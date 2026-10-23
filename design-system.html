@@ -1,0 +1,1272 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Design System · Cak Ali</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Hanya untuk preview. Di proyek, token di bawah ada di tailwind.config.js dan dibuild via Tailwind CLI. -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#FEF2F3', 100: '#FDE3E5', 200: '#FBCBD0', 300: '#F7A1AA', 400: '#F0697A',
+              500: '#E43B51', 600: '#C8102E', 700: '#A50D26', 800: '#880F24', 900: '#741124', 950: '#40050F'
+            },
+            gold: {
+              50: '#FFFBEB', 100: '#FEF3C7', 200: '#FDE68A', 300: '#FCD34D', 400: '#F8C21C',
+              500: '#F2B705', 600: '#D69403', 700: '#B16B06', 800: '#90530C', 900: '#76440D'
+            },
+            cream: '#F7F2EA',
+            wa: { DEFAULT: '#15803D', hover: '#166534' }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            soft: '0 1px 2px rgba(28,25,23,.04), 0 2px 8px rgba(28,25,23,.04)',
+            'soft-lg': '0 4px 12px rgba(28,25,23,.06), 0 16px 40px rgba(28,25,23,.08)'
+          },
+          maxWidth: { site: '72rem' },
+          keyframes: {
+            marquee: { to: { transform: 'translateX(-50%)' } },
+            'mega-in': { from: { opacity: '0', transform: 'translateY(-8px)' }, to: { opacity: '1', transform: 'none' } }
+          },
+          animation: {
+            marquee: 'marquee 45s linear infinite',
+            'mega-in': 'mega-in .2s ease-out'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Komponen: sama dengan src/input.css. Ubah di keduanya agar tetap sinkron. -->
+  <style type="text/tailwindcss">
+    @layer base {
+      body { @apply bg-white font-sans text-stone-700 antialiased; }
+      ::selection { @apply bg-brand-100 text-brand-900; }
+      [hidden] { display: none !important; }
+      html { scroll-padding-top: 88px; }
+      :focus-visible { @apply outline outline-2 outline-offset-2 outline-brand-600; }
+    }
+    /* Animasi masuk: main.js menambah .reveal-ready ke <html> (tidak aktif bila "kurangi gerakan") */
+    .reveal-ready [data-reveal] { transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0ms); }
+    .reveal-ready [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(24px); }
+    @layer components {
+      /* Layout */
+      .container-site { @apply mx-auto w-full max-w-site px-4 sm:px-6 lg:px-8; }
+      .section { @apply py-16 md:py-24; }
+
+      /* Tipografi */
+      .eyebrow { @apply text-xs font-bold uppercase tracking-[0.14em] text-brand-600; }
+      .text-display { @apply text-[2.5rem] font-extrabold leading-[1.05] tracking-tight text-stone-900 md:text-[3.5rem]; }
+      .h1 { @apply text-4xl font-extrabold leading-tight tracking-tight text-stone-900 md:text-5xl; }
+      .h2 { @apply text-3xl font-bold leading-tight tracking-tight text-stone-900 md:text-4xl; }
+      .h3 { @apply text-2xl font-bold leading-snug text-stone-900; }
+      .h4 { @apply text-xl font-semibold leading-snug text-stone-900; }
+      .lead { @apply text-lg leading-relaxed text-stone-600 md:text-xl; }
+      .body { @apply text-base leading-relaxed text-stone-700; }
+      .caption { @apply text-xs text-stone-500; }
+      .link { @apply font-semibold text-brand-700 underline-offset-4 hover:underline focus-visible:rounded focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-100; }
+
+      /* Tombol */
+      .btn { @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition duration-150 focus-visible:outline-none focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50; }
+      .btn-sm { @apply h-9 px-4 text-sm; }
+      .btn-md { @apply h-11 px-5 text-[15px]; }
+      .btn-lg { @apply h-[52px] px-7 text-base; }
+      .btn-primary { @apply bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800 focus-visible:ring-brand-200; }
+      .btn-secondary { @apply bg-stone-900 text-white hover:bg-stone-800 active:bg-stone-950 focus-visible:ring-stone-300; }
+      .btn-outline { @apply border border-stone-300 bg-white text-stone-900 hover:border-stone-400 hover:bg-stone-50 focus-visible:ring-stone-200; }
+      .btn-ghost { @apply text-stone-700 hover:bg-stone-100 hover:text-stone-900 focus-visible:ring-stone-200; }
+      .btn-wa { @apply bg-wa text-white hover:bg-wa-hover focus-visible:ring-green-200; }
+      .btn-icon { @apply aspect-square px-0; }
+
+      /* Badge & chip */
+      .badge { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold; }
+      .badge-brand { @apply bg-brand-50 text-brand-700; }
+      .badge-gold { @apply bg-gold-100 text-gold-800; }
+      .badge-neutral { @apply bg-stone-100 text-stone-700; }
+      .badge-success { @apply bg-emerald-50 text-emerald-700; }
+      .chip { @apply inline-flex h-9 items-center gap-1.5 rounded-full border border-stone-200 bg-white px-4 text-sm font-medium text-stone-700 transition hover:border-stone-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-stone-200 aria-pressed:border-stone-900 aria-pressed:bg-stone-900 aria-pressed:text-white; }
+
+      /* Form */
+      .label { @apply mb-1.5 block text-sm font-semibold text-stone-800; }
+      .input { @apply block h-11 w-full rounded-xl border border-stone-300 bg-white px-4 text-[15px] text-stone-900 transition placeholder:text-stone-400 focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-100 disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-stone-400; }
+      .textarea { @apply input h-auto min-h-[120px] py-3 leading-relaxed; }
+      .select {
+        @apply input appearance-none bg-no-repeat pr-11;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378716c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-size: 18px;
+        background-position: right 14px center;
+      }
+      .is-invalid { @apply border-red-500 focus:border-red-500 focus:ring-red-100; }
+      .help { @apply mt-1.5 text-sm text-stone-500; }
+      .error-text { @apply mt-1.5 flex items-center gap-1.5 text-sm font-medium text-red-600; }
+      .check { @apply mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-brand-600; }
+
+      /* Kartu */
+      .card { @apply rounded-2xl border border-stone-200 bg-white; }
+      .card-hover { @apply transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200; }
+      .card-link { @apply transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300 focus-visible:ring-offset-2; }
+      .icon-tile { @apply grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600; }
+
+      /* Navigasi */
+      .site-header { @apply fixed inset-x-0 top-0 z-50 border-b border-transparent text-stone-900 transition-colors duration-200; }
+      .site-header.is-scrolled,
+      .site-header.is-menu { @apply border-stone-200 bg-white/90 shadow-soft backdrop-blur; }
+      .site-header.is-mega { @apply border-white/15 bg-brand-600 text-white shadow-none backdrop-blur-none; }
+      .logo-white { @apply hidden; }
+      .is-mega .logo-color { @apply hidden; }
+      .is-mega .logo-white { @apply block; }
+      .nav-link { @apply relative inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[15px] font-semibold transition hover:bg-stone-900/5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200; }
+      .nav-link svg { @apply transition-transform duration-200; }
+      .nav-link[aria-expanded='true'] svg { @apply rotate-180; }
+      .nav-link.is-active::after { content: ''; @apply absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-brand-600; }
+      .is-mega .nav-link { @apply hover:bg-white/10 focus-visible:ring-white/30; }
+      .is-mega .nav-link[aria-expanded='true'] { @apply bg-white/15; }
+      .is-mega .nav-link.is-active::after { @apply bg-white; }
+      .is-mega .header-cta { @apply bg-white text-brand-700 hover:bg-brand-50 focus-visible:ring-white/40; }
+      .mega-panel { @apply fixed inset-x-0 top-[72px] z-40 max-h-[calc(100vh-72px)] animate-mega-in overflow-y-auto bg-brand-600 text-white; }
+      .dock-btn { @apply relative grid h-12 w-12 place-items-center rounded-xl border-2 border-white bg-brand-600 text-white shadow-soft-lg transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200; }
+      .dock-tip { @apply pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-stone-900 px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100; }
+
+      /* Tab */
+      .tab { @apply -mb-px border-b-2 border-transparent pb-3 text-sm font-semibold text-stone-500 transition hover:text-stone-900 focus-visible:outline-none focus-visible:text-stone-900 aria-selected:border-brand-600 aria-selected:text-brand-700; }
+
+      /* Alert */
+      .alert { @apply flex gap-3 rounded-xl border p-4 text-sm leading-relaxed; }
+      .alert-info { @apply border-sky-200 bg-sky-50 text-sky-900; }
+      .alert-success { @apply border-emerald-200 bg-emerald-50 text-emerald-900; }
+      .alert-warning { @apply border-amber-200 bg-amber-50 text-amber-900; }
+      .alert-error { @apply border-red-200 bg-red-50 text-red-900; }
+    }
+  </style>
+
+  <!-- Khusus halaman dokumentasi ini (bukan bagian design system website). -->
+  <style type="text/tailwindcss">
+    @layer components {
+      .ds-section { @apply scroll-mt-24 border-t border-stone-200 py-14 first:border-t-0; }
+      .ds-title { @apply text-2xl font-bold tracking-tight text-stone-900 md:text-3xl; }
+      .ds-desc { @apply mt-2 max-w-2xl text-stone-600; }
+      .ds-sub { @apply mb-4 mt-10 text-sm font-bold uppercase tracking-wider text-stone-400; }
+      .ds-canvas { @apply rounded-2xl border border-stone-200 bg-stone-50/60 p-6 md:p-8; }
+      .ds-code { @apply mt-3 overflow-x-auto rounded-xl bg-stone-900 p-4 font-mono text-[13px] leading-relaxed text-stone-100; }
+      .ds-nav a { @apply block rounded-lg px-3 py-1.5 text-sm text-stone-600 transition hover:bg-stone-100 hover:text-stone-900; }
+      .ds-nav a.active { @apply bg-brand-50 font-semibold text-brand-700; }
+      /* Komponen fixed ditampilkan statis di dalam dokumentasi */
+      .ds-static { @apply !relative !inset-auto !top-auto !z-auto !max-h-none !overflow-hidden; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="sticky top-0 z-40 border-b border-stone-200 bg-white/85 backdrop-blur">
+  <div class="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a href="#pengantar" class="flex items-center gap-2.5">
+      <img src="assets/img/logo-cak-ali.png" alt="Cak Ali" class="h-9 w-auto" />
+      <span class="font-bold text-stone-900">Design System</span>
+    </a>
+    <span class="badge badge-neutral">v1.3 · Fase 1</span>
+  </div>
+  <nav class="ds-nav-mobile flex gap-2 overflow-x-auto border-t border-stone-100 px-4 py-2 lg:hidden" aria-label="Bagian dokumentasi"></nav>
+</header>
+
+<div class="flex">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto border-r border-stone-200 p-4 lg:block">
+    <nav class="ds-nav space-y-0.5" aria-label="Bagian dokumentasi">
+      <p class="px-3 pb-2 pt-1 text-xs font-bold uppercase tracking-wider text-stone-400">Fondasi</p>
+      <a href="#pengantar">Pengantar & Prinsip</a>
+      <a href="#warna">Warna</a>
+      <a href="#tipografi">Tipografi</a>
+      <a href="#spasi">Spasi, Radius, Bayangan</a>
+      <a href="#ikon">Ikon</a>
+      <a href="#grid">Grid & Breakpoint</a>
+      <p class="px-3 pb-2 pt-5 text-xs font-bold uppercase tracking-wider text-stone-400">Komponen</p>
+      <a href="#tombol">Tombol</a>
+      <a href="#badge">Badge, Chip & Tab</a>
+      <a href="#form">Form</a>
+      <a href="#kartu">Kartu</a>
+      <a href="#header">Header & Mega Menu</a>
+      <a href="#samping">Tombol Samping & Footer</a>
+      <a href="#feedback">Feedback</a>
+      <p class="px-3 pb-2 pt-5 text-xs font-bold uppercase tracking-wider text-stone-400">Pola</p>
+      <a href="#hero">Hero</a>
+      <a href="#pola">Pola Seksi</a>
+      <a href="#suara">Suara & Nada</a>
+      <a href="#token">Token & Kode</a>
+    </nav>
+  </aside>
+
+  <main class="min-w-0 flex-1">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-10">
+
+<!-- ============ PENGANTAR ============ -->
+<section id="pengantar" class="ds-section">
+  <p class="eyebrow">Pedoman Visual</p>
+  <h1 class="mt-3 text-5xl uppercase leading-[1.02] tracking-tight text-stone-900 md:text-6xl"><span class="font-light">Design System</span><br /><span class="font-extrabold text-brand-600">Cak Ali</span></h1>
+  <p class="lead mt-5 max-w-2xl">Pedoman tampilan dan komponen untuk <strong class="text-stone-900">cakali.id</strong>. Gaya: minimalis, bersih, modern, dengan sentuhan <strong class="text-stone-900">editorial</strong> yang personal. Struktur informasi mengikuti <strong class="text-stone-900">Portal Jabar</strong>: mega menu, kartu kabar, kolom layanan, tombol samping, footer berwarna brand.</p>
+
+  <div class="mt-10 grid gap-4 sm:grid-cols-2">
+    <div class="card p-6">
+      <div class="icon-tile"><svg data-icon="users" class="h-6 w-6"></svg></div>
+      <h3 class="h4 mt-4">Dekat & personal</h3>
+      <p class="mt-1.5 text-stone-600">Bahasa santai, foto asli, sapaan "Cak", tanda tangan tulisan tangan. Hindari kesan kaku dan birokratis.</p>
+    </div>
+    <div class="card p-6">
+      <div class="icon-tile"><svg data-icon="sparkle" class="h-6 w-6"></svg></div>
+      <h3 class="h4 mt-4">Editorial & berani</h3>
+      <p class="mt-1.5 text-stone-600">Tipografi besar, kontras tipis-tebal, penomoran 01–06, tata letak asimetris. Merah tetap dipakai hemat.</p>
+    </div>
+    <div class="card p-6">
+      <div class="icon-tile"><svg data-icon="target" class="h-6 w-6"></svg></div>
+      <h3 class="h4 mt-4">Jelas seperti portal</h3>
+      <p class="mt-1.5 text-stone-600">Navigasi maksimal 5 menu, isi dikelompokkan di mega menu. Pengunjung cepat tahu harus ke mana.</p>
+    </div>
+    <div class="card p-6">
+      <div class="icon-tile"><svg data-icon="zap" class="h-6 w-6"></svg></div>
+      <h3 class="h4 mt-4">Ringan di HP</h3>
+      <p class="mt-1.5 text-stone-600">Mobile-first, gambar WebP/Unsplash berukuran pas, animasi berhenti bila pengguna memilih kurangi gerakan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WARNA ============ -->
+<section id="warna" class="ds-section">
+  <h2 class="ds-title">Warna</h2>
+  <p class="ds-desc">Palet mengacu pada warna Gerindra. Komposisi ideal: <strong>~80% putih/netral/cream</strong>, <strong>~15% merah</strong> untuk aksi, penekanan, mega menu, pita, dan footer, <strong>~5% emas</strong> sebagai aksen. Klik kotak warna untuk menyalin kode hex.</p>
+
+  <div class="mt-8 flex h-4 overflow-hidden rounded-full" aria-hidden="true">
+    <div class="w-[80%] bg-cream"></div><div class="w-[15%] bg-brand-600"></div><div class="w-[5%] bg-gold-500"></div>
+  </div>
+
+  <h3 class="ds-sub">Brand · Merah (primer)</h3>
+  <div class="swatches grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-11" data-palette="brand" data-main="600"></div>
+
+  <h3 class="ds-sub">Gold · Emas (aksen)</h3>
+  <div class="swatches grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-10" data-palette="gold" data-main="500"></div>
+
+  <h3 class="ds-sub">Netral · Stone (teks, latar, garis)</h3>
+  <div class="swatches grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-11" data-palette="stone" data-main="900"></div>
+
+  <h3 class="ds-sub">Latar & semantik</h3>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <button class="card overflow-hidden text-left" data-hex="#F7F2EA"><div class="h-14 border-b border-stone-200 bg-cream"></div><div class="p-3"><p class="text-sm font-semibold text-stone-900">Cream</p><p class="caption">#F7F2EA · khusus latar hero editorial</p></div></button>
+    <button class="card overflow-hidden text-left" data-hex="#A50D26"><div class="h-14 bg-brand-700"></div><div class="p-3"><p class="text-sm font-semibold text-stone-900">Footer</p><p class="caption">brand-700 · #A50D26 · teks brand-100</p></div></button>
+    <button class="card overflow-hidden text-left" data-hex="#15803D"><div class="h-14 bg-wa"></div><div class="p-3"><p class="text-sm font-semibold text-stone-900">WhatsApp</p><p class="caption">#15803D · hijau gelap agar teks putih kontras (AA)</p></div></button>
+    <button class="card overflow-hidden text-left" data-hex="#059669"><div class="h-14 bg-emerald-600"></div><div class="p-3"><p class="text-sm font-semibold text-stone-900">Sukses</p><p class="caption">emerald-600 · #059669</p></div></button>
+    <button class="card overflow-hidden text-left" data-hex="#D97706"><div class="h-14 bg-amber-600"></div><div class="p-3"><p class="text-sm font-semibold text-stone-900">Peringatan</p><p class="caption">amber-600 · #D97706</p></div></button>
+    <button class="card overflow-hidden text-left" data-hex="#DC2626"><div class="h-14 bg-red-600"></div><div class="p-3"><p class="text-sm font-semibold text-stone-900">Galat</p><p class="caption">red-600 · #DC2626 · selalu dengan ikon + teks</p></div></button>
+  </div>
+
+  <h3 class="ds-sub">Pemakaian & kontras</h3>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-2xl bg-brand-600 p-5 text-white"><p class="text-lg font-bold">Aa Putih di brand-600</p><p class="mt-1 text-sm text-brand-100">Tombol, mega menu, pita · AA ✓</p></div>
+    <div class="rounded-2xl bg-brand-700 p-5 text-brand-100"><p class="text-lg font-bold text-white">Aa Putih di brand-700</p><p class="mt-1 text-sm">Footer · AA ✓</p></div>
+    <div class="rounded-2xl bg-stone-900 p-5 text-white"><p class="text-lg font-bold">Aa Putih di stone-900</p><p class="mt-1 text-sm text-stone-400">Kartu gelap · AAA ✓</p></div>
+    <div class="rounded-2xl border border-dashed border-red-300 bg-white p-5"><p class="text-lg font-bold text-gold-500">Aa Emas di putih</p><p class="mt-1 text-sm font-semibold text-red-600">✗ Jangan untuk teks</p></div>
+  </div>
+</section>
+
+<!-- ============ TIPOGRAFI ============ -->
+<section id="tipografi" class="ds-section">
+  <h2 class="ds-title">Tipografi</h2>
+  <p class="ds-desc"><strong>Plus Jakarta Sans</strong> (font buatan Indonesia), bobot 300–800, untuk semua teks. Tanda tangan "Cak Ali" memakai <strong>gambar logo</strong>, bukan font. Ciri khas editorial: judul seksi menggabungkan baris <em>tipis</em> dan baris <em>tebal merah</em>, huruf kapital.</p>
+
+  <h3 class="ds-sub">Judul editorial (pola utama judul seksi)</h3>
+  <div class="ds-canvas bg-white">
+    <p class="text-4xl uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl"><span class="font-light">Program</span><br /><span class="font-extrabold text-brand-600">Prioritas</span></p>
+    <pre class="ds-code"><code>&lt;h2 class="text-4xl uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl"&gt;
+  &lt;span class="font-light"&gt;Program&lt;/span&gt;&lt;br&gt;
+  &lt;span class="font-extrabold text-brand-600"&gt;Prioritas&lt;/span&gt;
+&lt;/h2&gt;</code></pre>
+  </div>
+
+  <h3 class="ds-sub">Skala</h3>
+  <div class="ds-canvas divide-y divide-stone-200 bg-white !p-0">
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Nama hero · 22vw→13.5rem / 800</code><p class="text-7xl font-extrabold uppercase leading-[0.82] tracking-[-0.05em] text-stone-900 md:text-8xl">Cak Ali</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Nama tipis · 36→48px / 300</code><p class="text-4xl font-light uppercase leading-[1.02] tracking-tight text-stone-900 md:text-5xl">Ali Hasan Mun'im</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h1 · 36→48px / 800</code><p class="h1">Membangun dari desa</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h2 · 30→36px / 700</code><p class="h2">Kabar terkini</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h3 · 24px / 700</code><p class="h3">Penguatan UMKM lokal</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h4 · 20px / 600</code><p class="h4">Pelatihan digital untuk pemuda</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Angka urut · 36px / 300</code><p class="text-4xl font-light tracking-tight text-brand-600">01 <span class="text-stone-300">02 03</span></p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.lead · 18→20px / 400</code><p class="lead">Cak Ali percaya perubahan dimulai dari mendengar langsung suara warga.</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.body · 16px / 400</code><p class="body">Selama bertahun-tahun, Cak Ali aktif mendampingi pelaku usaha kecil di Bondowoso, Situbondo, dan Banyuwangi.</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Label kapital · 12px / 700</code><p class="text-xs font-bold uppercase tracking-[0.16em] text-stone-600">Wilayah perjuangan</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.eyebrow · 12px / 700</code><p class="eyebrow">Program Unggulan</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Logo sebagai tanda tangan</code><img src="assets/img/logo-cak-ali.png" alt="Cak Ali" class="h-14 w-auto -rotate-3" /></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.caption · 12px / 400</code><p class="caption">Diperbarui 12 Oktober 2026 · Banyuwangi</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.link</code><p class="body">Baca <a href="#tipografi" class="link">profil lengkap Cak Ali</a> untuk mengenal lebih dekat.</p></div>
+  </div>
+
+  <div class="mt-6 grid gap-3 text-sm sm:grid-cols-3">
+    <div class="card p-4"><p class="font-semibold text-stone-900">Tanda tangan</p><p class="mt-1 text-stone-600">Pakai <code>logo-cak-ali.png</code>, maks. sekali per seksi, miring 2–3°.</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Warna teks</p><p class="mt-1 text-stone-600">Judul <code>stone-900</code>, isi <code>stone-700</code>/<code>600</code>, sekunder <code>stone-500</code>.</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Panjang baris</p><p class="mt-1 text-stone-600">Paragraf maks. ±70 karakter (<code>max-w-2xl</code>).</p></div>
+  </div>
+</section>
+
+<!-- ============ SPASI ============ -->
+<section id="spasi" class="ds-section">
+  <h2 class="ds-title">Spasi, Radius, Bayangan</h2>
+  <p class="ds-desc">Gunakan skala spasi Tailwind (kelipatan 4px). Pemisah lebih banyak memakai garis tipis (<code>border-stone-200</code>) dan ruang kosong daripada bayangan.</p>
+
+  <h3 class="ds-sub">Skala spasi yang dipakai</h3>
+  <div class="space-y-2" id="spacing-scale"></div>
+
+  <div class="mt-6 grid gap-3 text-sm sm:grid-cols-3">
+    <div class="card p-4"><p class="font-semibold text-stone-900">Antar seksi</p><p class="mt-1 text-stone-600"><code>.section</code> → 64px mobile, 96px desktop</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Isi kartu</p><p class="mt-1 text-stone-600"><code>p-5</code>–<code>p-8</code>; jarak antarkartu <code>gap-4</code>–<code>gap-6</code></p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Gutter halaman</p><p class="mt-1 text-stone-600"><code>.container-site</code> → 16 / 24 / 32px, lebar maks 1152px</p></div>
+  </div>
+
+  <h3 class="ds-sub">Radius</h3>
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+    <div class="text-center"><div class="h-20 w-full rounded-lg border-2 border-stone-300 bg-white"></div><p class="mt-2 text-sm font-semibold">rounded-lg</p><p class="caption">8px · thumbnail</p></div>
+    <div class="text-center"><div class="h-20 w-full rounded-xl border-2 border-stone-300 bg-white"></div><p class="mt-2 text-sm font-semibold">rounded-xl</p><p class="caption">12px · input, ikon</p></div>
+    <div class="text-center"><div class="h-20 w-full rounded-2xl border-2 border-stone-300 bg-white"></div><p class="mt-2 text-sm font-semibold">rounded-2xl</p><p class="caption">16px · kartu</p></div>
+    <div class="text-center"><div class="h-20 w-full rounded-3xl border-2 border-stone-300 bg-white"></div><p class="mt-2 text-sm font-semibold">rounded-3xl</p><p class="caption">24px · bento, banner</p></div>
+    <div class="text-center"><div class="h-20 w-full rounded-full border-2 border-stone-300 bg-white"></div><p class="mt-2 text-sm font-semibold">rounded-full</p><p class="caption">tombol, badge</p></div>
+    <div class="text-center"><div class="mx-auto h-20 w-16 rounded-t-full border-2 border-stone-300 bg-white"></div><p class="mt-2 text-sm font-semibold">rounded-t-full</p><p class="caption">bingkai foto hero</p></div>
+  </div>
+
+  <h3 class="ds-sub">Bayangan</h3>
+  <div class="ds-canvas grid gap-6 sm:grid-cols-3">
+    <div class="rounded-2xl border border-stone-200 bg-white p-6"><p class="font-semibold text-stone-900">Tanpa bayangan</p><p class="caption mt-1">border stone-200 · default kartu</p></div>
+    <div class="rounded-2xl bg-white p-6 shadow-soft"><p class="font-semibold text-stone-900">shadow-soft</p><p class="caption mt-1">header saat scroll</p></div>
+    <div class="rounded-2xl bg-white p-6 shadow-soft-lg"><p class="font-semibold text-stone-900">shadow-soft-lg</p><p class="caption mt-1">hover kartu, kartu Kabar, tombol samping</p></div>
+  </div>
+</section>
+
+<!-- ============ IKON ============ -->
+<section id="ikon" class="ds-section">
+  <h2 class="ds-title">Ikon</h2>
+  <p class="ds-desc">Gaya garis ala Lucide, <code>stroke-width 1.75</code>, warna mengikuti teks (<code>currentColor</code>). Ukuran: 16px (inline), 20px (tombol, daftar), 24px (kotak ikon). Disimpan di <code>js/icons.js</code>, dirender lewat atribut <code>data-icon</code>. Klik ikon untuk menyalin namanya.</p>
+  <div id="icon-grid" class="mt-8 grid grid-cols-3 gap-2 sm:grid-cols-5 md:grid-cols-7"></div>
+  <pre class="ds-code"><code>&lt;svg data-icon="map-pin" class="h-5 w-5"&gt;&lt;/svg&gt;</code></pre>
+
+  <h3 class="ds-sub">Wadah ikon</h3>
+  <div class="ds-canvas flex flex-wrap items-center gap-6">
+    <div class="text-center"><span class="icon-tile"><svg data-icon="store" class="h-6 w-6"></svg></span><p class="caption mt-2">.icon-tile</p></div>
+    <div class="text-center"><span class="grid h-12 w-12 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="store" class="h-6 w-6"></svg></span><p class="caption mt-2">di mega menu</p></div>
+    <div class="text-center"><span class="mx-auto grid h-11 w-11 place-items-center rounded-full bg-brand-600 text-white"><svg data-icon="route" class="h-5 w-5"></svg></span><p class="caption mt-2">bulat (nilai)</p></div>
+    <div class="text-center"><span class="relative mx-auto block h-16 w-16"><span class="absolute right-0 top-0 h-9 w-9 rounded-full bg-gold-300"></span><span class="absolute bottom-0 left-0 grid h-12 w-12 place-items-center rounded-xl bg-brand-600 text-white"><svg data-icon="users" class="h-6 w-6"></svg></span></span><p class="caption mt-2">ilustrasi (kolom "Untuk")</p></div>
+    <div class="text-center"><span class="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-white/15 text-white ring-1 ring-stone-900/10 [background:rgb(28_25_23/.6)]"><svg data-icon="store" class="h-6 w-6"></svg></span><p class="caption mt-2">di atas foto</p></div>
+  </div>
+</section>
+
+<!-- ============ GRID ============ -->
+<section id="grid" class="ds-section">
+  <h2 class="ds-title">Grid & Breakpoint</h2>
+  <p class="ds-desc">Mobile-first: tulis gaya untuk HP dulu, lalu tambahkan <code>sm:</code>, <code>md:</code>, <code>lg:</code>. Tata letak editorial memakai <strong>12 kolom</strong> di <code>lg:</code> (mis. 4-5-3 di hero, 4-4-4 di Kenalan). Uji di 360, 390, 768, 1024, 1440px tanpa scroll horizontal.</p>
+  <div class="mt-8 overflow-x-auto rounded-2xl border border-stone-200">
+    <table class="w-full min-w-[560px] text-left text-sm">
+      <thead class="bg-stone-50 text-stone-500"><tr><th class="p-4 font-semibold">Prefix</th><th class="p-4 font-semibold">Min. lebar</th><th class="p-4 font-semibold">Perangkat</th><th class="p-4 font-semibold">Catatan</th></tr></thead>
+      <tbody class="divide-y divide-stone-200">
+        <tr><td class="p-4 font-mono text-stone-900">(dasar)</td><td class="p-4">0</td><td class="p-4">HP</td><td class="p-4">1 kolom, menu hamburger, tombol WA bulat</td></tr>
+        <tr><td class="p-4 font-mono text-stone-900">sm:</td><td class="p-4">640px</td><td class="p-4">HP besar</td><td class="p-4">2 kolom kartu, CTA header muncul</td></tr>
+        <tr><td class="p-4 font-mono text-stone-900">md:</td><td class="p-4">768px</td><td class="p-4">Tablet</td><td class="p-4">Galeri 5 kolom bertingkat</td></tr>
+        <tr><td class="p-4 font-mono text-stone-900">lg:</td><td class="p-4">1024px</td><td class="p-4">Laptop</td><td class="p-4">Menu 5 + mega menu, tombol samping, 12 kolom</td></tr>
+        <tr><td class="p-4 font-mono text-stone-900">2xl:</td><td class="p-4">1536px</td><td class="p-4">Layar lebar</td><td class="p-4">Label vertikal di tepi hero</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="ds-sub">Grid 12 kolom (lg)</h3>
+  <div id="grid-demo" class="grid grid-cols-4 gap-2 md:grid-cols-8 lg:grid-cols-12"></div>
+</section>
+
+<!-- ============ TOMBOL ============ -->
+<section id="tombol" class="ds-section">
+  <h2 class="ds-title">Tombol</h2>
+  <p class="ds-desc">Bentuk pil (<code>rounded-full</code>). Maksimal <strong>satu tombol primer</strong> per area. Tinggi minimal 44px pada HP untuk target sentuh.</p>
+
+  <h3 class="ds-sub">Varian</h3>
+  <div class="ds-canvas flex flex-wrap items-center gap-3">
+    <button class="btn btn-md btn-primary">Jadi Relawan <svg data-icon="arrow-right" class="h-4 w-4"></svg></button>
+    <button class="btn btn-md btn-secondary">Sampaikan Aspirasi</button>
+    <button class="btn btn-md btn-outline">Kenal Cak Ali</button>
+    <button class="btn btn-md btn-ghost">Batal</button>
+    <button class="btn btn-md btn-wa"><svg data-icon="whatsapp" class="h-5 w-5"></svg> Kirim via WhatsApp</button>
+  </div>
+  <div class="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-5">
+    <p><code class="font-semibold text-stone-900">.btn-primary</code><br /><span class="text-stone-500">Aksi utama: Relawan, Kirim</span></p>
+    <p><code class="font-semibold text-stone-900">.btn-secondary</code><br /><span class="text-stone-500">Aksi kedua yang tetap penting</span></p>
+    <p><code class="font-semibold text-stone-900">.btn-outline</code><br /><span class="text-stone-500">Navigasi, "selengkapnya"</span></p>
+    <p><code class="font-semibold text-stone-900">.btn-ghost</code><br /><span class="text-stone-500">Aksi ringan, batal, tutup</span></p>
+    <p><code class="font-semibold text-stone-900">.btn-wa</code><br /><span class="text-stone-500">Semua aksi ke WhatsApp</span></p>
+  </div>
+
+  <h3 class="ds-sub">Di atas latar gelap/merah/cream</h3>
+  <div class="grid gap-3 md:grid-cols-3">
+    <div class="flex flex-wrap gap-2 rounded-2xl bg-brand-600 p-5">
+      <span class="btn btn-md bg-white text-brand-700 hover:bg-brand-50">Jadi Relawan</span>
+      <span class="btn btn-md border border-white/40 text-white hover:bg-white/10">Aspirasi</span>
+    </div>
+    <div class="flex flex-wrap gap-2 rounded-2xl bg-stone-950 p-5">
+      <span class="btn btn-md bg-white text-stone-900 hover:bg-stone-100">Selengkapnya</span>
+    </div>
+    <div class="flex flex-wrap gap-2 rounded-2xl bg-cream p-5">
+      <span class="btn btn-md btn-primary">Jadi Relawan</span>
+      <span class="btn btn-md btn-outline border-stone-900/15 bg-transparent">Kenal Cak Ali</span>
+    </div>
+  </div>
+
+  <h3 class="ds-sub">Tautan aksi editorial</h3>
+  <div class="ds-canvas">
+    <a href="#tombol" class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-stone-900 transition hover:text-brand-700">Semua program <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
+    <p class="caption mt-2">Dipakai di samping judul seksi editorial, pengganti tombol outline.</p>
+  </div>
+
+  <h3 class="ds-sub">Ukuran & status</h3>
+  <div class="ds-canvas flex flex-wrap items-center gap-3">
+    <button class="btn btn-sm btn-primary">Kecil · 36px</button>
+    <button class="btn btn-md btn-primary">Sedang · 44px</button>
+    <button class="btn btn-lg btn-primary">Besar · 52px</button>
+    <button class="btn btn-md btn-outline btn-icon" aria-label="Bagikan"><svg data-icon="share" class="h-5 w-5"></svg></button>
+    <button class="btn btn-md btn-primary" disabled>Nonaktif</button>
+    <button class="btn btn-md btn-primary" id="btn-loading-demo"><span>Klik: status memuat</span></button>
+  </div>
+</section>
+
+<!-- ============ BADGE, CHIP, TAB ============ -->
+<section id="badge" class="ds-section">
+  <h2 class="ds-title">Badge, Chip & Tab</h2>
+  <p class="ds-desc">Badge untuk label kategori/status. Chip untuk filter (<code>aria-pressed</code>). Tab bergaris bawah untuk mengganti daftar di tempat yang sama (<code>role="tab"</code> + <code>aria-selected</code>), seperti Terbaru/Terpopuler di Kabar Terkini.</p>
+
+  <h3 class="ds-sub">Badge</h3>
+  <div class="ds-canvas flex flex-wrap gap-2">
+    <span class="badge badge-brand">Ekonomi & UMKM</span>
+    <span class="badge badge-gold">Video</span>
+    <span class="badge badge-neutral"><svg data-icon="map-pin" class="h-3.5 w-3.5"></svg> Bondowoso</span>
+    <span class="badge badge-success"><svg data-icon="check" class="h-3.5 w-3.5"></svg> Terkirim</span>
+    <span class="badge bg-brand-600 text-white">Di atas foto</span>
+    <span class="badge badge-brand"><span class="h-1.5 w-1.5 rounded-full bg-brand-600"></span> Dapil Jawa Timur IV</span>
+  </div>
+
+  <h3 class="ds-sub">Chip filter (klik untuk mencoba)</h3>
+  <div class="ds-canvas flex flex-wrap gap-2" data-chip-group>
+    <button class="chip" aria-pressed="true">Semua</button>
+    <button class="chip" aria-pressed="false">Bondowoso</button>
+    <button class="chip" aria-pressed="false">Situbondo</button>
+    <button class="chip" aria-pressed="false">Banyuwangi</button>
+  </div>
+
+  <h3 class="ds-sub">Tab (klik untuk mencoba)</h3>
+  <div class="ds-canvas bg-white">
+    <div role="tablist" class="flex gap-6 border-b border-stone-200" data-tab-group>
+      <button type="button" role="tab" class="tab" aria-selected="true">Terbaru</button>
+      <button type="button" role="tab" class="tab" aria-selected="false">Terpopuler</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORM ============ -->
+<section id="form" class="ds-section">
+  <h2 class="ds-title">Form</h2>
+  <p class="ds-desc">Label selalu terlihat di atas field (jangan hanya placeholder). Pesan galat muncul di bawah field dengan ikon dan teks. Tanda <span class="text-brand-600">*</span> untuk wajib diisi.</p>
+
+  <h3 class="ds-sub">Status field</h3>
+  <div class="ds-canvas grid gap-6 md:grid-cols-2">
+    <div><label class="label" for="f1">Default</label><input id="f1" class="input" placeholder="Nama lengkap" /><p class="help">Teks bantuan singkat di bawah field.</p></div>
+    <div><label class="label" for="f2">Fokus</label><input id="f2" class="input border-brand-600 ring-4 ring-brand-100" value="Ahmad Fauzi" /></div>
+    <div><label class="label" for="f3">Galat</label><input id="f3" class="input is-invalid" value="0812" aria-invalid="true" aria-describedby="f3e" /><p id="f3e" class="error-text"><svg data-icon="alert-circle" class="h-4 w-4"></svg> Nomor WhatsApp minimal 10 digit.</p></div>
+    <div><label class="label" for="f4">Nonaktif</label><input id="f4" class="input" value="Jawa Timur" disabled /></div>
+    <div><label class="label" for="f5">Pilihan</label><select id="f5" class="select"><option>Pilih kabupaten</option><option>Bondowoso</option><option>Situbondo</option><option>Banyuwangi</option></select></div>
+    <div>
+      <label class="label">Unggah foto <span class="font-normal text-stone-400">(opsional)</span></label>
+      <label class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-stone-300 bg-white px-4 py-6 text-center transition hover:border-brand-400 hover:bg-brand-50/40">
+        <svg data-icon="upload" class="h-6 w-6 text-stone-400"></svg>
+        <span class="text-sm font-semibold text-stone-800">Pilih foto</span><span class="caption">JPG/PNG, maks. 1 MB</span>
+        <input type="file" accept="image/*" class="sr-only" />
+      </label>
+    </div>
+    <div class="md:col-span-2"><label class="label" for="f6">Area teks</label><textarea id="f6" class="textarea" placeholder="Ceritakan aspirasi Anda…"></textarea><p class="help flex justify-between"><span>Minimal 20 karakter.</span><span>0 / 1000</span></p></div>
+  </div>
+
+  <h3 class="ds-sub">Checkbox & radio</h3>
+  <div class="ds-canvas grid gap-6 md:grid-cols-2">
+    <fieldset>
+      <legend class="label">Peran yang diminati</legend>
+      <div class="mt-2 space-y-3">
+        <label class="flex gap-3 text-[15px]"><input type="checkbox" class="check" checked /> Koordinator wilayah</label>
+        <label class="flex gap-3 text-[15px]"><input type="checkbox" class="check" /> Konten & media sosial</label>
+        <label class="flex gap-3 text-[15px]"><input type="checkbox" class="check" /> Acara & logistik</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="label">Kategori aspirasi</legend>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50"><input type="radio" name="kat" class="check" checked /> Infrastruktur</label>
+        <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50"><input type="radio" name="kat" class="check" /> Ekonomi</label>
+        <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50"><input type="radio" name="kat" class="check" /> Pendidikan</label>
+        <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50"><input type="radio" name="kat" class="check" /> Kesehatan</label>
+      </div>
+    </fieldset>
+  </div>
+
+  <h3 class="ds-sub">Contoh form utuh (coba kirim kosong)</h3>
+  <div class="grid gap-6 xl:grid-cols-[1fr_320px]">
+    <form id="demo-form" class="card p-6 md:p-8" novalidate>
+      <h3 class="h3">Daftar jadi relawan</h3>
+      <p class="mt-1 text-stone-600">Isi data singkat, tim Cak Ali akan menghubungi lewat WhatsApp.</p>
+      <div class="mt-6 grid gap-5 sm:grid-cols-2">
+        <div class="sm:col-span-2"><label class="label" for="d-nama">Nama lengkap <span class="text-brand-600">*</span></label><input id="d-nama" name="nama" class="input" autocomplete="name" /><p class="error-text hidden"></p></div>
+        <div><label class="label" for="d-wa">Nomor WhatsApp <span class="text-brand-600">*</span></label><input id="d-wa" name="wa" class="input" inputmode="tel" placeholder="08xxxxxxxxxx" /><p class="error-text hidden"></p></div>
+        <div><label class="label" for="d-kab">Kabupaten <span class="text-brand-600">*</span></label><select id="d-kab" name="kab" class="select"><option value="">Pilih kabupaten</option><option>Bondowoso</option><option>Situbondo</option><option>Banyuwangi</option></select><p class="error-text hidden"></p></div>
+        <div class="sm:col-span-2">
+          <label class="flex gap-3 text-sm leading-relaxed text-stone-600"><input id="d-ok" name="ok" type="checkbox" class="check" /> <span>Saya setuju data ini digunakan tim Cak Ali untuk keperluan relawan sesuai <a href="#form" class="link">Kebijakan Privasi</a>. <span class="text-brand-600">*</span></span></label>
+          <p class="error-text hidden"></p>
+        </div>
+      </div>
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+        <button class="btn btn-lg btn-primary" type="submit">Daftar sekarang</button>
+        <button class="btn btn-lg btn-ghost" type="reset">Kosongkan</button>
+      </div>
+    </form>
+    <div class="space-y-3 text-sm">
+      <div class="card p-4"><p class="font-semibold text-stone-900">Validasi</p><p class="mt-1 text-stone-600">Saat submit (semua galat tampil sekaligus) dan saat field ditinggalkan. Fokus ke field galat pertama.</p></div>
+      <div class="card p-4"><p class="font-semibold text-stone-900">Lebar field</p><p class="mt-1 text-stone-600">Satu kolom di HP; dua kolom mulai <code>sm:</code> untuk field pendek.</p></div>
+      <div class="card p-4"><p class="font-semibold text-stone-900">Keyboard HP</p><p class="mt-1 text-stone-600">Pakai <code>inputmode="tel"</code> untuk nomor dan <code>autocomplete</code> yang sesuai.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KARTU ============ -->
+<section id="kartu" class="ds-section">
+  <h2 class="ds-title">Kartu</h2>
+  <p class="ds-desc">Dasar kartu: latar putih, garis <code>stone-200</code>, <code>rounded-2xl</code>. Kartu yang bisa diklik memakai <code>.card-hover</code>. Kartu foto memakai gradasi gelap dari bawah agar teks putih terbaca, dan foto sedikit membesar saat hover.</p>
+
+  <h3 class="ds-sub">Kartu bernomor (program)</h3>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <a href="#kartu" class="card card-hover group flex flex-col p-6">
+      <span class="flex items-start justify-between"><span class="text-4xl font-light tracking-tight text-brand-600">02</span><span class="icon-tile"><svg data-icon="graduation" class="h-6 w-6"></svg></span></span>
+      <span class="h4 mt-6 block">Pemuda & Pendidikan</span>
+      <span class="mt-2 block flex-1 text-stone-600">Beasiswa, ruang kreatif, dan pelatihan kerja untuk anak muda.</span>
+      <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">Selengkapnya <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
+    </a>
+    <a href="#kartu" class="group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-3xl p-6 text-white">
+      <img src="https://images.unsplash.com/photo-1604973104381-870c92f10343?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+      <span class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-stone-950/10"></span>
+      <span class="absolute left-6 top-6 text-5xl font-light tracking-tight text-white/90">01</span>
+      <span class="relative">
+        <span class="grid h-12 w-12 place-items-center rounded-xl bg-white/15 backdrop-blur"><svg data-icon="store" class="h-6 w-6"></svg></span>
+        <span class="mt-4 block text-2xl font-bold leading-tight">Ekonomi & UMKM</span>
+        <span class="mt-2 block text-sm text-stone-200">Kartu foto: dipakai untuk item unggulan.</span>
+      </span>
+    </a>
+    <a href="#kartu" class="card card-hover group overflow-hidden">
+      <div class="aspect-[16/10] overflow-hidden bg-stone-100"><img src="https://images.unsplash.com/photo-1541064828014-503911d13103?auto=format&fit=crop&w=600&q=70" alt="Nelayan di pantai" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" /></div>
+      <div class="p-5">
+        <div class="flex items-center gap-2"><span class="badge badge-brand">Nelayan</span><span class="caption">20 Sep 2026 · Banyuwangi</span></div>
+        <h3 class="mt-3 text-lg font-bold leading-snug text-stone-900">Menyapa nelayan di pesisir Banyuwangi</h3>
+        <p class="mt-2 line-clamp-2 text-sm text-stone-600">Kartu kegiatan untuk halaman daftar Kegiatan.</p>
+      </div>
+    </a>
+  </div>
+
+  <h3 class="ds-sub">Baris fakta & nilai</h3>
+  <div class="grid gap-8 md:grid-cols-2">
+    <div class="border-t border-stone-200">
+      <div class="flex items-baseline justify-between gap-4 border-b border-stone-200 py-4"><span class="text-sm font-semibold uppercase tracking-wider text-stone-500">Kabupaten di dapil</span><span class="text-2xl font-extrabold tracking-tight text-stone-900">3</span></div>
+      <div class="flex items-baseline justify-between gap-4 border-b border-stone-200 py-4"><span class="text-sm font-semibold uppercase tracking-wider text-stone-500">Pertama maju caleg</span><span class="text-2xl font-extrabold tracking-tight text-stone-900">2019</span></div>
+    </div>
+    <ul class="space-y-6">
+      <li class="flex gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white"><svg data-icon="route" class="h-5 w-5"></svg></span><span><span class="block text-sm font-bold uppercase tracking-wider text-stone-900">Turun langsung</span><span class="mt-1 block text-sm leading-relaxed text-stone-600">Datang ke desa, duduk bareng warga, mencatat sendiri.</span></span></li>
+      <li class="flex gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white"><svg data-icon="shield-check" class="h-5 w-5"></svg></span><span><span class="block text-sm font-bold uppercase tracking-wider text-stone-900">Terbuka & amanah</span><span class="mt-1 block text-sm leading-relaxed text-stone-600">Aspirasi dicatat, ditindaklanjuti, dan dikabarkan kembali.</span></span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ HEADER & MEGA MENU ============ -->
+<section id="header" class="ds-section">
+  <h2 class="ds-title">Header & Mega Menu</h2>
+  <p class="ds-desc">Logo tulisan tangan <strong>Cak Ali</strong> (merah; versi putih otomatis saat header merah). <strong>Maksimal 5 menu</strong>; menu yang punya banyak isi dibuka sebagai mega menu penuh lebar berwarna merah (ala Portal Jabar). <strong>Satu CTA</strong> saja: Jadi Relawan. Header dibuat otomatis oleh <code>js/main.js</code> dari <code>config.nav</code>.</p>
+
+  <h3 class="ds-sub">Tiga status header</h3>
+  <div class="space-y-3">
+    <div>
+      <div class="overflow-hidden rounded-2xl border border-stone-200 bg-cream">
+        <div class="site-header ds-static"><div class="flex h-[72px] items-center justify-between gap-6 px-6">
+          <img src="assets/img/logo-cak-ali.png" alt="" class="logo-color h-10 w-auto" /><img src="assets/img/logo-cak-ali-white.png" alt="" class="logo-white h-10 w-auto" />
+          <ul class="hidden items-center gap-1 lg:flex"><li><span class="nav-link">Tentang<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link is-active">Program<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Kabar<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Terlibat<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Kontak</span></li></ul>
+          <span class="header-cta btn btn-md btn-primary">Jadi Relawan</span>
+        </div></div>
+      </div>
+      <p class="caption mt-2"><strong>Transparan</strong> · di atas hero (<code>&lt;body data-header="overlay"&gt;</code>). Titik merah = halaman aktif.</p>
+    </div>
+    <div>
+      <div class="overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
+        <div class="site-header is-scrolled ds-static"><div class="flex h-[72px] items-center justify-between gap-6 px-6">
+          <img src="assets/img/logo-cak-ali.png" alt="" class="logo-color h-10 w-auto" /><img src="assets/img/logo-cak-ali-white.png" alt="" class="logo-white h-10 w-auto" />
+          <ul class="hidden items-center gap-1 lg:flex"><li><span class="nav-link">Tentang<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Program<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Kabar<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Terlibat<svg data-icon="chevron-down" class="h-4 w-4"></svg></span></li><li><span class="nav-link">Kontak</span></li></ul>
+          <span class="header-cta btn btn-md btn-primary">Jadi Relawan</span>
+        </div></div>
+      </div>
+      <p class="caption mt-2"><strong>.is-scrolled</strong> · putih semi-transparan + blur setelah halaman digulir 8px. Halaman tanpa hero otomatis diberi spacer setinggi header.</p>
+    </div>
+  </div>
+
+  <h3 class="ds-sub">Mega menu (klik menu untuk mencoba)</h3>
+  <div class="overflow-hidden rounded-2xl border border-stone-200 bg-cream" id="mega-demo">
+    <div class="site-header ds-static" id="mega-demo-header"><div class="flex h-[72px] items-center justify-between gap-6 px-6">
+      <img src="assets/img/logo-cak-ali.png" alt="" class="logo-color h-10 w-auto" /><img src="assets/img/logo-cak-ali-white.png" alt="" class="logo-white h-10 w-auto" />
+      <ul class="hidden items-center gap-1 md:flex">
+        <li><button type="button" class="nav-link" data-demo-mega="tentang" aria-expanded="false">Tentang<svg data-icon="chevron-down" class="h-4 w-4"></svg></button></li>
+        <li><button type="button" class="nav-link" data-demo-mega="program" aria-expanded="false">Program<svg data-icon="chevron-down" class="h-4 w-4"></svg></button></li>
+        <li><span class="nav-link">Kontak</span></li>
+      </ul>
+      <span class="header-cta btn btn-md btn-primary">Jadi Relawan</span>
+    </div></div>
+
+    <div class="mega-panel ds-static" data-demo-panel="tentang" hidden>
+      <div class="relative px-6 pb-10 pt-6 md:px-8">
+        <svg class="pointer-events-none absolute -bottom-px right-0 h-48 w-48 text-white/10" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="12" aria-hidden="true"><circle cx="200" cy="200" r="50"/><circle cx="200" cy="200" r="100"/><circle cx="200" cy="200" r="150"/></svg>
+        <div class="relative flex items-start justify-between gap-6">
+          <div><p class="text-3xl font-bold tracking-tight">Kenal Cak Ali</p><p class="mt-2 max-w-xl text-brand-100">Siapa Cak Ali, dari mana ia berangkat, dan apa yang ia perjuangkan.</p></div>
+          <button type="button" class="btn btn-md btn-icon text-white hover:bg-white/10" data-demo-close aria-label="Tutup"><svg data-icon="x" class="h-6 w-6"></svg></button>
+        </div>
+        <div class="relative mt-8 grid gap-8 lg:grid-cols-[1fr_280px]">
+          <ul class="grid content-start gap-x-8 gap-y-7 sm:grid-cols-2">
+            <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="users" class="h-6 w-6"></svg></span><span><span class="block font-bold">Profil Cak Ali</span><span class="mt-1 block text-sm text-brand-100">Latar belakang keluarga, pendidikan, dan dunia usaha.</span></span></li>
+            <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="route" class="h-6 w-6"></svg></span><span><span class="block font-bold">Perjalanan</span><span class="mt-1 block text-sm text-brand-100">Jejak langkah dari kampung hingga Pemilu 2019.</span></span></li>
+            <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="flag" class="h-6 w-6"></svg></span><span><span class="block font-bold">Visi & Misi</span><span class="mt-1 block text-sm text-brand-100">Arah perjuangan untuk Dapil Jawa Timur IV.</span></span></li>
+            <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="shield-check" class="h-6 w-6"></svg></span><span><span class="block font-bold">Nilai yang Dipegang</span><span class="mt-1 block text-sm text-brand-100">Turun langsung, terbuka, dan amanah.</span></span></li>
+          </ul>
+          <div class="relative hidden min-h-[220px] overflow-hidden rounded-2xl lg:block">
+            <img src="https://images.unsplash.com/photo-1558005530-a7958896ec60?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            <span class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/30 to-transparent"></span>
+            <span class="absolute inset-x-0 bottom-0 p-5"><span class="text-xs font-bold uppercase tracking-[0.14em] text-gold-400">Kenalan</span><span class="mt-1 block text-lg font-bold leading-snug">Pengusaha yang tumbuh dari kampung</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mega-panel ds-static" data-demo-panel="program" hidden>
+      <div class="relative px-6 pb-10 pt-6 md:px-8">
+        <svg class="pointer-events-none absolute -bottom-px right-0 h-48 w-48 text-white/10" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="12" aria-hidden="true"><circle cx="200" cy="200" r="50"/><circle cx="200" cy="200" r="100"/><circle cx="200" cy="200" r="150"/></svg>
+        <div class="relative flex items-start justify-between gap-6">
+          <div><p class="text-3xl font-bold tracking-tight">Program Prioritas</p><p class="mt-2 max-w-xl text-brand-100">Tanpa kartu foto: item tampil 3 kolom penuh.</p></div>
+          <button type="button" class="btn btn-md btn-icon text-white hover:bg-white/10" data-demo-close aria-label="Tutup"><svg data-icon="x" class="h-6 w-6"></svg></button>
+        </div>
+        <ul class="relative mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+          <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="store" class="h-6 w-6"></svg></span><span><span class="block font-bold">Ekonomi & UMKM</span><span class="mt-1 block text-sm text-brand-100">Akses modal dan pasar untuk usaha kecil.</span></span></li>
+          <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="graduation" class="h-6 w-6"></svg></span><span><span class="block font-bold">Pemuda & Pendidikan</span><span class="mt-1 block text-sm text-brand-100">Beasiswa dan pelatihan kerja.</span></span></li>
+          <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="sprout" class="h-6 w-6"></svg></span><span><span class="block font-bold">Petani & Nelayan</span><span class="mt-1 block text-sm text-brand-100">Pupuk tepat waktu, harga panen adil.</span></span></li>
+          <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="building" class="h-6 w-6"></svg></span><span><span class="block font-bold">Infrastruktur Desa</span><span class="mt-1 block text-sm text-brand-100">Jalan, irigasi, dan air bersih.</span></span></li>
+          <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="heart-pulse" class="h-6 w-6"></svg></span><span><span class="block font-bold">Layanan Kesehatan</span><span class="mt-1 block text-sm text-brand-100">Puskesmas mudah dijangkau.</span></span></li>
+          <li class="flex gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-brand-600 shadow-soft"><svg data-icon="briefcase" class="h-6 w-6"></svg></span><span><span class="block font-bold">Untuk Pengusaha</span><span class="mt-1 block text-sm text-brand-100">Gagasan ekonomi dan kolaborasi.</span></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="h-24" aria-hidden="true"></div>
+  </div>
+  <div class="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+    <div class="card p-4"><p class="font-semibold text-stone-900">Struktur menu</p><p class="mt-1 text-stone-600">Tentang · Program · Kabar · Terlibat (mega menu) · Kontak (tautan biasa).</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Isi panel</p><p class="mt-1 text-stone-600">Judul, intro 1 kalimat, item (ikon + judul + deskripsi), opsional kartu foto di kanan.</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Perilaku</p><p class="mt-1 text-stone-600">Buka dengan klik, tutup dengan X, Esc, atau klik di luar. Header ikut merah (<code>.is-mega</code>).</p></div>
+  </div>
+
+  <h3 class="ds-sub">Menu mobile (klik ikon menu)</h3>
+  <div class="ds-canvas flex justify-center">
+    <div class="relative h-[640px] w-[360px] max-w-full overflow-hidden rounded-[2rem] border-[6px] border-stone-900 bg-cream shadow-soft-lg">
+      <div id="mm-header" class="site-header ds-static"><div class="flex h-16 items-center justify-between px-4">
+        <img src="assets/img/logo-cak-ali.png" alt="" class="logo-color h-10 w-auto" /><img src="assets/img/logo-cak-ali-white.png" alt="" class="logo-white h-10 w-auto" />
+        <button id="mm-toggle" class="btn btn-md btn-ghost btn-icon" aria-expanded="false" aria-controls="mm-panel" aria-label="Buka menu"><svg data-icon="menu" class="h-6 w-6"></svg></button>
+      </div></div>
+      <div class="px-5 pt-4">
+        <p class="text-center text-[4.2rem] font-extrabold uppercase leading-[0.82] tracking-[-0.05em] text-stone-900">Cak Ali</p>
+        <div class="relative mx-auto -mt-3 aspect-[4/5] w-[62%]">
+          <div class="absolute left-1/2 top-[14%] aspect-square w-[118%] -translate-x-1/2 rounded-full bg-brand-600"></div>
+          <img src="assets/img/cak-ali-portrait.webp" alt="" class="relative h-full w-full rounded-t-full border-4 border-cream object-cover object-[44%_20%]" />
+        </div>
+      </div>
+      <div id="mm-panel" class="absolute inset-x-0 bottom-0 top-16 hidden flex-col overflow-y-auto bg-white px-4 pb-5">
+        <nav class="divide-y divide-stone-100">
+          <details class="group" open>
+            <summary class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">Tentang<svg data-icon="chevron-down" class="h-5 w-5 text-stone-400 transition group-open:rotate-180"></svg></summary>
+            <ul class="space-y-1 pb-4">
+              <li><span class="flex items-center gap-3 rounded-xl p-2"><span class="icon-tile h-10 w-10 rounded-lg"><svg data-icon="users" class="h-5 w-5"></svg></span><span class="text-[15px] font-medium text-stone-700">Profil Cak Ali</span></span></li>
+              <li><span class="flex items-center gap-3 rounded-xl p-2"><span class="icon-tile h-10 w-10 rounded-lg"><svg data-icon="route" class="h-5 w-5"></svg></span><span class="text-[15px] font-medium text-stone-700">Perjalanan</span></span></li>
+            </ul>
+          </details>
+          <details class="group"><summary class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">Program<svg data-icon="chevron-down" class="h-5 w-5 text-stone-400 transition group-open:rotate-180"></svg></summary></details>
+          <details class="group"><summary class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">Kabar<svg data-icon="chevron-down" class="h-5 w-5 text-stone-400 transition group-open:rotate-180"></svg></summary></details>
+          <details class="group"><summary class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">Terlibat<svg data-icon="chevron-down" class="h-5 w-5 text-stone-400 transition group-open:rotate-180"></svg></summary></details>
+          <span class="flex py-4 text-lg font-semibold text-stone-900">Kontak</span>
+        </nav>
+        <div class="mt-auto grid gap-2 pt-4"><span class="btn btn-md btn-primary">Jadi Relawan</span><span class="btn btn-md btn-wa"><svg data-icon="whatsapp" class="h-5 w-5"></svg> Chat Tim Cak Ali</span></div>
+      </div>
+      <span id="mm-fab" class="absolute bottom-5 right-5 grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-soft-lg"><svg data-icon="whatsapp" class="h-7 w-7"></svg></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOMBOL SAMPING & FOOTER ============ -->
+<section id="samping" class="ds-section">
+  <h2 class="ds-title">Tombol Samping & Footer</h2>
+  <p class="ds-desc">Ala Portal Jabar: deretan tombol aksi cepat menempel di kanan tengah layar (desktop), footer berwarna brand dengan info kontak dan peta situs. Keduanya dibuat oleh <code>js/main.js</code>.</p>
+
+  <h3 class="ds-sub">Tombol samping (arahkan kursor untuk label)</h3>
+  <div class="ds-canvas flex flex-wrap items-center justify-around gap-10">
+    <div class="flex flex-col gap-2">
+      <a href="#samping" class="dock-btn group bg-wa hover:bg-wa-hover" aria-label="Chat WhatsApp"><svg data-icon="whatsapp" class="h-5 w-5"></svg><span class="dock-tip">Chat WhatsApp</span></a>
+      <a href="#samping" class="dock-btn group" aria-label="Sampaikan aspirasi"><svg data-icon="megaphone" class="h-5 w-5"></svg><span class="dock-tip">Sampaikan aspirasi</span></a>
+      <a href="#samping" class="dock-btn group" aria-label="Jadi relawan"><svg data-icon="users" class="h-5 w-5"></svg><span class="dock-tip">Jadi relawan</span></a>
+      <a href="#samping" class="dock-btn group bg-stone-900 hover:bg-stone-800" aria-label="Kembali ke atas"><svg data-icon="arrow-up" class="h-5 w-5"></svg><span class="dock-tip">Kembali ke atas</span></a>
+    </div>
+    <div class="text-center">
+      <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-soft-lg"><svg data-icon="whatsapp" class="h-7 w-7"></svg></span>
+      <p class="caption mt-3 max-w-[200px]">Di bawah <code>lg</code> hanya tombol WhatsApp bulat di kanan bawah.</p>
+    </div>
+    <ul class="max-w-xs space-y-2 text-sm text-stone-600">
+      <li>• <code>fixed right-4 top-1/2</code>, mulai <code>lg:</code></li>
+      <li>• Bingkai putih agar tetap terlihat di atas footer merah</li>
+      <li>• Disembunyikan saat mega menu / menu mobile terbuka</li>
+    </ul>
+  </div>
+
+  <h3 class="ds-sub">Footer</h3>
+  <footer class="overflow-hidden rounded-2xl bg-brand-700 text-brand-100">
+    <div class="p-8 md:p-10">
+      <img src="assets/img/logo-cak-ali-white.png" alt="Cak Ali" class="h-12 w-auto" />
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="flex gap-3"><svg data-icon="map-pin" class="mt-0.5 h-5 w-5 shrink-0 text-gold-400"></svg><div><p class="font-bold text-white">Posko</p><p class="mt-1.5 text-sm">Posko Cak Ali, Bondowoso</p></div></div>
+        <div class="flex gap-3"><svg data-icon="mail" class="mt-0.5 h-5 w-5 shrink-0 text-gold-400"></svg><div><p class="font-bold text-white">Surel</p><p class="mt-1.5 text-sm">halo@cakali.id</p></div></div>
+        <div class="flex gap-3"><svg data-icon="whatsapp" class="mt-0.5 h-5 w-5 shrink-0 text-gold-400"></svg><div><p class="font-bold text-white">WhatsApp</p><p class="mt-1.5 text-sm">Chat tim Cak Ali</p></div></div>
+        <div class="flex gap-3"><svg data-icon="heart" class="mt-0.5 h-5 w-5 shrink-0 text-gold-400"></svg><div><p class="font-bold text-white">Media Sosial</p><div class="mt-1.5 flex gap-2"><span class="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white"><svg data-icon="instagram" class="h-5 w-5"></svg></span></div></div></div>
+      </div>
+      <div class="mt-10 border-t border-white/15 pt-8">
+        <p class="flex items-center gap-2 font-bold text-white"><svg data-icon="link" class="h-5 w-5 text-gold-400"></svg> Peta Situs</p>
+        <div class="mt-5 grid grid-cols-2 gap-6 text-sm md:grid-cols-5">
+          <div><p class="font-bold text-white">Tentang</p><p class="mt-2 leading-7">Profil Cak Ali<br />Perjalanan<br />Visi & Misi</p></div>
+          <div><p class="font-bold text-white">Program</p><p class="mt-2 leading-7">Ekonomi & UMKM<br />Pemuda<br />Petani & Nelayan</p></div>
+          <div><p class="font-bold text-white">Kabar</p><p class="mt-2 leading-7">Kegiatan<br />Galeri<br />Agenda</p></div>
+          <div><p class="font-bold text-white">Terlibat</p><p class="mt-2 leading-7">Jadi Relawan<br />Aspirasi</p></div>
+          <div><p class="font-bold text-white">Kontak</p><p class="mt-2 leading-7">Kontak</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-2 border-t border-white/15 px-8 py-4 text-xs sm:flex-row sm:justify-between md:px-10"><p>© 2026 Cak Ali · Ali Hasan Mun'im, S.E. Konten situs ini bersifat sosialisasi.</p><span>Kebijakan Privasi</span></div>
+  </footer>
+</section>
+
+<!-- ============ FEEDBACK ============ -->
+<section id="feedback" class="ds-section">
+  <h2 class="ds-title">Feedback</h2>
+  <p class="ds-desc">Alert untuk pesan di dalam halaman, toast untuk konfirmasi singkat yang hilang sendiri, modal untuk konfirmasi, empty state saat belum ada data.</p>
+
+  <h3 class="ds-sub">Alert</h3>
+  <div class="grid gap-3">
+    <div class="alert alert-info" role="status"><svg data-icon="info" class="h-5 w-5 shrink-0 text-sky-600"></svg><p><strong>Data tersimpan di perangkat ini.</strong> Tekan "Kirim via WhatsApp" agar aspirasi sampai ke tim Cak Ali.</p></div>
+    <div class="alert alert-success" role="status"><svg data-icon="check-circle" class="h-5 w-5 shrink-0 text-emerald-600"></svg><p><strong>Terima kasih, pendaftaran berhasil!</strong> Nomor tiket Anda: ASP-20261022-001.</p></div>
+    <div class="alert alert-warning" role="status"><svg data-icon="alert" class="h-5 w-5 shrink-0 text-amber-600"></svg><p>Browser Anda sedang dalam mode privat, draf tidak bisa disimpan otomatis.</p></div>
+    <div class="alert alert-error" role="alert"><svg data-icon="alert-circle" class="h-5 w-5 shrink-0 text-red-600"></svg><p>Ada 2 isian yang perlu diperbaiki sebelum dikirim.</p></div>
+  </div>
+
+  <h3 class="ds-sub">Toast & modal</h3>
+  <div class="ds-canvas flex flex-wrap gap-3">
+    <button class="btn btn-md btn-outline" data-toast="Aspirasi berhasil disimpan">Tampilkan toast</button>
+    <button class="btn btn-md btn-outline" id="open-modal">Buka modal</button>
+  </div>
+
+  <h3 class="ds-sub">Empty state & skeleton</h3>
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="card flex flex-col items-center px-6 py-12 text-center">
+      <div class="grid h-14 w-14 place-items-center rounded-2xl bg-stone-100 text-stone-400"><svg data-icon="inbox" class="h-7 w-7"></svg></div>
+      <p class="mt-4 font-bold text-stone-900">Belum ada aspirasi</p>
+      <p class="mt-1 max-w-xs text-sm text-stone-500">Aspirasi yang Anda kirim dari perangkat ini akan muncul di sini.</p>
+      <a href="#feedback" class="btn btn-sm btn-primary mt-5">Tulis aspirasi</a>
+    </div>
+    <div class="card overflow-hidden" aria-hidden="true">
+      <div class="aspect-[16/10] animate-pulse bg-stone-100"></div>
+      <div class="space-y-3 p-5"><div class="h-5 w-20 animate-pulse rounded-full bg-stone-100"></div><div class="h-5 w-4/5 animate-pulse rounded bg-stone-100"></div><div class="h-4 w-full animate-pulse rounded bg-stone-100"></div><div class="h-4 w-2/3 animate-pulse rounded bg-stone-100"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="ds-section">
+  <h2 class="ds-title">Hero</h2>
+  <p class="ds-desc">Label dapil dengan titik berdenyut dan judul besar di tengah, lalu tiga kolom <strong>4 · 5 · 3</strong>: perkenalan editorial (nama tipis kapital + logo sebagai tanda tangan), <strong>foto potong</strong> di atas lingkaran merah yang menempel ke pita berjalan, dan daftar wilayah + <strong>kartu video</strong>. Tanpa angka statistik dan tanpa lencana/penghargaan.</p>
+
+  <div class="mt-8 overflow-hidden rounded-3xl border border-stone-200 bg-cream">
+    <div class="px-5 md:px-8">
+      <div class="pt-8 text-center">
+        <p class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-600">
+          <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60 motion-reduce:animate-none"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-600"></span></span>
+          Dapil Jawa Timur IV
+        </p>
+        <p class="mx-auto mt-3 max-w-2xl text-balance text-3xl font-extrabold leading-[1.05] tracking-tight text-stone-900 md:text-[2.6rem]">Bersama <span class="text-brand-600">Cak Ali</span>, membangun Jawa Timur dari desa</p>
+      </div>
+      <div class="mt-6 grid gap-8 lg:grid-cols-12 lg:gap-4">
+        <div class="order-2 lg:order-1 lg:col-span-4 lg:pb-8 lg:pt-6">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-600">Halo, saya</p>
+          <p class="mt-2 text-3xl font-light uppercase leading-[1.02] tracking-tight text-stone-900">Ali Hasan<br />Mun'im, S.E</p>
+          <p class="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-brand-600">Pengusaha · Putra Tapal Kuda</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="btn btn-md btn-primary pr-1.5">Jadi Relawan <span class="grid h-8 w-8 place-items-center rounded-full bg-white text-brand-600"><svg data-icon="arrow-right" class="h-4 w-4"></svg></span></span>
+            <span class="btn btn-md border border-brand-600 text-brand-700">Kenal Cak Ali</span>
+          </div>
+          <img src="assets/img/logo-cak-ali.png" alt="" class="mt-5 h-12 w-auto -rotate-3" />
+        </div>
+        <div class="relative order-1 mx-auto w-full max-w-[300px] self-end lg:order-2 lg:col-span-5 lg:-mx-[15%] lg:-mt-16 lg:w-[130%] lg:max-w-none">
+          <div class="absolute inset-0 overflow-hidden"><div class="absolute left-1/2 top-[22%] aspect-square w-[94%] -translate-x-1/2 rounded-full bg-brand-600 lg:top-[26%] lg:w-[76%]"></div></div>
+          <img src="assets/img/cak-ali-cutout.png" alt="Ali Hasan Mun'im (Cak Ali)" class="relative w-full" />
+        </div>
+        <div class="order-3 pb-8 lg:col-span-3 lg:pt-6">
+          <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-stone-600">Wilayah perjuangan</p>
+          <ol class="mt-2 border-t border-stone-900/10">
+            <li class="flex items-baseline gap-3 border-b border-stone-900/10 py-2.5"><span class="text-xs font-semibold text-brand-600">01</span><span class="text-lg font-bold text-stone-900">Bondowoso</span></li>
+            <li class="flex items-baseline gap-3 border-b border-stone-900/10 py-2.5"><span class="text-xs font-semibold text-brand-600">02</span><span class="text-lg font-bold text-stone-900">Situbondo</span></li>
+            <li class="flex items-baseline gap-3 border-b border-stone-900/10 py-2.5"><span class="text-xs font-semibold text-brand-600">03</span><span class="text-lg font-bold text-stone-900">Banyuwangi</span></li>
+          </ol>
+          <div class="relative mt-5 overflow-hidden rounded-xl shadow-soft-lg">
+            <img src="assets/img/cak-ali-portrait.webp" alt="" class="aspect-[4/3] w-full object-cover" />
+            <span class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent"></span>
+            <span class="absolute left-1/2 top-[40%] grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-brand-600 shadow-soft-lg"><svg data-icon="play" class="ml-0.5 h-5 w-5"></svg></span>
+            <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 text-xs font-semibold text-white"><span>Kenalan dengan Cak Ali</span><span class="rounded-full bg-white/15 px-2 py-0.5">1:30</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-hidden bg-brand-600 py-3 text-white" aria-hidden="true">
+      <div id="ticker" class="flex w-max animate-marquee text-lg font-bold uppercase tracking-tight motion-reduce:animate-none"></div>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+    <div class="card p-4"><p class="font-semibold text-stone-900">Foto potong</p><p class="mt-1 text-stone-600">PNG latar transparan (<code>cak-ali-cutout.png</code>) dari foto studio berlatar putih, dibuat dengan <code>tools/cutout.ps1</code>. Menempel ke tepi bawah hero; di desktop 130% lebar kolom + margin atas negatif, jadi kepala menjorok ke atas dan sedikit menimpa judul (±25px). Tanpa lencana berputar.</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Kartu video</p><p class="mt-1 text-stone-600">Tombol <code>[data-video]</code> membuka <code>&lt;dialog&gt;</code> berisi YouTube (<code>youtubeId</code>) atau MP4 dari <code>config.heroVideo</code>. Tanpa sumber: pesan "Video segera hadir".</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Jangan</p><p class="mt-1 text-stone-600">Angka statistik, lencana daun, atau apa pun yang terlihat seperti penghargaan.</p></div>
+    <div class="card p-4"><p class="font-semibold text-stone-900">Urutan di HP</p><p class="mt-1 text-stone-600">Judul → foto → perkenalan & CTA → wilayah & video, agar wajah langsung terlihat di layar pertama.</p></div>
+  </div>
+</section>
+
+<!-- ============ POLA SEKSI ============ -->
+<section id="pola" class="ds-section">
+  <h2 class="ds-title">Pola Seksi</h2>
+  <p class="ds-desc">Susunan seksi yang dipakai ulang. Selang-seling latar putih dan <code>stone-50</code> antar seksi.</p>
+
+  <h3 class="ds-sub">Kepala seksi editorial (12 kolom: 5 · 4 · 3)</h3>
+  <div class="ds-canvas grid gap-6 bg-white lg:grid-cols-12 lg:items-end">
+    <p class="text-4xl uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl lg:col-span-5"><span class="font-light">Program</span><br /><span class="font-extrabold text-brand-600">Prioritas</span></p>
+    <p class="text-stone-600 lg:col-span-4">Disusun dari obrolan langsung dengan warga, petani, nelayan, dan pelaku usaha.</p>
+    <span class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-stone-900 lg:col-span-3 lg:justify-self-end">Semua program <svg data-icon="arrow-right" class="h-5 w-5"></svg></span>
+  </div>
+
+  <h3 class="ds-sub">Bento program (1 besar · 4 bernomor · 1 lebar)</h3>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-3xl p-5 text-white lg:row-span-2">
+      <img src="https://images.unsplash.com/photo-1604973104381-870c92f10343?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+      <span class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-stone-950/10"></span>
+      <span class="absolute left-5 top-5 text-4xl font-light text-white/90">01</span>
+      <span class="relative text-xl font-bold">Ekonomi & UMKM</span>
+    </div>
+    <div class="card p-5"><span class="text-3xl font-light text-brand-600">02</span><p class="mt-3 font-semibold text-stone-900">Pemuda & Pendidikan</p></div>
+    <div class="card p-5"><span class="text-3xl font-light text-brand-600">03</span><p class="mt-3 font-semibold text-stone-900">Petani & Nelayan</p></div>
+    <div class="card p-5"><span class="text-3xl font-light text-brand-600">04</span><p class="mt-3 font-semibold text-stone-900">Infrastruktur Desa</p></div>
+    <div class="card p-5"><span class="text-3xl font-light text-brand-600">05</span><p class="mt-3 font-semibold text-stone-900">Layanan Kesehatan</p></div>
+    <div class="grid overflow-hidden rounded-3xl bg-stone-950 text-white sm:col-span-2 md:grid-cols-[1.2fr_1fr] lg:col-span-3">
+      <div class="p-6"><span class="text-3xl font-light text-gold-400">06</span><p class="mt-2 text-xl font-bold">Wakil yang Mendengar</p><span class="btn btn-sm mt-5 bg-white text-stone-900">Sampaikan aspirasi</span></div>
+      <div class="relative min-h-[160px]"><img src="https://images.unsplash.com/photo-1611087802810-046bb671e644?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 h-full w-full object-cover" loading="lazy" /></div>
+    </div>
+  </div>
+
+  <h3 class="ds-sub">Kabar Terkini (ala Portal Jabar)</h3>
+  <div class="card overflow-hidden shadow-soft-lg">
+    <div class="flex items-center justify-between gap-4 border-b border-stone-200 px-5 py-4">
+      <p class="text-2xl font-bold tracking-tight text-stone-900">Kabar Terkini</p>
+      <span class="btn btn-sm btn-outline">Lihat semua <svg data-icon="arrow-up-right" class="h-4 w-4"></svg></span>
+    </div>
+    <div class="grid lg:grid-cols-[1.4fr_1fr]">
+      <div class="p-3">
+        <div class="relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-2xl p-6">
+          <img src="https://images.unsplash.com/photo-1700906310080-65a7d9718929?auto=format&fit=crop&w=800&q=70" alt="" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          <span class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent"></span>
+          <span class="relative"><span class="badge bg-brand-600 text-white">Pertanian</span><span class="mt-3 block text-2xl font-bold leading-tight text-white">Panen bersama petani padi di Situbondo</span><span class="btn btn-sm mt-5 bg-white text-stone-900">Baca selengkapnya</span></span>
+        </div>
+      </div>
+      <div class="border-t border-stone-200 px-5 pt-5 lg:border-l lg:border-t-0">
+        <div role="tablist" class="flex gap-6 border-b border-stone-200" data-tab-group><button type="button" role="tab" class="tab" aria-selected="true">Terbaru</button><button type="button" role="tab" class="tab" aria-selected="false">Terpopuler</button></div>
+        <ul class="divide-y divide-stone-100">
+          <li class="flex gap-4 py-4"><img src="https://images.unsplash.com/photo-1671080749889-19f8a69deb2b?auto=format&fit=crop&w=240&q=70" alt="" class="h-16 w-20 shrink-0 rounded-lg object-cover" loading="lazy" /><span><span class="text-xs font-bold uppercase tracking-wider text-brand-600">Sosial</span><span class="mt-0.5 block font-semibold leading-snug text-stone-900">Silaturahmi dengan warga desa di Situbondo</span><span class="caption mt-1 block">5 Okt 2026 · Situbondo</span></span></li>
+          <li class="flex gap-4 py-4"><img src="https://images.unsplash.com/photo-1541064828014-503911d13103?auto=format&fit=crop&w=240&q=70" alt="" class="h-16 w-20 shrink-0 rounded-lg object-cover" loading="lazy" /><span><span class="text-xs font-bold uppercase tracking-wider text-brand-600">Nelayan</span><span class="mt-0.5 block font-semibold leading-snug text-stone-900">Menyapa nelayan di pesisir Banyuwangi</span><span class="caption mt-1 block">20 Sep 2026 · Banyuwangi</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="ds-sub">Kolom "Untuk …" (ala Layanan Terpopuler Portal Jabar)</h3>
+  <div class="ds-canvas grid divide-y divide-stone-200 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+    <div class="pb-8 lg:pb-0 lg:pr-8">
+      <div class="flex items-center gap-4">
+        <span class="relative h-16 w-16 shrink-0"><span class="absolute right-0 top-0 h-9 w-9 rounded-full bg-gold-300"></span><span class="absolute bottom-0 left-0 grid h-12 w-12 place-items-center rounded-xl bg-brand-600 text-white"><svg data-icon="users" class="h-6 w-6"></svg></span></span>
+        <span><span class="block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Untuk</span><span class="h3 block">Warga</span></span>
+      </div>
+      <ul class="mt-6 space-y-5">
+        <li class="flex gap-3"><svg data-icon="megaphone" class="mt-0.5 h-5 w-5 shrink-0 text-stone-400"></svg><span><span class="block font-semibold text-stone-900">Sampaikan aspirasi</span><span class="mt-0.5 block text-sm text-stone-500">Jalan rusak, air bersih, ceritakan saja.</span></span></li>
+        <li class="flex gap-3"><svg data-icon="calendar" class="mt-0.5 h-5 w-5 shrink-0 text-stone-400"></svg><span><span class="block font-semibold text-stone-900">Agenda kunjungan</span><span class="mt-0.5 block text-sm text-stone-500">Cek kapan Cak Ali mampir ke desamu.</span></span></li>
+      </ul>
+    </div>
+    <div class="pt-8 lg:pl-8 lg:pt-0">
+      <div class="flex items-center gap-4">
+        <span class="relative h-16 w-16 shrink-0"><span class="absolute right-0 top-0 h-9 w-9 rounded-full bg-gold-300"></span><span class="absolute bottom-0 left-0 grid h-12 w-12 place-items-center rounded-xl bg-brand-600 text-white"><svg data-icon="briefcase" class="h-6 w-6"></svg></span></span>
+        <span><span class="block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Untuk</span><span class="h3 block">Pengusaha</span></span>
+      </div>
+      <ul class="mt-6 space-y-5">
+        <li class="flex gap-3"><svg data-icon="store" class="mt-0.5 h-5 w-5 shrink-0 text-stone-400"></svg><span><span class="block font-semibold text-stone-900">Gagasan ekonomi</span><span class="mt-0.5 block text-sm text-stone-500">Akses modal, pasar, dan perizinan.</span></span></li>
+        <li class="flex gap-3"><svg data-icon="whatsapp" class="mt-0.5 h-5 w-5 shrink-0 text-stone-400"></svg><span><span class="block font-semibold text-stone-900">Diskusi kolaborasi</span><span class="mt-0.5 block text-sm text-stone-500">Ngobrol langsung soal kerja sama.</span></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="ds-sub">Kenalan (3 kolom bergaris: fakta · kutipan · nilai)</h3>
+  <div class="ds-canvas grid gap-10 bg-white lg:grid-cols-3 lg:gap-0">
+    <div class="lg:pr-8"><p class="text-3xl uppercase leading-[1.05] tracking-tight text-stone-900"><span class="font-light">Kenalan dengan</span><br /><span class="font-extrabold text-brand-600">Cak Ali</span></p><div class="mt-5 border-t border-stone-200"><div class="flex justify-between border-b border-stone-200 py-3 text-sm"><span class="font-semibold uppercase tracking-wider text-stone-500">Kabupaten</span><span class="text-xl font-extrabold text-stone-900">3</span></div></div></div>
+    <figure class="lg:border-l lg:border-stone-200 lg:px-8"><svg data-icon="quote" class="h-10 w-10 text-gold-500"></svg><blockquote class="mt-3 text-xl font-medium leading-snug text-stone-900">Saya mau jadi teman ngobrol warga, kapan pun.</blockquote><figcaption class="mt-3"><img src="assets/img/logo-cak-ali.png" alt="" class="h-10 w-auto -rotate-2" /></figcaption></figure>
+    <div class="lg:border-l lg:border-stone-200 lg:pl-8"><div class="flex gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white"><svg data-icon="route" class="h-5 w-5"></svg></span><span><span class="block text-sm font-bold uppercase tracking-wider text-stone-900">Turun langsung</span><span class="mt-1 block text-sm text-stone-600">Datang ke desa, mencatat sendiri.</span></span></div></div>
+  </div>
+
+  <h3 class="ds-sub">Galeri bertingkat</h3>
+  <div class="grid grid-cols-2 gap-3 pb-8 md:grid-cols-5">
+    <img src="https://images.unsplash.com/photo-1558005530-a7958896ec60?auto=format&fit=crop&w=400&q=70" alt="" class="aspect-[3/4] w-full rounded-2xl object-cover" loading="lazy" />
+    <img src="https://images.unsplash.com/photo-1642473194881-c7425b3789f1?auto=format&fit=crop&w=400&q=70" alt="" class="aspect-[3/4] w-full rounded-2xl object-cover md:translate-y-8" loading="lazy" />
+    <img src="https://images.unsplash.com/photo-1603725616907-82eb483d7dea?auto=format&fit=crop&w=400&q=70" alt="" class="aspect-[3/4] w-full rounded-2xl object-cover" loading="lazy" />
+    <img src="https://images.unsplash.com/photo-1720059777516-97a4f858f778?auto=format&fit=crop&w=400&q=70" alt="" class="aspect-[3/4] w-full rounded-2xl object-cover md:translate-y-8" loading="lazy" />
+    <img src="https://images.unsplash.com/photo-1599717460927-8101594d1418?auto=format&fit=crop&w=400&q=70" alt="" class="hidden aspect-[3/4] w-full rounded-2xl object-cover md:block" loading="lazy" />
+  </div>
+
+  <h3 class="ds-sub">Ajakan akhir (3 kolom, garis atas hitam)</h3>
+  <div class="grid gap-8 border-t border-stone-900 pt-8 lg:grid-cols-3 lg:gap-0">
+    <div class="lg:pr-8"><p class="text-3xl uppercase leading-[1.05] tracking-tight text-stone-900"><span class="font-light">Mari bergerak</span><br /><span class="font-extrabold text-brand-600">bersama</span></p><span class="btn btn-md btn-primary mt-5">Jadi Relawan</span></div>
+    <div class="lg:border-l lg:border-stone-200 lg:px-8"><span class="icon-tile"><svg data-icon="megaphone" class="h-6 w-6"></svg></span><p class="h4 mt-4">Ada yang perlu dibenahi di desamu?</p><span class="btn btn-sm btn-outline mt-4">Sampaikan aspirasi</span></div>
+    <ul class="space-y-4 lg:border-l lg:border-stone-200 lg:pl-8">
+      <li class="flex items-center gap-3"><span class="grid h-10 w-10 place-items-center rounded-full bg-wa text-white"><svg data-icon="whatsapp" class="h-5 w-5"></svg></span><span class="font-semibold text-stone-900">Chat tim Cak Ali</span></li>
+      <li class="flex items-center gap-3"><span class="grid h-10 w-10 place-items-center rounded-full bg-stone-900 text-white"><svg data-icon="instagram" class="h-5 w-5"></svg></span><span class="font-semibold text-stone-900">@alihasanmunim</span></li>
+    </ul>
+  </div>
+
+  <h3 class="ds-sub">Timeline (halaman Tentang)</h3>
+  <ol class="relative ml-3 space-y-8 border-l-2 border-stone-200 pl-8">
+    <li class="relative"><span class="absolute -left-[41px] top-1 h-4 w-4 rounded-full border-4 border-white bg-brand-600 ring-2 ring-brand-200"></span><p class="text-sm font-bold text-brand-600">2019</p><p class="mt-1 font-bold text-stone-900">Caleg DPRD Provinsi Jawa Timur</p><p class="mt-1 text-stone-600">Dapil Jatim IV, Partai Gerindra.</p></li>
+    <li class="relative"><span class="absolute -left-[41px] top-1 h-4 w-4 rounded-full border-4 border-white bg-stone-300"></span><p class="text-sm font-bold text-stone-500">20xx</p><p class="mt-1 font-bold text-stone-900">Aktif di KADIN Indonesia</p><p class="mt-1 text-stone-600">Contoh isi, menunggu data dari klien.</p></li>
+  </ol>
+
+  <h3 class="ds-sub">Accordion (FAQ / detail program)</h3>
+  <div class="divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white">
+    <details class="group p-5" open><summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">Bagaimana aspirasi saya diproses?<svg data-icon="chevron-down" class="h-5 w-5 shrink-0 text-stone-400 transition group-open:rotate-180"></svg></summary><p class="mt-3 text-stone-600">Setelah dikirim via WhatsApp, tim Cak Ali akan mencatat dan menghubungi Anda bila perlu informasi tambahan.</p></details>
+    <details class="group p-5"><summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">Siapa yang bisa jadi relawan?<svg data-icon="chevron-down" class="h-5 w-5 shrink-0 text-stone-400 transition group-open:rotate-180"></svg></summary><p class="mt-3 text-stone-600">Siapa saja warga dapil berusia 17 tahun ke atas yang ingin ikut bergerak.</p></details>
+  </div>
+</section>
+
+<!-- ============ SUARA & NADA ============ -->
+<section id="suara" class="ds-section">
+  <h2 class="ds-title">Suara & Nada</h2>
+  <p class="ds-desc">Bicara seperti tetangga yang bisa dipercaya: santai, hangat, sopan, dan to the point. Sapaan "Cak Ali" untuk beliau, "kamu/Anda" atau "sampeyan" secukupnya untuk pengunjung.</p>
+  <div class="mt-8 grid gap-4 md:grid-cols-2">
+    <div class="rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 p-6">
+      <p class="flex items-center gap-2 font-bold text-emerald-700"><svg data-icon="check-circle" class="h-5 w-5"></svg> Lakukan</p>
+      <ul class="mt-4 space-y-3 text-stone-700">
+        <li>"Ada jalan rusak di desamu? Kabari Cak Ali."</li>
+        <li>"Halo, saya Ali Hasan Mun'im." (orang pertama di hero)</li>
+        <li>Kalimat pendek, kata kerja aktif, angka nyata.</li>
+        <li>Foto asli kegiatan; Unsplash hanya pengganti sementara.</li>
+      </ul>
+    </div>
+    <div class="rounded-2xl border-2 border-red-200 bg-red-50/50 p-6">
+      <p class="flex items-center gap-2 font-bold text-red-700"><svg data-icon="x" class="h-5 w-5"></svg> Hindari</p>
+      <ul class="mt-4 space-y-3 text-stone-700">
+        <li>"Silakan menyampaikan aspirasi melalui formulir berikut ini."</li>
+        <li>"Coblos nomor 4!" (sebelum masa kampanye resmi)</li>
+        <li>Lebih dari 5 menu utama atau lebih dari 1 CTA di header.</li>
+        <li>Teks kapital panjang untuk paragraf, terlalu banyak merah.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOKEN ============ -->
+<section id="token" class="ds-section">
+  <h2 class="ds-title">Token & Kode</h2>
+  <p class="ds-desc">Token di bawah sama dengan <code>tailwind.config.js</code> (<code>theme.extend</code>). Kelas komponen ada di blok <code>&lt;style type="text/tailwindcss"&gt;</code> pertama pada file ini dan di <code>src/input.css</code>.</p>
+  <pre class="ds-code"><code id="token-code"></code></pre>
+  <h3 class="ds-sub">Aturan singkat</h3>
+  <ul class="grid gap-3 text-sm sm:grid-cols-2">
+    <li class="card p-4">Pakai kelas komponen yang ada sebelum membuat gaya baru.</li>
+    <li class="card p-4">Jangan tulis warna hex langsung di HTML, pakai token (<code>brand-600</code>, bukan <code>#C8102E</code>).</li>
+    <li class="card p-4">Menu, kontak, dan teks identitas diubah di <code>js/config.js</code>, bukan di HTML.</li>
+    <li class="card p-4">Halaman dengan hero di bawah header: <code>&lt;body data-header="overlay"&gt;</code>.</li>
+    <li class="card p-4">Komponen baru: tambahkan dulu ke dokumen ini dan <code>src/input.css</code>.</li>
+    <li class="card p-4">Setiap elemen interaktif wajib punya status fokus yang terlihat.</li>
+  </ul>
+</section>
+
+<p class="caption py-10 text-center">Design System Cak Ali · v1.3 · Oktober 2026</p>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<dialog id="modal" class="w-[calc(100%-2rem)] max-w-md rounded-3xl p-0 shadow-soft-lg backdrop:bg-stone-950/50 backdrop:backdrop-blur-sm">
+  <div class="p-6 md:p-8">
+    <div class="flex items-start justify-between gap-4">
+      <div class="icon-tile"><svg data-icon="whatsapp" class="h-6 w-6"></svg></div>
+      <form method="dialog"><button class="btn btn-sm btn-ghost btn-icon" aria-label="Tutup"><svg data-icon="x" class="h-5 w-5"></svg></button></form>
+    </div>
+    <h3 class="h3 mt-5">Kirim ke tim Cak Ali?</h3>
+    <p class="mt-2 text-stone-600">Anda akan diarahkan ke WhatsApp dengan pesan yang sudah terisi. Periksa lagi sebelum menekan kirim.</p>
+    <form method="dialog" class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <button class="btn btn-md btn-ghost">Nanti saja</button>
+      <button class="btn btn-md btn-wa"><svg data-icon="whatsapp" class="h-5 w-5"></svg> Buka WhatsApp</button>
+    </form>
+  </div>
+</dialog>
+
+<!-- Toast container -->
+<div id="toasts" class="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex flex-col items-center gap-2 px-4" aria-live="polite"></div>
+
+<script>
+/* ---------- Ikon (salinan js/icons.js) ---------- */
+const ICONS = {
+  'arrow-right': '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  'arrow-up': '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
+  'arrow-up-right': '<path d="M7 7h10v10"/><path d="M7 17 17 7"/>',
+  'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+  'chevron-right': '<path d="m9 18 6-6-6-6"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  menu: '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  'map-pin': '<path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  route: '<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
+  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',
+  'shield-check': '<path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  message: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  whatsapp: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.2 8.6c.2-.4.6-.5.9-.3l.9 1.6c.1.3 0 .6-.2.8l-.5.5c.5 1.1 1.4 2 2.5 2.5l.5-.5c.2-.2.5-.3.8-.2l1.6.9c.3.2.4.6.2.9-.5.9-1.4 1.3-2.4 1-2.3-.7-4.2-2.6-4.8-4.9-.2-.9.1-1.7.5-2.3Z"/>',
+  megaphone: '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+  store: '<path d="M3 9 4.5 4h15L21 9"/><path d="M3 9h18v1.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0Z"/><path d="M5 13v8h14v-8"/><path d="M10 21v-4h4v4"/>',
+  graduation: '<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+  sprout: '<path d="M7 20h10"/><path d="M12 20v-8"/><path d="M12 12c0-3-2-5-6-5 0 3 2 5 6 5Z"/><path d="M12 10c0-3 2-6 6-6 0 4-2 6-6 6Z"/>',
+  'heart-pulse': '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/><path d="M3.2 12h6.3l.5-1 2 4.5 2-7 1.5 3.5h5.3"/>',
+  heart: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/>',
+  building: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/>',
+  newspaper: '<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8Z"/>',
+  camera: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>',
+  image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+  play: '<path d="M7 4v16l13-8Z"/>',
+  quote: '<path d="M10 8H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3v1a3 3 0 0 1-3 3"/><path d="M20 8h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3v1a3 3 0 0 1-3 3"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
+  mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+  instagram: '<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
+  facebook: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"/>',
+  youtube: '<path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3Z"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  'alert-circle': '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>',
+  alert: '<path d="m21.7 18-8-14a2 2 0 0 0-3.5 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z"/><path d="M12 9v4M12 17h.01"/>',
+  'check-circle': '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+  inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1Z"/>',
+  copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  loader: '<path d="M21 12a9 9 0 1 1-6.2-8.6"/>',
+  sparkle: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><path d="m12 8 1.5 2.5L16 12l-2.5 1.5L12 16l-1.5-2.5L8 12l2.5-1.5Z"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/>'
+};
+function renderIcons(root = document) {
+  root.querySelectorAll('svg[data-icon]').forEach(svg => {
+    const d = ICONS[svg.dataset.icon];
+    if (!d) return;
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '1.75');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.innerHTML = d;
+  });
+}
+
+/* ---------- Toast ---------- */
+function toast(msg) {
+  const el = document.createElement('div');
+  el.className = 'pointer-events-auto flex items-center gap-2.5 rounded-full bg-stone-900 py-3 pl-4 pr-5 text-sm font-medium text-white shadow-soft-lg transition duration-300 translate-y-2 opacity-0';
+  el.innerHTML = '<svg data-icon="check-circle" class="h-5 w-5 text-emerald-400"></svg>';
+  el.append(document.createTextNode(msg));
+  document.getElementById('toasts').append(el);
+  renderIcons(el);
+  requestAnimationFrame(() => el.classList.remove('translate-y-2', 'opacity-0'));
+  setTimeout(() => { el.classList.add('opacity-0'); setTimeout(() => el.remove(), 300); }, 2400);
+}
+async function copyText(text, label) {
+  try { await navigator.clipboard.writeText(text); toast(label || `Disalin: ${text}`); }
+  catch { toast(`Salin manual: ${text}`); }
+}
+
+/* ---------- Swatch warna ---------- */
+const PALETTES = {
+  brand: tailwind.config.theme.extend.colors.brand,
+  gold: tailwind.config.theme.extend.colors.gold,
+  stone: { 50: '#FAFAF9', 100: '#F5F5F4', 200: '#E7E5E4', 300: '#D6D3D1', 400: '#A8A29E', 500: '#78716C', 600: '#57534E', 700: '#44403C', 800: '#292524', 900: '#1C1917', 950: '#0C0A09' }
+};
+document.querySelectorAll('.swatches').forEach(wrap => {
+  const pal = PALETTES[wrap.dataset.palette];
+  wrap.innerHTML = Object.entries(pal).map(([k, hex]) => {
+    const main = k === wrap.dataset.main;
+    return `<button class="group text-left" data-hex="${hex}" title="Salin ${hex}">
+      <div class="h-16 rounded-xl border border-black/5 transition group-hover:scale-[1.04] ${main ? 'ring-2 ring-offset-2 ring-stone-900' : ''}" style="background:${hex}"></div>
+      <p class="mt-1.5 text-xs font-semibold text-stone-900">${k}${main ? ' ★' : ''}</p>
+      <p class="font-mono text-[11px] uppercase text-stone-500">${hex}</p></button>`;
+  }).join('');
+});
+document.addEventListener('click', e => {
+  const sw = e.target.closest('[data-hex]');
+  if (sw) copyText(sw.dataset.hex);
+  const t = e.target.closest('[data-toast]');
+  if (t) toast(t.dataset.toast);
+});
+
+/* ---------- Skala spasi & grid ---------- */
+document.getElementById('spacing-scale').innerHTML = [[1, 4], [2, 8], [3, 12], [4, 16], [5, 20], [6, 24], [8, 32], [10, 40], [12, 48], [16, 64], [24, 96]]
+  .map(([k, px]) => `<div class="flex items-center gap-4"><code class="w-10 text-sm font-semibold text-stone-900">${k}</code><span class="w-14 text-sm text-stone-500">${px}px</span><div class="h-3 rounded-full bg-brand-200" style="width:${px * 2}px;max-width:60%"></div></div>`).join('');
+document.getElementById('grid-demo').innerHTML = Array.from({ length: 12 }, (_, i) =>
+  `<div class="${i >= 8 ? 'hidden lg:block' : i >= 4 ? 'hidden md:block' : ''} h-16 rounded-lg bg-brand-50 text-center text-xs font-semibold leading-[4rem] text-brand-700">${i + 1}</div>`).join('');
+
+/* ---------- Grid ikon ---------- */
+document.getElementById('icon-grid').innerHTML = Object.keys(ICONS).map(n =>
+  `<button class="flex flex-col items-center gap-2 rounded-xl border border-stone-200 bg-white p-4 text-stone-700 transition hover:border-brand-300 hover:text-brand-600" data-icon-name="${n}" title="Salin nama ikon">
+    <svg data-icon="${n}" class="h-6 w-6"></svg><span class="w-full truncate text-center font-mono text-[11px] text-stone-500">${n}</span></button>`).join('');
+document.getElementById('icon-grid').addEventListener('click', e => {
+  const b = e.target.closest('[data-icon-name]');
+  if (b) copyText(b.dataset.iconName, `Ikon "${b.dataset.iconName}" disalin`);
+});
+
+/* ---------- Chip & tab ---------- */
+document.querySelectorAll('[data-chip-group]').forEach(g => g.addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  g.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === c)));
+}));
+document.querySelectorAll('[data-tab-group]').forEach(g => g.addEventListener('click', e => {
+  const t = e.target.closest('.tab'); if (!t) return;
+  g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+}));
+
+/* ---------- Tombol loading ---------- */
+document.getElementById('btn-loading-demo').addEventListener('click', function () {
+  const label = this.innerHTML;
+  this.disabled = true;
+  this.innerHTML = '<svg data-icon="loader" class="h-5 w-5 animate-spin"></svg> Mengirim…';
+  renderIcons(this);
+  setTimeout(() => { this.disabled = false; this.innerHTML = label; }, 1800);
+});
+
+/* ---------- Mega menu demo ---------- */
+(() => {
+  const header = document.getElementById('mega-demo-header');
+  const triggers = [...document.querySelectorAll('[data-demo-mega]')];
+  let current = null;
+  const show = id => {
+    current = id;
+    triggers.forEach(t => t.setAttribute('aria-expanded', String(t.dataset.demoMega === id)));
+    document.querySelectorAll('[data-demo-panel]').forEach(p => { p.hidden = p.dataset.demoPanel !== id; });
+    header.classList.toggle('is-mega', !!id);
+  };
+  triggers.forEach(t => t.addEventListener('click', () => show(current === t.dataset.demoMega ? null : t.dataset.demoMega)));
+  document.querySelectorAll('[data-demo-close]').forEach(b => b.addEventListener('click', () => show(null)));
+})();
+
+/* ---------- Menu mobile demo ---------- */
+const mmBtn = document.getElementById('mm-toggle'), mmPanel = document.getElementById('mm-panel');
+mmBtn.addEventListener('click', () => {
+  const open = mmBtn.getAttribute('aria-expanded') !== 'true';
+  mmBtn.setAttribute('aria-expanded', String(open));
+  mmBtn.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+  mmPanel.classList.toggle('hidden', !open);
+  mmPanel.classList.toggle('flex', open);
+  document.getElementById('mm-header').classList.toggle('is-menu', open);
+  document.getElementById('mm-fab').classList.toggle('hidden', open); // tombol WA disembunyikan saat menu terbuka
+  mmBtn.querySelector('svg').dataset.icon = open ? 'x' : 'menu';
+  renderIcons(mmBtn);
+});
+
+/* ---------- Pita berjalan ---------- */
+(() => {
+  const words = ['Bondowoso', 'Situbondo', 'Banyuwangi', 'Mendengar langsung', 'Bekerja nyata']
+    .map(w => `<span class="flex items-center gap-6">${w}<svg data-icon="sparkle" class="h-4 w-4 text-gold-400"></svg></span>`).join('');
+  document.getElementById('ticker').innerHTML =
+    `<div class="flex shrink-0 gap-6 pr-6">${words}</div><div class="flex shrink-0 gap-6 pr-6" aria-hidden="true">${words}</div>`;
+})();
+
+/* ---------- Modal ---------- */
+document.getElementById('open-modal').addEventListener('click', () => document.getElementById('modal').showModal());
+
+/* ---------- Validasi form contoh ---------- */
+const form = document.getElementById('demo-form');
+const rules = {
+  nama: v => v.trim().length >= 3 || 'Nama minimal 3 huruf.',
+  wa: v => /^(\+62|62|0)8\d{8,12}$/.test(v.replace(/[\s-]/g, '')) || 'Nomor WhatsApp tidak valid (contoh: 081234567890).',
+  kab: v => !!v || 'Pilih kabupaten.',
+  ok: (_, el) => el.checked || 'Centang persetujuan untuk melanjutkan.'
+};
+function check(el) {
+  const res = rules[el.name](el.value, el);
+  const err = el.closest('div').querySelector('.error-text');
+  const bad = res !== true;
+  if (el.type !== 'checkbox') el.classList.toggle('is-invalid', bad);
+  el.setAttribute('aria-invalid', String(bad));
+  err.classList.toggle('hidden', !bad);
+  err.innerHTML = bad ? '<svg data-icon="alert-circle" class="h-4 w-4 shrink-0"></svg>' : '';
+  if (bad) { err.append(document.createTextNode(res)); renderIcons(err); }
+  return !bad;
+}
+Object.keys(rules).forEach(n => form.elements[n].addEventListener('blur', e => check(e.target)));
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const fields = Object.keys(rules).map(n => form.elements[n]);
+  const results = fields.map(el => check(el));
+  const firstBad = fields[results.indexOf(false)];
+  if (firstBad) { firstBad.focus(); return; }
+  toast('Pendaftaran tersimpan (demo)');
+  form.reset();
+});
+form.addEventListener('reset', () => {
+  form.querySelectorAll('.error-text').forEach(el => el.classList.add('hidden'));
+  form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+});
+
+/* ---------- Token ---------- */
+document.getElementById('token-code').textContent =
+  '// tailwind.config.js\nmodule.exports = {\n  content: ["./*.html", "!./design-system.html", "./js/**/*.js"],\n  theme: {\n    extend: ' +
+  JSON.stringify(tailwind.config.theme.extend, null, 2).replace(/\n/g, '\n    ') + '\n  }\n};';
+
+/* ---------- Navigasi dokumentasi ---------- */
+const links = [...document.querySelectorAll('.ds-nav a')];
+document.querySelector('.ds-nav-mobile').innerHTML = links.map(a =>
+  `<a href="${a.getAttribute('href')}" class="chip h-8 shrink-0 px-3 text-xs">${a.textContent}</a>`).join('');
+const obs = new IntersectionObserver(entries => entries.forEach(en => {
+  if (!en.isIntersecting) return;
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+}), { rootMargin: '-30% 0px -65% 0px' });
+document.querySelectorAll('.ds-section').forEach(s => obs.observe(s));
+
+renderIcons();
+</script>
+</body>
+</html>
