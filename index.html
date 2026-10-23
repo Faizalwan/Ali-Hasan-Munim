@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://images.unsplash.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/img/cak-ali-cutout.png" fetchpriority="high" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="dist/styles.css" />
@@ -38,84 +38,66 @@
 
   <main id="main">
 
-    <!-- ========== HERO (judul di tengah, foto potong di atas lingkaran merah, sisi kiri-kanan editorial) ========== -->
+    <!-- ========== HERO (split: teks kiri, foto besar kanan di atas lingkaran merah) ========== -->
     <section class="relative overflow-hidden bg-cream pt-16 lg:pt-[72px]">
-      <!-- label vertikal di tepi layar lebar -->
-      <p class="absolute left-6 top-1/2 hidden -translate-y-1/2 rotate-180 text-[11px] font-bold uppercase tracking-[0.3em] text-stone-400 [writing-mode:vertical-rl] 2xl:block" aria-hidden="true">Pengusaha · Pengurus KADIN</p>
-      <p class="absolute right-6 top-1/2 hidden -translate-y-1/2 text-[11px] font-bold uppercase tracking-[0.3em] text-stone-400 [writing-mode:vertical-rl] 2xl:block" aria-hidden="true">Putra Tapal Kuda</p>
+      <div class="container-site relative grid lg:min-h-[min(780px,calc(100svh-72px))] lg:grid-cols-12 lg:gap-6">
 
-      <div class="container-site relative">
-        <!-- judul -->
-        <div data-reveal class="mx-auto max-w-5xl pt-10 text-center lg:pt-14">
-          <p class="inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-600 sm:text-xs">
-            <span class="relative flex h-2.5 w-2.5" aria-hidden="true">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60 motion-reduce:animate-none"></span>
-              <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-600"></span>
-            </span>
+        <!-- kiri: teks -->
+        <div data-reveal class="relative z-10 pb-10 pt-12 lg:col-span-7 lg:self-center lg:py-16">
+          <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600">
+            <span class="h-2.5 w-2.5 rounded-full bg-brand-600" aria-hidden="true"></span>
             <span data-cfg="campaign.dapil">Dapil Jawa Timur IV</span>
-            <span class="hidden text-stone-400 sm:inline" aria-hidden="true">/</span>
-            <span class="hidden text-stone-600 sm:inline" data-cfg="campaign.regions">Bondowoso · Situbondo · Banyuwangi</span>
+            <span class="h-px w-8 bg-stone-900/25" aria-hidden="true"></span>
           </p>
-          <h1 class="mt-5 text-balance text-[2.5rem] font-extrabold leading-[1.05] tracking-tight text-stone-900 sm:text-5xl lg:text-[3.5rem] xl:text-[4.25rem]">
-            Bersama <span class="text-brand-600">Cak Ali</span>, membangun Jawa Timur dari desa
+          <h1 class="mt-6 text-[2.75rem] font-extrabold leading-[1.02] tracking-[-0.035em] text-stone-900 sm:text-6xl lg:whitespace-nowrap lg:text-[3.6rem] xl:text-[4.1rem]">
+            Bersama <span class="text-brand-600">Cak Ali</span>,<br />
+            membangun<br />
+            Jawa Timur dari desa<span class="text-brand-600">.</span>
           </h1>
-        </div>
-
-        <!-- HP: judul · foto · perkenalan · wilayah & video | tablet: perkenalan & wilayah berdampingan, foto di bawah | desktop: 4-5-3 -->
-        <div class="relative mt-8 grid gap-10 md:grid-cols-2 lg:mt-2 lg:grid-cols-12 lg:gap-6">
-          <!-- kiri: perkenalan editorial -->
-          <div data-reveal style="--d:120ms" class="order-2 md:order-1 lg:col-span-4 lg:pb-6 lg:pt-8">
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-stone-600">Halo, saya</p>
-            <p class="mt-3 text-4xl font-light uppercase leading-[1.02] tracking-tight text-stone-900 md:text-5xl lg:text-[2.6rem] xl:text-5xl">Ali Hasan<br />Mun'im, S.E</p>
-            <p class="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-brand-600">Pengusaha · Putra Tapal Kuda</p>
-            <p class="mt-5 max-w-sm leading-relaxed text-stone-600">Pengurus KADIN yang tumbuh di tapal kuda. Ingin jadi wakil yang mau turun, mendengar, dan bekerja bersama warga.</p>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <a href="relawan.html" class="btn btn-lg btn-primary group pr-2">
-                Jadi Relawan
-                <span class="grid h-9 w-9 place-items-center rounded-full bg-white text-brand-600 transition group-hover:translate-x-0.5"><svg data-icon="arrow-right" class="h-4 w-4"></svg></span>
-              </a>
-              <a href="tentang.html" class="btn btn-lg border border-brand-600 text-brand-700 hover:bg-brand-50 focus-visible:ring-brand-200">Kenal Cak Ali</a>
-            </div>
-            <!-- tanda tangan = logo -->
-            <img src="assets/img/logo-cak-ali.png" alt="" width="600" height="273" class="mt-8 h-14 w-auto -rotate-3 lg:hidden xl:block xl:h-16" loading="lazy" />
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-stone-600 xl:text-xl" data-cfg="campaign.subTagline">Berangkat dari dunia usaha, Cak Ali ingin mendengar aspirasi warga, memahami kebutuhan, dan mendorong solusi nyata untuk Jawa Timur yang lebih maju dan sejahtera.</p>
+          <div class="mt-9 flex flex-wrap gap-3 sm:gap-4">
+            <a href="aspirasi.html" class="btn btn-lg btn-primary group h-14 px-8 text-[17px]">Sampaikan Aspirasi <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
+            <a href="tentang.html" class="btn btn-lg group h-14 border border-brand-600 px-8 text-[17px] text-brand-700 hover:bg-brand-50 focus-visible:ring-brand-200">Kenal Cak Ali <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
           </div>
 
-          <!-- tengah: foto potong + lingkaran merah. Desktop: 130% lebar kolom dan lebih tinggi dari barisnya, jadi kepala menjorok ke atas menimpa judul -->
-          <div data-reveal style="--d:200ms" class="relative order-1 mx-auto w-full max-w-[380px] self-end border-b border-stone-900/10 md:order-3 md:col-span-2 md:max-w-[460px] md:border-0 lg:order-2 lg:col-span-5 lg:-mx-[15%] lg:-mt-24 lg:w-[130%] lg:max-w-none">
-            <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
-              <div class="absolute left-1/2 top-[22%] aspect-square w-[94%] -translate-x-1/2 rounded-full bg-brand-600 lg:top-[26%] lg:w-[76%]">
-                <svg class="absolute inset-0 h-full w-full text-white/15" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width=".5">
-                  <circle cx="50" cy="50" r="41" /><circle cx="50" cy="50" r="32" />
-                </svg>
-              </div>
+          <!-- tiga janji singkat -->
+          <ul class="mt-12 flex flex-col gap-5 sm:flex-row sm:gap-0">
+            <li class="flex min-w-0 items-center gap-3 sm:flex-1 sm:pr-4">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600"><svg data-icon="chat" class="h-5 w-5"></svg></span>
+              <span><span class="block whitespace-nowrap text-sm font-semibold text-stone-900">Dengar Aspirasi</span><span class="block text-xs leading-snug text-stone-500">Langsung dari warga</span></span>
+            </li>
+            <li class="flex min-w-0 items-center gap-3 sm:flex-1 sm:border-l sm:border-stone-900/10 sm:px-4">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600"><svg data-icon="chart" class="h-5 w-5"></svg></span>
+              <span><span class="block whitespace-nowrap text-sm font-semibold text-stone-900">Dorong Solusi</span><span class="block text-xs leading-snug text-stone-500">Berdasarkan kebutuhan nyata</span></span>
+            </li>
+            <li class="flex min-w-0 items-center gap-3 sm:flex-1 sm:border-l sm:border-stone-900/10 sm:pl-4">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600"><svg data-icon="users" class="h-5 w-5"></svg></span>
+              <span><span class="block whitespace-nowrap text-sm font-semibold text-stone-900">Bangun Kolaborasi</span><span class="block text-xs leading-snug text-stone-500">Untuk Jawa Timur yang lebih baik</span></span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- kanan: foto besar + dekorasi -->
+        <div data-reveal style="--d:150ms" class="relative mx-auto w-full max-w-[460px] self-end sm:max-w-[520px] lg:col-span-5 lg:-ml-16 lg:mr-0 lg:w-[calc(100%+9rem)] lg:max-w-none">
+          <div class="relative aspect-square w-full">
+            <!-- latar dekorasi -->
+            <div class="absolute inset-0" aria-hidden="true">
+              <span class="absolute -right-[30%] bottom-[-35%] aspect-square w-[95%] rounded-full bg-[#EFE5D6]/70"></span>
+              <span class="absolute left-[-8%] top-[8%] aspect-square w-[105%] rounded-full border border-stone-900/10"></span>
+              <span class="absolute left-[4%] top-[20%] aspect-square w-[80%] rounded-full border border-stone-900/10"></span>
+              <span class="absolute left-[2%] top-[24%] aspect-square w-[78%] rounded-full bg-brand-600"></span>
+              <span class="absolute left-[9%] top-[31%] aspect-square w-[64%] rounded-full border border-white/15"></span>
+              <svg class="absolute right-[1%] top-[50%] h-8 w-8 text-gold-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.6 6.2 5.8 11.4 12 12-6.2.6-11.4 5.8-12 12-.6-6.2-5.8-11.4-12-12C6.2 11.4 11.4 6.2 12 0Z" /></svg>
             </div>
             <img src="assets/img/cak-ali-cutout.png" alt="Ali Hasan Mun'im (Cak Ali)" width="1000" height="1000" class="relative w-full" fetchpriority="high" />
           </div>
 
-          <!-- kanan: wilayah + video -->
-          <div data-reveal style="--d:280ms" class="order-3 pb-12 md:order-2 md:pb-0 lg:order-3 lg:col-span-3 lg:pb-6 lg:pt-8">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-stone-600">Wilayah perjuangan</p>
-            <ol class="mt-3 border-t border-stone-900/10">
-              <li class="flex items-baseline gap-4 border-b border-stone-900/10 py-3.5"><span class="text-sm font-semibold text-brand-600">01</span><span class="text-2xl font-bold tracking-tight text-stone-900 lg:text-xl xl:text-2xl">Bondowoso</span></li>
-              <li class="flex items-baseline gap-4 border-b border-stone-900/10 py-3.5"><span class="text-sm font-semibold text-brand-600">02</span><span class="text-2xl font-bold tracking-tight text-stone-900 lg:text-xl xl:text-2xl">Situbondo</span></li>
-              <li class="flex items-baseline gap-4 border-b border-stone-900/10 py-3.5"><span class="text-sm font-semibold text-brand-600">03</span><span class="text-2xl font-bold tracking-tight text-stone-900 lg:text-xl xl:text-2xl">Banyuwangi</span></li>
-            </ol>
-
-            <!-- kartu video: klik untuk memutar (sumber video di config.heroVideo) -->
-            <button type="button" data-video class="card-link group relative mt-8 block w-full overflow-hidden rounded-2xl text-left shadow-soft-lg">
-              <img src="assets/img/cak-ali-portrait.webp" alt="" width="640" height="640" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" data-video-poster />
-              <span class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent"></span>
-              <span class="absolute left-1/2 top-[40%] grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-brand-600 shadow-soft-lg transition group-hover:scale-110">
-                <span class="absolute inset-0 animate-ping rounded-full bg-white/50 motion-reduce:animate-none" aria-hidden="true"></span>
-                <svg data-icon="play" class="relative ml-0.5 h-6 w-6"></svg>
-              </span>
-              <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white">
-                <span>
-                  <span class="block font-semibold leading-snug" data-cfg="heroVideo.title">Kenalan dengan Cak Ali</span>
-                </span>
-                <span class="shrink-0 rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold backdrop-blur" data-cfg="heroVideo.duration">1:30</span>
-              </span>
-            </button>
+          <!-- tanda tangan & peran -->
+          <div class="absolute right-0 top-[6%] hidden w-44 xl:block 2xl:-right-24" aria-hidden="true">
+            <p class="-rotate-[8deg] font-script text-[2.6rem] leading-[0.95] text-stone-900">Ali Hasan<br /><span class="pl-6">Mun'im, S.E.</span></p>
+            <span class="mt-5 block h-px w-6 bg-stone-900/30"></span>
+            <p class="mt-4 space-y-1.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-stone-500"><span class="block">Pengusaha</span><span class="block">Pengurus KADIN</span><span class="block">Putra Tapal Kuda</span></p>
+            <span class="mt-4 block h-px w-6 bg-stone-900/30"></span>
           </div>
         </div>
       </div>

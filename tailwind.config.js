@@ -17,7 +17,9 @@ module.exports = {
         wa: { DEFAULT: '#15803D', hover: '#166534' }
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // tulisan tangan untuk nama di hero
+        script: ['Caveat', 'cursive']
       },
       boxShadow: {
         soft: '0 1px 2px rgba(28,25,23,.04), 0 2px 8px rgba(28,25,23,.04)',

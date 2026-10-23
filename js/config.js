@@ -28,7 +28,7 @@ export const config = {
     dapil: 'Dapil Jawa Timur IV',
     regions: ['Bondowoso', 'Situbondo', 'Banyuwangi'],
     tagline: 'Bersama Cak Ali, membangun Jawa Timur dari desa',
-    subTagline: 'Mendengar langsung, bekerja nyata untuk warga Bondowoso, Situbondo, dan Banyuwangi.',
+    subTagline: 'Berangkat dari dunia usaha, Cak Ali ingin mendengar aspirasi warga, memahami kebutuhan, dan mendorong solusi nyata untuk Jawa Timur yang lebih maju dan sejahtera.',
     ticker: ['Bondowoso', 'Situbondo', 'Banyuwangi', 'Mendengar langsung', 'Bekerja nyata', 'Dari desa untuk Jawa Timur']
   },
 

@@ -98,7 +98,7 @@ function renderHeader() {
       </a>
       <nav class="hidden lg:block" aria-label="Menu utama"><ul class="flex items-center gap-1">${desktopNav}</ul></nav>
       <div class="flex items-center gap-2">
-        <a href="relawan.html" class="header-cta btn btn-md btn-primary hidden sm:inline-flex">Jadi Relawan</a>
+        <a href="relawan.html" class="header-cta btn btn-md btn-primary group hidden sm:inline-flex">Jadi Relawan <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5"></svg></a>
         <button id="menu-toggle" class="btn btn-md btn-ghost btn-icon lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Buka menu">
           <svg data-icon="menu" class="h-6 w-6"></svg>
         </button>
