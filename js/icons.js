@@ -24,6 +24,7 @@ export const ICONS = {
   message: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
   chat: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/>',
   chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 17v-4"/><path d="M12 17v-6"/><path d="M17 17V9"/><path d="m7 9 4-3 3 2 5-4"/>',
+  'chart-up': '<path d="M3 21h18"/><path d="M6 17v-3"/><path d="M11 17v-6"/><path d="M16 17V9"/><path d="m5 10 5-4 3 2 6-5"/><path d="M15 3h4v4"/>',
   whatsapp: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.2 8.6c.2-.4.6-.5.9-.3l.9 1.6c.1.3 0 .6-.2.8l-.5.5c.5 1.1 1.4 2 2.5 2.5l.5-.5c.2-.2.5-.3.8-.2l1.6.9c.3.2.4.6.2.9-.5.9-1.4 1.3-2.4 1-2.3-.7-4.2-2.6-4.8-4.9-.2-.9.1-1.7.5-2.3Z"/>',
   megaphone: '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
   briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
