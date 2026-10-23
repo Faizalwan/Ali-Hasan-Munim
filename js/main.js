@@ -117,10 +117,6 @@ function renderHeader() {
   </div>`;
 }
 
-function setDockHidden(hidden) {
-  document.querySelectorAll('[data-dock]').forEach(el => el.toggleAttribute('hidden', hidden));
-}
-
 function setupMega() {
   const header = document.getElementById('header');
   const backdrop = document.getElementById('mega-backdrop');
@@ -133,7 +129,6 @@ function setupMega() {
     document.querySelectorAll('.mega-panel').forEach(p => { p.hidden = p.id !== `mega-${id}`; });
     header.classList.toggle('is-mega', !!id);
     backdrop.hidden = !id;
-    setDockHidden(!!id);
   };
   const closeAndFocus = () => {
     const trigger = triggers.find(t => t.dataset.mega === current);
@@ -167,7 +162,6 @@ function setupMobileMenu() {
     menu.classList.toggle('flex', open);
     header.classList.toggle('is-menu', open);
     document.body.classList.toggle('overflow-hidden', open);
-    setDockHidden(open);
   };
 
   btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
@@ -180,39 +174,11 @@ function setupMobileMenu() {
 function setupScrollState() {
   const header = document.getElementById('header');
   if (!header) return;
-  const toTop = document.querySelector('[data-to-top]');
   const update = () => {
     header.classList.toggle('is-scrolled', scrollY > 8);
-    // tombol "ke atas" baru berguna setelah pengunjung menggulir agak jauh
-    toTop?.classList.toggle('invisible', scrollY < 600);
-    toTop?.classList.toggle('opacity-0', scrollY < 600);
   };
   addEventListener('scroll', update, { passive: true });
   update();
-}
-
-/* ---------- Tombol samping (ala Portal Jabar) ---------- */
-
-function renderDock() {
-  const items = [
-    { icon: 'whatsapp', label: 'Chat WhatsApp', href: waLink(), ext: true, cls: 'bg-wa hover:bg-wa-hover' },
-    { icon: 'megaphone', label: 'Sampaikan aspirasi', href: 'aspirasi.html' },
-    { icon: 'users', label: 'Jadi relawan', href: 'relawan.html' },
-    { icon: 'arrow-up', label: 'Kembali ke atas', href: '#', top: true, cls: 'bg-stone-900 hover:bg-stone-800' }
-  ];
-  const btn = it => `<a href="${esc(it.href)}"${it.ext ? ' target="_blank" rel="noopener"' : ''}${it.top ? ' data-to-top' : ''} class="dock-btn group ${it.cls || ''}" aria-label="${esc(it.label)}">
-      <svg data-icon="${it.icon}" class="h-5 w-5"></svg><span class="dock-tip">${esc(it.label)}</span></a>`;
-
-  document.body.insertAdjacentHTML('beforeend', `
-  <div data-dock class="fixed right-4 top-1/2 z-20 hidden -translate-y-1/2 flex-col gap-2 xl:flex">${items.map(btn).join('')}</div>
-  <a data-dock href="${waLink()}" target="_blank" rel="noopener" class="fixed bottom-5 right-5 z-20 grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-soft-lg transition hover:bg-wa-hover xl:hidden" aria-label="Chat WhatsApp tim ${esc(config.person.nickname)}">
-    <svg data-icon="whatsapp" class="h-7 w-7"></svg>
-  </a>`);
-
-  document.querySelector('[data-to-top]').addEventListener('click', e => {
-    e.preventDefault();
-    scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  });
 }
 
 /* ---------- Footer (ala Portal Jabar) ---------- */
@@ -263,7 +229,7 @@ function renderFooter() {
       </div>
     </div>
     <div class="border-t border-white/15">
-      <div class="container-site flex flex-col gap-2 pb-24 pt-5 text-xs sm:flex-row sm:justify-between xl:pb-5">
+      <div class="container-site flex flex-col gap-2 py-5 text-xs sm:flex-row sm:justify-between">
         <p>© ${new Date().getFullYear()} ${esc(config.site.name)} · ${esc(config.person.fullName)}. ${esc(config.site.disclaimer)}</p>
         <a href="privasi.html" class="transition hover:text-white">Kebijakan Privasi</a>
       </div>
@@ -304,7 +270,6 @@ function bindConfig() {
 
 renderHeader();
 renderFooter();
-renderDock();
 bindConfig();
 setupMega();
 setupMobileMenu();
