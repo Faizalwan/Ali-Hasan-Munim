@@ -66,54 +66,53 @@ function renderTicker() {
 
 /* ---------- Kenalan ---------- */
 
-/* ---------- Program (bento) ---------- */
+/* ---------- Program (carousel) ---------- */
 
+// Kartu foto tinggi. Hover/fokus: foto membesar, ikon jadi merah, tautan "Selengkapnya" muncul.
+// Di perangkat sentuh (tanpa hover) tautan itu langsung tampil.
 function renderPrograms() {
   const el = document.getElementById('program-list');
-  if (!el || programs.length < 3) return;
-  const [first, ...rest] = programs;
-  const last = rest.pop();
-
-  // sm: kartu besar & lebar mengisi 2 kolom · lg: kartu besar 2 baris di kiri, kartu lebar 3 kolom di bawah
-  const big = `
-    <a href="${esc(programHref(first))}" class="card-link group relative flex min-h-[380px] flex-col justify-end overflow-hidden rounded-3xl p-6 text-white sm:col-span-2 md:p-8 lg:col-span-1 lg:row-span-2 lg:min-h-[440px]">
-      <img src="${imgSrc(first.image, 900)}" alt="" class="absolute inset-0 h-full w-full bg-stone-800 object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
-      <span class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-stone-950/10"></span>
-      <span class="absolute left-6 top-6 text-5xl font-light tracking-tight text-white/90 md:left-8 md:top-8">01</span>
-      <span class="relative">
-        <span class="grid h-12 w-12 place-items-center rounded-xl bg-white/15 backdrop-blur"><svg data-icon="${esc(first.icon)}" class="h-6 w-6"></svg></span>
-        <span class="mt-5 block text-2xl font-bold leading-tight md:text-3xl">${esc(first.title)}</span>
-        <span class="mt-2 block max-w-md text-stone-200">${esc(first.summary)}</span>
-        <span class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold">Selengkapnya <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
-      </span>
-    </a>`;
-
-  const small = rest.map((p, i) => `
-    <a href="${esc(programHref(p))}" class="card card-hover group flex flex-col p-6">
-      <span class="flex items-start justify-between">
-        <span class="text-4xl font-light tracking-tight text-brand-600">${pad(i + 2)}</span>
-        <span class="icon-tile"><svg data-icon="${esc(p.icon)}" class="h-6 w-6"></svg></span>
-      </span>
-      <span class="h4 mt-6 block">${esc(p.title)}</span>
-      <span class="mt-2 block flex-1 text-stone-600">${esc(p.summary)}</span>
-      <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">Selengkapnya <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
-    </a>`).join('');
-
-  const wide = `
-    <a href="${esc(programHref(last))}" class="card-link group grid overflow-hidden rounded-3xl bg-stone-950 text-white sm:col-span-2 md:grid-cols-[1.2fr_1fr] lg:col-span-3">
-      <span class="flex flex-col justify-center p-8 md:p-10">
-        <span class="text-4xl font-light tracking-tight text-gold-400">${pad(programs.length)}</span>
-        <span class="mt-4 block text-2xl font-bold leading-tight md:text-3xl">${esc(last.title)}</span>
-        <span class="mt-3 block max-w-lg text-stone-400">${esc(last.summary)}</span>
-        <span class="btn btn-md mt-8 self-start bg-white text-stone-900 group-hover:bg-stone-100">${esc(last.cta || 'Selengkapnya')} <svg data-icon="arrow-right" class="h-4 w-4"></svg></span>
-      </span>
-      <span class="relative min-h-[240px] overflow-hidden bg-stone-800">
-        <img src="${imgSrc(last.image, 900)}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
-      </span>
-    </a>`;
-
-  el.innerHTML = big + small + wide;
+  if (!el || !programs.length) return;
+  el.innerHTML = programs.map((p, i) => `
+    <li class="w-[78vw] max-w-[300px] shrink-0 snap-start sm:w-[300px]">
+      <a href="${esc(programHref(p))}" class="card-link group relative flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-2xl bg-stone-800 p-5 text-white md:p-6">
+        <img src="${imgSrc(p.image, 700)}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110" loading="lazy" />
+        <span class="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/35 to-stone-950/10 transition duration-500 group-hover:from-brand-950/95 group-hover:via-stone-950/50 group-focus-visible:from-brand-950/95" aria-hidden="true"></span>
+        <span class="relative flex items-start justify-between">
+          <span class="text-sm font-semibold tracking-[0.2em] text-white/80">${pad(i + 1)}</span>
+          <span class="grid h-11 w-11 place-items-center rounded-full bg-white/15 backdrop-blur transition duration-300 group-hover:bg-brand-600 group-focus-visible:bg-brand-600"><svg data-icon="${esc(p.icon)}" class="h-5 w-5"></svg></span>
+        </span>
+        <span class="relative">
+          <span class="block text-xl font-bold leading-snug md:text-2xl">${esc(p.title)}</span>
+          <span class="mt-2 block text-sm leading-relaxed text-white/80">${esc(p.summary)}</span>
+          <span class="grid transition-all duration-300 [@media(hover:hover)]:grid-rows-[0fr] [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:grid-rows-[1fr] [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-visible:grid-rows-[1fr] [@media(hover:hover)]:group-focus-visible:opacity-100">
+            <span class="overflow-hidden"><span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">${esc(p.cta || 'Selengkapnya')} <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span></span>
+          </span>
+        </span>
+      </a>
+    </li>`).join('');
   renderIcons(el);
+  setupCarousel(el);
+}
+
+// Tombol panah menggeser satu kartu; tombol nonaktif di ujung.
+function setupCarousel(list) {
+  const prev = document.querySelector(`[data-carousel-prev][aria-controls="${list.id}"]`);
+  const next = document.querySelector(`[data-carousel-next][aria-controls="${list.id}"]`);
+  if (!prev || !next) return;
+  const step = () => {
+    const card = list.firstElementChild;
+    return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(list).columnGap || 0) : list.clientWidth;
+  };
+  const update = () => {
+    prev.disabled = list.scrollLeft <= 2;
+    next.disabled = list.scrollLeft + list.clientWidth >= list.scrollWidth - 2;
+  };
+  prev.addEventListener('click', () => list.scrollBy({ left: -step() }));
+  next.addEventListener('click', () => list.scrollBy({ left: step() }));
+  list.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 }
 
 /* ---------- Kabar terkini ---------- */
