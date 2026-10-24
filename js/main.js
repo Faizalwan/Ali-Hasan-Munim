@@ -201,7 +201,7 @@ function renderFooter() {
   const menu = [{ label: 'Beranda', href: 'index.html', pages: ['beranda'] }, ...groups].map(g => {
     const href = g.href || (g.items && g.items[0].href.split('#')[0]);
     const active = (g.pages || []).includes(page);
-    return `<li><a href="${esc(href)}" class="inline-block text-3xl font-bold leading-tight tracking-tight transition hover:text-gold-300 md:text-4xl ${active ? 'text-gold-300' : 'text-white'}"${active ? ' aria-current="page"' : ''}>${esc(g.label)}</a></li>`;
+    return `<li><a href="${esc(href)}" class="inline-block text-2xl font-bold leading-tight tracking-tight transition hover:text-gold-300 md:text-[1.75rem]${active ? 'text-gold-300' : 'text-white'}"${active ? ' aria-current="page"' : ''}>${esc(g.label)}</a></li>`;
   }).join('');
 
   const info = (label, body) => `
@@ -210,15 +210,16 @@ function renderFooter() {
       <div class="mt-2 text-lg font-bold leading-snug text-white">${body}</div>
     </div>`;
 
+  // Sudut atas membulat besar. Di halaman bergaleri (beranda) footer naik menimpa galeri,
+  // jadi foto tetap terlihat di balik lengkungan sudutnya.
+  const overlap = document.getElementById('galeri-list') ? 'relative z-20 -mt-12 md:-mt-20' : '';
+
   el.outerHTML = `
-  <footer class="bg-brand-700 text-brand-100">
+  <footer class="${overlap} rounded-t-[2.5rem] bg-brand-700 text-brand-100 md:rounded-t-[5rem]">
     <div class="container-site pt-16 md:pt-20">
       <div class="grid gap-14 lg:grid-cols-12 lg:gap-8">
         <div class="lg:col-span-5">
-          <a href="index.html" class="inline-block rounded-xl" aria-label="${esc(config.person.nickname)}, ke beranda">
-            <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="h-12 w-auto" loading="lazy" />
-          </a>
-          <p class="mt-10 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-white/80">
+          <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-white/80">
             <span class="h-2.5 w-2.5 rounded-full bg-gold-400" aria-hidden="true"></span>
             Ayo Terlibat
           </p>
@@ -232,7 +233,7 @@ function renderFooter() {
 
         <nav class="lg:col-span-3 lg:col-start-7" aria-label="Menu footer">
           <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/60">Menu</p>
-          <ul class="mt-5 space-y-2">${menu}</ul>
+          <ul class="mt-5 space-y-4">${menu}</ul>
         </nav>
 
         <div class="space-y-7 lg:col-span-3">
@@ -244,7 +245,9 @@ function renderFooter() {
         </div>
       </div>
 
-      <p class="mt-16 select-none whitespace-nowrap text-center text-[min(10.6vw,7.6rem)] font-bold leading-[0.9] tracking-[-0.04em] text-white md:mt-20" aria-hidden="true">${esc(config.person.fullName.replace(/,?\s*S\.E\.?$/, ''))}</p>
+      <a href="index.html" class="mt-16 block rounded-2xl md:mt-20" aria-label="${esc(config.person.nickname)}, ke beranda">
+        <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="mx-auto h-auto w-full max-w-2xl" loading="lazy" />
+      </a>
     </div>
 
     <div class="container-site">
