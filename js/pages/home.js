@@ -68,26 +68,24 @@ function renderTicker() {
 
 /* ---------- Program (carousel) ---------- */
 
-// Kartu foto tinggi. Hover/fokus: foto membesar, ikon jadi merah, tautan "Selengkapnya" muncul.
-// Di perangkat sentuh (tanpa hover) tautan itu langsung tampil.
+// Foto di atas, kotak info + tombol panah di bawah. Hover/fokus: foto membesar,
+// judul jadi merah, tombol panah berputar dan berubah gelap.
 function renderPrograms() {
   const el = document.getElementById('program-list');
   if (!el || !programs.length) return;
   el.innerHTML = programs.map((p, i) => `
-    <li class="w-[78vw] max-w-[300px] shrink-0 snap-start sm:w-[300px]">
-      <a href="${esc(programHref(p))}" class="card-link group relative flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-2xl bg-stone-800 p-5 text-white md:p-6">
-        <img src="${imgSrc(p.image, 700)}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110" loading="lazy" />
-        <span class="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/35 to-stone-950/10 transition duration-500 group-hover:from-brand-950/95 group-hover:via-stone-950/50 group-focus-visible:from-brand-950/95" aria-hidden="true"></span>
-        <span class="relative flex items-start justify-between">
-          <span class="text-sm font-semibold tracking-[0.2em] text-white/80">${pad(i + 1)}</span>
-          <span class="grid h-11 w-11 place-items-center rounded-full bg-white/15 backdrop-blur transition duration-300 group-hover:bg-brand-600 group-focus-visible:bg-brand-600"><svg data-icon="${esc(p.icon)}" class="h-5 w-5"></svg></span>
+    <li class="flex w-[85%] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2.5rem)/3)]">
+      <a href="${esc(programHref(p))}" class="card-link group flex w-full flex-col rounded-2xl">
+        <span class="relative block aspect-[16/10] overflow-hidden rounded-2xl bg-stone-200">
+          <img src="${imgSrc(p.image, 700)}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105 group-focus-visible:scale-105" loading="lazy" />
+          <span class="absolute left-4 top-4 rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold tracking-wider text-stone-900 backdrop-blur">${pad(i + 1)}</span>
         </span>
-        <span class="relative">
-          <span class="block text-xl font-bold leading-snug md:text-2xl">${esc(p.title)}</span>
-          <span class="mt-2 block text-sm leading-relaxed text-white/80">${esc(p.summary)}</span>
-          <span class="grid transition-all duration-300 [@media(hover:hover)]:grid-rows-[0fr] [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:grid-rows-[1fr] [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-visible:grid-rows-[1fr] [@media(hover:hover)]:group-focus-visible:opacity-100">
-            <span class="overflow-hidden"><span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">${esc(p.cta || 'Selengkapnya')} <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span></span>
+        <span class="mt-2 flex flex-1 items-center gap-4 rounded-2xl border border-stone-200 bg-white p-5 transition duration-300 group-hover:border-stone-300 group-hover:shadow-soft">
+          <span class="min-w-0 flex-1">
+            <span class="block text-lg font-bold leading-snug text-stone-900 transition group-hover:text-brand-700">${esc(p.title)}</span>
+            <span class="mt-1 line-clamp-2 text-sm leading-relaxed text-stone-500">${esc(p.summary)}</span>
           </span>
+          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white transition duration-300 group-hover:rotate-45 group-hover:bg-stone-900 group-focus-visible:rotate-45 group-focus-visible:bg-stone-900"><svg data-icon="arrow-up-right" class="h-4 w-4"></svg></span>
         </span>
       </a>
     </li>`).join('');
@@ -95,23 +93,38 @@ function renderPrograms() {
   setupCarousel(el);
 }
 
-// Tombol panah menggeser satu kartu; tombol nonaktif di ujung.
+// Tombol panah menggeser satu kartu, nonaktif di ujung. Indikator: satu garis per posisi geser.
 function setupCarousel(list) {
   const prev = document.querySelector(`[data-carousel-prev][aria-controls="${list.id}"]`);
   const next = document.querySelector(`[data-carousel-next][aria-controls="${list.id}"]`);
+  const dots = document.querySelector(`[data-carousel-dots][aria-controls="${list.id}"]`);
   if (!prev || !next) return;
   const step = () => {
     const card = list.firstElementChild;
     return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(list).columnGap || 0) : list.clientWidth;
   };
+  const maxScroll = () => list.scrollWidth - list.clientWidth;
+  const positions = () => Math.max(1, Math.round(maxScroll() / step()) + 1);
+
+  const renderDots = () => {
+    if (!dots) return;
+    dots.innerHTML = Array.from({ length: positions() }, (_, i) =>
+      `<button type="button" class="group/dot py-2" aria-label="Geser ke posisi ${i + 1}"><span class="block h-1 w-5 rounded-full bg-stone-300 transition-all group-aria-[current=true]/dot:w-9 group-aria-[current=true]/dot:bg-brand-600 sm:w-8 sm:group-aria-[current=true]/dot:w-12"></span></button>`).join('');
+    dots.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => list.scrollTo({ left: i * step() })));
+  };
   const update = () => {
     prev.disabled = list.scrollLeft <= 2;
-    next.disabled = list.scrollLeft + list.clientWidth >= list.scrollWidth - 2;
+    next.disabled = list.scrollLeft >= maxScroll() - 2;
+    if (!dots) return;
+    const active = list.scrollLeft >= maxScroll() - 2 ? positions() - 1 : Math.round(list.scrollLeft / step());
+    dots.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-current', i === active ? 'true' : 'false'));
   };
+
   prev.addEventListener('click', () => list.scrollBy({ left: -step() }));
   next.addEventListener('click', () => list.scrollBy({ left: step() }));
   list.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
+  window.addEventListener('resize', () => { renderDots(); update(); });
+  renderDots();
   update();
 }
 

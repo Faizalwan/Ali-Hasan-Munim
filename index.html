@@ -162,29 +162,31 @@
       </ul>
     </section>
 
-    <!-- ========== PROGRAM (carousel geser ke samping) ========== -->
-    <section class="section overflow-x-clip bg-stone-50" aria-labelledby="program-title">
+    <!-- ========== PROGRAM (carousel 3 kartu + navigasi bawah) ========== -->
+    <section class="section bg-stone-50" aria-labelledby="program-title">
       <div class="container-site">
-        <div data-reveal class="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div class="lg:col-span-8">
+        <div data-reveal class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
             <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600">
               <span class="h-2.5 w-2.5 rounded-full bg-brand-600" aria-hidden="true"></span>
               Program Prioritas
             </p>
             <h2 id="program-title" class="mt-5 text-3xl font-bold leading-[1.2] tracking-tight text-stone-900 md:text-[2.5rem]">Program yang lahir dari <span class="text-brand-600">obrolan langsung</span> dengan warga.</h2>
-            <p class="mt-5 max-w-2xl text-base leading-relaxed text-stone-600 md:text-lg">Disusun bersama petani, nelayan, anak muda, dan pelaku usaha di Bondowoso, Situbondo, dan Banyuwangi.</p>
           </div>
-          <div class="flex items-center justify-between gap-6 lg:col-span-4 lg:justify-end">
-            <a href="program.html" class="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-stone-900 transition hover:text-brand-700">Semua program <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
-            <div class="flex gap-2">
-              <button type="button" data-carousel-prev aria-controls="program-list" aria-label="Program sebelumnya" class="btn btn-icon h-12 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-5 w-5 rotate-180"></svg></button>
-              <button type="button" data-carousel-next aria-controls="program-list" aria-label="Program berikutnya" class="btn btn-icon h-12 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-5 w-5"></svg></button>
-            </div>
+          <div class="lg:col-span-4 lg:col-start-9">
+            <p class="text-base leading-relaxed text-stone-600">Disusun bersama petani, nelayan, anak muda, dan pelaku usaha di Bondowoso, Situbondo, dan Banyuwangi.</p>
+            <a href="program.html" class="link mt-3 inline-block text-sm underline underline-offset-4">Lihat semua program</a>
           </div>
         </div>
-        <!-- Kartu digeser ke samping (tombol panah, swipe, atau Tab). Deretan memanjang sampai tepi kanan layar:
-             mr-[calc(50%-50vw)] menarik sisi kanan ke tepi viewport, section memakai overflow-x-clip. -->
-        <ul id="program-list" data-reveal class="-ml-4 mr-[calc(50%-50vw)] mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth scroll-pl-4 px-4 pb-2 [scrollbar-width:none] sm:-ml-6 sm:scroll-pl-6 sm:px-6 lg:-ml-8 lg:gap-5 lg:scroll-pl-8 lg:px-8 [&::-webkit-scrollbar]:hidden"></ul>
+
+        <!-- Kartu digeser ke samping (tombol panah, indikator, swipe, atau Tab). Di HP deretan menempel ke tepi layar. -->
+        <ul id="program-list" data-reveal class="-mx-4 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth scroll-pl-4 px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:scroll-pl-0 sm:px-0 lg:gap-5 [&::-webkit-scrollbar]:hidden"></ul>
+
+        <div class="mt-10 flex items-center justify-center gap-5">
+          <button type="button" data-carousel-prev aria-controls="program-list" aria-label="Program sebelumnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-4 w-4 rotate-180"></svg></button>
+          <div data-carousel-dots aria-controls="program-list" class="flex items-center gap-1.5"></div>
+          <button type="button" data-carousel-next aria-controls="program-list" aria-label="Program berikutnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-4 w-4"></svg></button>
+        </div>
       </div>
     </section>
 
