@@ -220,7 +220,7 @@ function renderFooter() {
       <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         ${info('map-pin', 'Posko', esc(contact.address))}
         ${info('mail', 'Surel', `<a href="mailto:${esc(contact.email)}" class="transition hover:text-white">${esc(contact.email)}</a>`)}
-        ${info('whatsapp', 'WhatsApp', `<a href="${waLink()}" target="_blank" rel="noopener" class="transition hover:text-white">Chat tim ${esc(config.person.nickname)}</a>`)}
+        ${info('whatsapp', 'WhatsApp', `<a href="${waLink()}" target="_blank" rel="noopener" class="transition hover:text-white">Chat Tim ${esc(config.person.nickname)}</a>`)}
         ${info('share', 'Media Sosial', `<div class="flex gap-2">${socials}</div>`)}
       </div>
       <div class="mt-12 border-t border-white/15 pt-10">

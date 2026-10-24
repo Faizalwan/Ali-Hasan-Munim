@@ -45,6 +45,6 @@ export const programs = [
     summary: 'Kanal aspirasi terbuka dan kunjungan rutin ke tiap kecamatan. Masalah di desamu jadi pekerjaan rumah kami.',
     image: 'photo-1611087802810-046bb671e644',
     href: 'aspirasi.html',
-    cta: 'Sampaikan aspirasi'
+    cta: 'Sampaikan Aspirasi'
   }
 ];

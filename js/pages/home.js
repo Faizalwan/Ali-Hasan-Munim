@@ -152,7 +152,7 @@ function renderKabar() {
       <span class="mt-5 block">${kabarMeta(k)}</span>
       <span class="mt-2 line-clamp-2 text-xl font-bold leading-snug text-stone-900 transition group-hover:text-brand-700">${esc(k.title)}</span>
       <span class="mt-2 line-clamp-3 text-sm leading-relaxed text-stone-600">${esc(k.summary)}</span>
-      <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">Baca selengkapnya <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
+      <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">Baca Selengkapnya <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
     </a>`).join('');
 
   listEl.innerHTML = sorted.slice(2, 6).map(k => `
