@@ -183,19 +183,23 @@ function renderGaleri() {
   list.innerHTML = slots.map(({ k, pos }) => {
     const ak = Math.abs(pos);
     const hide = ak >= 3 ? 'hidden lg:block' : ak === 2 ? 'hidden sm:block' : '';
-    const style = `transform: translateX(calc(-50% + ${pos} * var(--gap))) translateY(calc(${(ak * ak + ak) / 2} * var(--drop))) rotate(${pos * 7}deg) scale(${(1 - ak * 0.07).toFixed(2)}); z-index: ${10 - ak}`;
+    // Posisi kipas lewat variabel CSS; saat hover kartu naik (--y-up), tegak, sedikit membesar, dan maju ke depan
+    // kartu lain (z 15) tapi tetap di belakang footer (z 20). Tanda ! diperlukan karena variabel diset di style.
+    const drop = (ak * ak + ak) / 2;
+    const style = `--x: calc(${pos} * var(--gap)); --y: calc(${drop} * var(--drop)); --y-up: calc(${(drop * 0.35).toFixed(2)} * var(--drop) - 28px); --r: ${pos * 7}deg; --s: ${(1 - ak * 0.07).toFixed(2)}; --z: ${10 - ak}`;
     return `
-    <li class="group absolute left-1/2 top-0 w-[180px] origin-bottom sm:w-[220px] md:w-[260px] lg:w-[290px] ${hide}" style="${style}">
-      <figure class="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-stone-200 shadow-soft-lg ring-4 ring-white transition-transform duration-500 ease-out group-hover:-translate-y-5">
+    <li class="absolute left-1/2 top-0 w-[180px] origin-bottom cursor-default transition-transform duration-500 ease-out [transform:translateX(calc(-50%_+_var(--x)))_translateY(var(--y))_rotate(var(--r))_scale(var(--s))] [z-index:var(--z)] hover:![--r:0deg] hover:![--s:1.04] hover:![--y:var(--y-up)] hover:[z-index:15] sm:w-[220px] md:w-[260px] lg:w-[290px] ${hide}" style="${style}">
+      <figure class="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-stone-200 shadow-soft-lg ring-4 ring-white">
         <img src="${imgSrc(k.image)}" alt="${esc(k.imageAlt || k.title)}" style="object-position:${esc(k.imagePos || 'center')}" class="h-full w-full object-cover" loading="lazy" />
         <span class="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-stone-950/70 to-transparent" aria-hidden="true"></span>
         <figcaption class="absolute left-5 right-5 top-5 text-white">
-          <span class="block text-lg font-bold leading-tight md:text-xl">${esc(k.category)}</span>
-          <span class="mt-1 block text-sm text-white/80">${esc(k.region)}</span>
+          <span class="block text-lg font-bold leading-tight md:text-xl">${esc(k.short || k.category)}</span>
+          <span class="mt-1 flex items-center gap-1 text-sm text-white/80"><svg data-icon="map-pin" class="h-3.5 w-3.5"></svg>${esc(k.region)}</span>
         </figcaption>
       </figure>
     </li>`;
   }).join('');
+  renderIcons(list);
 }
 
 setupVideo();
