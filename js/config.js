@@ -17,8 +17,8 @@ export const config = {
     fullName: "Ali Hasan Mun'im, S.E",
     nickname: 'Cak Ali',
     photo: 'assets/img/cak-ali-portrait.webp',
-    // Foto potong (latar transparan) untuk hero. Dibuat dari cak-ali-studio.webp dengan tools/cutout.ps1.
-    cutout: 'assets/img/cak-ali-cutout.png'
+    // Foto potong (latar transparan) untuk hero, dari klien.
+    cutout: 'assets/img/cak-ali-hero.webp'
   },
 
   // Diasumsikan sama dengan Pemilu 2019 (lihat project-brief.md).
