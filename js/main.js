@@ -181,60 +181,85 @@ function setupScrollState() {
   update();
 }
 
-/* ---------- Footer (ala Portal Jabar) ---------- */
-
+/* ---------- Footer (CTA + menu + kontak + nama besar) ---------- */
+// Kiri: ajakan bergerak (relawan & aspirasi). Tengah: menu utama berukuran besar. Kanan: kontak & media sosial.
+// Bawah: nama lengkap besar selebar kontainer, lalu baris hak cipta dan tombol kembali ke atas.
 function renderFooter() {
   const el = document.getElementById('site-footer');
   if (!el) return;
-  const { contact, social } = config;
+  const { contact, social, campaign } = config;
 
   const socials = [
     ['instagram', 'Instagram', social.instagram],
     ['youtube', 'YouTube', social.youtube],
     ['facebook', 'Facebook', social.facebook]
   ].filter(([, , href]) => href).map(([icon, label, href]) =>
-    `<a href="${esc(href)}" target="_blank" rel="noopener" class="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white hover:text-brand-700" aria-label="${label}"><svg data-icon="${icon}" class="h-5 w-5"></svg></a>`
+    `<a href="${esc(href)}" target="_blank" rel="noopener" class="grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white hover:text-brand-700" aria-label="${label}"><svg data-icon="${icon}" class="h-5 w-5"></svg></a>`
   ).join('');
 
-  const info = (icon, title, body) => `
-    <div class="flex gap-3">
-      <svg data-icon="${icon}" class="mt-0.5 h-5 w-5 shrink-0 text-gold-400"></svg>
-      <div><p class="font-bold text-white">${title}</p><div class="mt-1.5 text-sm leading-relaxed">${body}</div></div>
-    </div>`;
+  // Menu: Beranda + tiap grup navigasi (grup bermenu memakai tautan item pertamanya).
+  const menu = [{ label: 'Beranda', href: 'index.html', pages: ['beranda'] }, ...groups].map(g => {
+    const href = g.href || (g.items && g.items[0].href.split('#')[0]);
+    const active = (g.pages || []).includes(page);
+    return `<li><a href="${esc(href)}" class="inline-block text-3xl font-bold leading-tight tracking-tight transition hover:text-gold-300 md:text-4xl ${active ? 'text-gold-300' : 'text-white'}"${active ? ' aria-current="page"' : ''}>${esc(g.label)}</a></li>`;
+  }).join('');
 
-  const sitemap = groups.map(g => `
+  const info = (label, body) => `
     <div>
-      <p class="font-bold text-white">${esc(g.label)}</p>
-      <ul class="mt-3 space-y-2 text-sm">
-        ${(g.items || [{ label: g.label, href: g.href }]).map(it =>
-          `<li><a href="${esc(hrefOf(it))}"${extAttr(it)} class="transition hover:text-white">${esc(it.label)}</a></li>`).join('')}
-      </ul>
-    </div>`).join('');
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/60">${label}</p>
+      <div class="mt-2 text-lg font-bold leading-snug text-white">${body}</div>
+    </div>`;
 
   el.outerHTML = `
   <footer class="bg-brand-700 text-brand-100">
-    <div class="container-site py-14">
-      <a href="index.html" class="inline-block rounded-xl" aria-label="${esc(config.person.nickname)}, ke beranda">
-        <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="h-14 w-auto" loading="lazy" />
-      </a>
-      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        ${info('map-pin', 'Posko', esc(contact.address))}
-        ${info('mail', 'Surel', `<a href="mailto:${esc(contact.email)}" class="transition hover:text-white">${esc(contact.email)}</a>`)}
-        ${info('whatsapp', 'WhatsApp', `<a href="${waLink()}" target="_blank" rel="noopener" class="transition hover:text-white">Chat Tim ${esc(config.person.nickname)}</a>`)}
-        ${info('share', 'Media Sosial', `<div class="flex gap-2">${socials}</div>`)}
+    <div class="container-site pt-16 md:pt-20">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-5">
+          <a href="index.html" class="inline-block rounded-xl" aria-label="${esc(config.person.nickname)}, ke beranda">
+            <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="h-12 w-auto" loading="lazy" />
+          </a>
+          <p class="mt-10 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-white/80">
+            <span class="h-2.5 w-2.5 rounded-full bg-gold-400" aria-hidden="true"></span>
+            Ayo Terlibat
+          </p>
+          <h2 class="mt-3 text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">Mari bergerak<br />bersama.</h2>
+          <p class="mt-4 max-w-md text-base leading-relaxed">Gabung jadi relawan dan bantu kabarkan program untuk kampungmu, atau ceritakan apa yang perlu dibenahi di desamu.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="relawan.html" class="btn btn-lg group bg-white text-brand-700 hover:bg-brand-50 focus-visible:ring-white/40">Jadi Relawan <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
+            <a href="aspirasi.html" class="btn btn-lg border border-white/40 text-white hover:border-white hover:bg-white/10 focus-visible:ring-white/30">Sampaikan Aspirasi</a>
+          </div>
+        </div>
+
+        <nav class="lg:col-span-3 lg:col-start-7" aria-label="Menu footer">
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/60">Menu</p>
+          <ul class="mt-5 space-y-2">${menu}</ul>
+        </nav>
+
+        <div class="space-y-7 lg:col-span-3">
+          ${info('WhatsApp', `<a href="${waLink()}" target="_blank" rel="noopener" class="transition hover:text-gold-300">Chat Tim ${esc(config.person.nickname)}</a>`)}
+          ${info('Surel', `<a href="mailto:${esc(contact.email)}" class="transition hover:text-gold-300">${esc(contact.email)}</a>`)}
+          ${info('Posko', esc(contact.address))}
+          ${info('Dapil', esc(campaign.regions.join(' · ')))}
+          <div class="flex gap-2">${socials}</div>
+        </div>
       </div>
-      <div class="mt-12 border-t border-white/15 pt-10">
-        <p class="flex items-center gap-2 font-bold text-white"><svg data-icon="link" class="h-5 w-5 text-gold-400"></svg> Peta Situs</p>
-        <div class="mt-6 grid grid-cols-2 gap-8 md:grid-cols-5">${sitemap}</div>
-      </div>
+
+      <p class="mt-16 select-none whitespace-nowrap text-center text-[min(10.6vw,7.6rem)] font-bold leading-[0.9] tracking-[-0.04em] text-white md:mt-20" aria-hidden="true">${esc(config.person.fullName.replace(/,?\s*S\.E\.?$/, ''))}</p>
     </div>
-    <div class="border-t border-white/15">
-      <div class="container-site flex flex-col gap-2 py-5 text-xs sm:flex-row sm:justify-between">
-        <p>© ${new Date().getFullYear()} ${esc(config.site.name)} · ${esc(config.person.fullName)}. ${esc(config.site.disclaimer)}</p>
-        <a href="privasi.html" class="transition hover:text-white">Kebijakan Privasi</a>
+
+    <div class="container-site">
+      <div class="mt-10 flex flex-col gap-3 border-t border-white/20 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <p>© ${new Date().getFullYear()} ${esc(config.person.fullName)}. ${esc(config.site.disclaimer)}</p>
+        <div class="flex items-center gap-6">
+          <a href="privasi.html" class="transition hover:text-white">Kebijakan Privasi</a>
+          <button type="button" data-to-top class="group inline-flex items-center gap-1.5 font-bold text-white">Kembali ke Atas <svg data-icon="arrow-up" class="h-4 w-4 transition group-hover:-translate-y-0.5"></svg></button>
+        </div>
       </div>
     </div>
   </footer>`;
+
+  const toTop = document.querySelector('[data-to-top]');
+  if (toTop) toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
 }
 
 /* ---------- Animasi masuk ---------- */
