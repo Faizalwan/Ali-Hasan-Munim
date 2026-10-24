@@ -287,12 +287,14 @@
           </div>
         </div>
 
-        <!-- Galeri melengkung selebar layar, diisi home.js dari foto lokal di data kabar.
-             mx-[calc(50%-50vw)] melebarkan deretan ke tepi layar; padding kiri-kanan memberi ruang agar kartu pertama/terakhir bisa di tengah. -->
-        <ul id="galeri-list" data-reveal aria-label="Galeri kegiatan" class="mx-[calc(50%-50vw)] mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-[calc(50vw-6.5rem)] py-8 [scrollbar-width:none] md:gap-5 md:px-[calc(50vw-7.5rem)] [&::-webkit-scrollbar]:hidden"></ul>
-        <div class="mt-4 flex items-center justify-center gap-3">
-          <button type="button" data-carousel-prev aria-controls="galeri-list" aria-label="Foto sebelumnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-4 w-4 rotate-180"></svg></button>
-          <button type="button" data-carousel-next aria-controls="galeri-list" aria-label="Foto berikutnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-4 w-4"></svg></button>
+        <!-- Galeri silinder 3D selebar layar (dilihat dari dalam: tengah jauh, tepi dekat & miring).
+             Kartu diisi dan digerakkan home.js; berputar tanpa ujung, bisa digeser atau pakai panah. -->
+        <div id="galeri-stage" data-reveal class="relative mx-[calc(50%-50vw)] mt-6 h-[260px] cursor-grab touch-pan-y select-none overflow-hidden [perspective:900px] active:cursor-grabbing md:h-[460px]">
+          <ul id="galeri-list" aria-label="Galeri kegiatan" class="absolute inset-0 [transform-style:preserve-3d]"></ul>
+        </div>
+        <div class="mt-2 flex items-center justify-center gap-3">
+          <button type="button" data-galeri-prev aria-controls="galeri-list" aria-label="Foto sebelumnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200"><svg data-icon="arrow-right" class="h-4 w-4 rotate-180"></svg></button>
+          <button type="button" data-galeri-next aria-controls="galeri-list" aria-label="Foto berikutnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200"><svg data-icon="arrow-right" class="h-4 w-4"></svg></button>
         </div>
       </div>
     </section>
