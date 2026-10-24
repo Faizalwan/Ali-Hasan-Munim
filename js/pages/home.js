@@ -130,70 +130,44 @@ function setupCarousel(list) {
 
 /* ---------- Kabar terkini ---------- */
 
+// Baris kecil di atas judul: KATEGORI | TANGGAL
+const kabarMeta = k => `
+  <span class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-stone-500">
+    <span class="text-brand-600">${esc(k.category)}</span><span class="h-3 w-px bg-stone-300" aria-hidden="true"></span><time datetime="${esc(k.date)}">${formatDate(k.date)}</time>
+  </span>`;
+
+// 2 kabar terbaru jadi kartu utama (foto, judul, ringkasan), 4 berikutnya jadi daftar ringkas.
 function renderKabar() {
   const featuredEl = document.getElementById('kabar-featured');
   const listEl = document.getElementById('kabar-list');
   if (!featuredEl || !listEl) return;
 
   const sorted = [...kegiatan].sort((a, b) => b.date.localeCompare(a.date));
-  const featured = sorted.find(k => k.image) || sorted[0];
-  const others = sorted.filter(k => k !== featured);
-  const lists = {
-    terbaru: others.slice(0, 4),
-    populer: sorted.filter(k => k.popular).slice(0, 4)
-  };
 
-  featuredEl.innerHTML = `
-    <a href="${kegiatanHref(featured)}" class="card-link group relative flex h-full min-h-[340px] flex-col justify-end overflow-hidden rounded-2xl p-6 md:min-h-[440px] md:p-8">
-      <img src="${imgSrc(featured.image, 1000)}" alt="${esc(featured.imageAlt || featured.title)}" class="absolute inset-0 h-full w-full bg-stone-800 object-cover object-top transition duration-500 group-hover:scale-105" loading="lazy" />
-      <span class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent"></span>
-      <span class="relative">
-        <span class="badge bg-brand-600 text-white">${esc(featured.category)}</span>
-        <span class="mt-4 block text-2xl font-bold leading-tight text-white md:text-3xl">${esc(featured.title)}</span>
-        <span class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-stone-300">
-          <span class="inline-flex items-center gap-1.5"><svg data-icon="calendar" class="h-4 w-4"></svg>${formatDate(featured.date)}</span>
-          <span class="inline-flex items-center gap-1.5"><svg data-icon="map-pin" class="h-4 w-4"></svg>${esc(featured.region)}</span>
-        </span>
-        <span class="btn btn-sm mt-6 bg-white text-stone-900 group-hover:bg-stone-100">Baca selengkapnya</span>
+  featuredEl.innerHTML = sorted.slice(0, 2).map(k => `
+    <a href="${kegiatanHref(k)}" class="card-link group block rounded-2xl">
+      <span class="block aspect-[16/10] overflow-hidden rounded-2xl bg-stone-100">
+        <img src="${imgSrc(k.image, 800)}" alt="${esc(k.imageAlt || '')}" class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105" loading="lazy" />
       </span>
-    </a>`;
+      <span class="mt-5 block">${kabarMeta(k)}</span>
+      <span class="mt-2 line-clamp-2 text-xl font-bold leading-snug text-stone-900 transition group-hover:text-brand-700">${esc(k.title)}</span>
+      <span class="mt-2 line-clamp-3 text-sm leading-relaxed text-stone-600">${esc(k.summary)}</span>
+      <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">Baca selengkapnya <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
+    </a>`).join('');
 
-  const renderList = key => {
-    listEl.innerHTML = lists[key].map(k => `
-      <li>
-        <a href="${kegiatanHref(k)}" class="group flex gap-4 rounded-lg py-4">
-          <img src="${imgSrc(k.image, 240)}" alt="" class="h-16 w-20 shrink-0 rounded-lg bg-stone-100 object-cover" loading="lazy" />
-          <span class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-brand-600">${esc(k.category)}</span>
-            <span class="mt-0.5 line-clamp-2 block font-semibold leading-snug text-stone-900 transition group-hover:text-brand-700">${esc(k.title)}</span>
-            <span class="caption mt-1 block">${formatDate(k.date)} · ${esc(k.region)}</span>
-          </span>
-        </a>
-      </li>`).join('');
-  };
+  listEl.innerHTML = sorted.slice(2, 6).map(k => `
+    <li class="lg:[&:first-child>a]:pt-0">
+      <a href="${kegiatanHref(k)}" class="group flex items-center gap-4 py-4">
+        <span class="block h-[4.5rem] w-24 shrink-0 overflow-hidden rounded-lg bg-stone-100">
+          <img src="${imgSrc(k.image, 240)}" alt="" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
+        </span>
+        <span class="min-w-0">
+          ${kabarMeta(k)}
+          <span class="mt-1 line-clamp-2 font-bold leading-snug text-stone-900 transition group-hover:text-brand-700">${esc(k.title)}</span>
+        </span>
+      </a>
+    </li>`).join('');
 
-  // Tab: klik, atau panah kiri/kanan saat fokus di tab (pola tablist WAI-ARIA)
-  const tabs = [...document.querySelectorAll('[data-tab]')];
-  const select = tab => {
-    tabs.forEach(t => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', String(on));
-      t.tabIndex = on ? 0 : -1;
-    });
-    listEl.setAttribute('aria-labelledby', tab.id);
-    renderList(tab.dataset.tab);
-  };
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(tab));
-    tab.addEventListener('keydown', e => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
-      next.focus();
-      select(next);
-    });
-  });
-
-  select(tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0]);
   renderIcons(featuredEl);
 }
 

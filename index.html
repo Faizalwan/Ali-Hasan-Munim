@@ -190,24 +190,26 @@
       </div>
     </section>
 
-    <!-- ========== KABAR TERKINI (ala Portal Jabar) ========== -->
+    <!-- ========== KABAR TERKINI (2 kartu utama + daftar samping) ========== -->
     <section class="section" aria-labelledby="kabar-title">
       <div class="container-site">
-        <div data-reveal class="card overflow-hidden shadow-soft-lg">
-          <div class="flex items-center justify-between gap-4 border-b border-stone-200 px-5 py-4 md:px-8 md:py-5">
-            <h2 id="kabar-title" class="text-2xl font-bold tracking-tight text-stone-900 md:text-3xl">Kabar Terkini</h2>
-            <a href="kegiatan.html" class="btn btn-sm btn-outline">Lihat semua <svg data-icon="arrow-right" class="h-4 w-4"></svg></a>
+        <div data-reveal class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600">
+              <span class="h-2.5 w-2.5 rounded-full bg-brand-600" aria-hidden="true"></span>
+              Kabar Terkini
+            </p>
+            <h2 id="kabar-title" class="mt-5 text-3xl font-bold leading-[1.2] tracking-tight text-stone-900 md:text-[2.5rem]">Ikuti langkah <span class="text-brand-600">Cak Ali</span> dari desa ke desa.</h2>
           </div>
-          <div class="grid lg:grid-cols-[1.4fr_1fr]">
-            <div id="kabar-featured" class="p-3 md:p-4"></div>
-            <div class="border-t border-stone-200 px-5 pt-5 md:px-6 lg:border-l lg:border-t-0">
-              <div role="tablist" aria-label="Urutkan kabar" class="flex gap-6 border-b border-stone-200">
-                <button type="button" role="tab" id="tab-terbaru" class="tab" data-tab="terbaru" aria-selected="true" aria-controls="kabar-list">Terbaru</button>
-                <button type="button" role="tab" id="tab-populer" class="tab" data-tab="populer" aria-selected="false" aria-controls="kabar-list">Terpopuler</button>
-              </div>
-              <ul id="kabar-list" role="tabpanel" class="divide-y divide-stone-100"></ul>
-            </div>
+          <div class="lg:col-span-4 lg:col-start-9">
+            <p class="text-base leading-relaxed text-stone-600">Kegiatan, gagasan, dan kabar terbaru Cak Ali bersama warga Bondowoso, Situbondo, dan Banyuwangi.</p>
+            <a href="kegiatan.html" class="link mt-3 inline-block text-sm underline underline-offset-4">Lihat semua kabar</a>
           </div>
+        </div>
+
+        <div data-reveal style="--d:120ms" class="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-8">
+          <div id="kabar-featured" class="grid gap-8 sm:grid-cols-2 sm:gap-6 lg:col-span-8"></div>
+          <ul id="kabar-list" class="divide-y divide-stone-200 border-t border-stone-200 lg:col-span-4 lg:border-t-0"></ul>
         </div>
       </div>
     </section>
