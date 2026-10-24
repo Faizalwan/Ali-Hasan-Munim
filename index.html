@@ -270,7 +270,7 @@
       </div>
     </section>
 
-    <!-- ========== DARI LAPANGAN (galeri bertingkat) ========== -->
+    <!-- ========== DARI LAPANGAN (galeri melengkung + panah) ========== -->
     <section class="section overflow-hidden" aria-labelledby="lapangan-title">
       <div class="container-site">
         <div data-reveal class="grid gap-6 lg:grid-cols-12 lg:items-end">
@@ -283,31 +283,16 @@
           </div>
           <div class="lg:col-span-4 lg:col-start-9">
             <p class="text-base leading-relaxed text-stone-600">Dokumentasi kegiatan Cak Ali bersama warga, dari pesantren dan forum usaha hingga panggung perayaan di kampung.</p>
-            <a href="galeri.html" class="link mt-3 inline-block text-sm underline underline-offset-4">Lihat Semua Galeri</a>          </div>
+            <a href="galeri.html" class="link mt-3 inline-block text-sm underline underline-offset-4">Lihat Semua Galeri</a>
+          </div>
         </div>
-        <!-- Foto kegiatan asli (sama dengan Kabar Terkini), dipotong tegak; object-position menjaga Cak Ali tetap di bingkai.
-             Keterangan selalu tampil di HP, muncul saat hover di desktop. -->
-        <div data-reveal class="mt-12 grid grid-cols-2 gap-3 pb-10 md:grid-cols-5 md:gap-4">
-          <figure class="group relative overflow-hidden rounded-2xl bg-stone-100">
-            <img src="assets/img/kabar/hari-tani-2026.webp" alt="Cak Ali berbicara di forum Hari Tani Nasional" class="aspect-[3/4] w-full object-cover object-[45%_center] transition duration-500 group-hover:scale-105" loading="lazy" />
-            <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">Hari Tani Nasional</figcaption>
-          </figure>
-          <figure class="group relative overflow-hidden rounded-2xl bg-stone-100 md:translate-y-10">
-            <img src="assets/img/kabar/kurban-pesantren.webp" alt="Cak Ali menyerahkan sapi kurban kepada pengasuh pesantren" class="aspect-[3/4] w-full object-cover object-[58%_center] transition duration-500 group-hover:scale-105" loading="lazy" />
-            <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">Kurban · Bondowoso</figcaption>
-          </figure>
-          <figure class="group relative overflow-hidden rounded-2xl bg-stone-100">
-            <img src="assets/img/kabar/hut-ri-81.webp" alt="Cak Ali memberi sambutan di malam puncak HUT RI" class="aspect-[3/4] w-full object-cover object-[72%_center] transition duration-500 group-hover:scale-105" loading="lazy" />
-            <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">Malam HUT ke-81 RI</figcaption>
-          </figure>
-          <figure class="group relative overflow-hidden rounded-2xl bg-stone-100 md:translate-y-10">
-            <img src="assets/img/kabar/santri-pengusaha.webp" alt="Cak Ali menerima penghargaan di acara Pesantrenpreneur" class="aspect-[3/4] w-full object-cover object-[50%_center] transition duration-500 group-hover:scale-105" loading="lazy" />
-            <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">Pesantrenpreneur</figcaption>
-          </figure>
-          <figure class="group relative hidden overflow-hidden rounded-2xl bg-stone-100 md:block">
-            <img src="assets/img/kabar/ekonomi-umat.webp" alt="Cak Ali bersilaturahmi dengan para kiai" class="aspect-[3/4] w-full object-cover object-[90%_center] transition duration-500 group-hover:scale-105" loading="lazy" />
-            <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">Silaturahmi ulama</figcaption>
-          </figure>
+
+        <!-- Galeri melengkung selebar layar, diisi home.js dari foto lokal di data kabar.
+             mx-[calc(50%-50vw)] melebarkan deretan ke tepi layar; padding kiri-kanan memberi ruang agar kartu pertama/terakhir bisa di tengah. -->
+        <ul id="galeri-list" data-reveal aria-label="Galeri kegiatan" class="mx-[calc(50%-50vw)] mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-[calc(50vw-6.5rem)] py-8 [scrollbar-width:none] md:gap-5 md:px-[calc(50vw-7.5rem)] [&::-webkit-scrollbar]:hidden"></ul>
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button type="button" data-carousel-prev aria-controls="galeri-list" aria-label="Foto sebelumnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-4 w-4 rotate-180"></svg></button>
+          <button type="button" data-carousel-next aria-controls="galeri-list" aria-label="Foto berikutnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200 disabled:opacity-40"><svg data-icon="arrow-right" class="h-4 w-4"></svg></button>
         </div>
       </div>
     </section>

@@ -171,5 +171,42 @@ function renderKabar() {
 
 setupVideo();
 renderTicker();
+/* ---------- Dari lapangan (galeri melengkung) ---------- */
+
+// Kartu foto tegak dari kabar yang punya foto lokal. Kartu makin ke tepi layar makin miring dan besar,
+// sehingga deretan tampak melengkung. Dimulai dari kartu tengah agar lengkungan terlihat di kedua sisi.
+function renderGaleri() {
+  const el = document.getElementById('galeri-list');
+  if (!el) return;
+  const items = kegiatan.filter(k => k.image && !k.image.startsWith('photo-'));
+  el.innerHTML = items.map(k => `
+    <li class="w-52 shrink-0 snap-center md:w-60">
+      <figure class="group relative aspect-[3/4] overflow-hidden rounded-3xl bg-stone-200 shadow-soft will-change-transform">
+        <img src="${imgSrc(k.image)}" alt="${esc(k.imageAlt || k.title)}" style="object-position:${esc(k.imagePos || 'center')}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+        <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">${esc(k.category)} · ${esc(k.region)}</figcaption>
+      </figure>
+    </li>`).join('');
+
+  const cards = [...el.querySelectorAll('figure')];
+  let queued = false;
+  const tilt = () => {
+    queued = false;
+    const mid = window.innerWidth / 2;
+    cards.forEach(card => {
+      const r = card.parentElement.getBoundingClientRect();
+      const off = Math.max(-1.6, Math.min(1.6, (r.left + r.width / 2 - mid) / mid));
+      card.style.transform = `perspective(900px) rotateY(${(-off * 20).toFixed(2)}deg) scale(${(1 + Math.abs(off) * 0.12).toFixed(3)})`;
+    });
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(tilt); } };
+  el.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+
+  el.scrollTo({ left: (el.scrollWidth - el.clientWidth) / 2, behavior: 'instant' });
+  tilt();
+  setupCarousel(el);
+}
+
 renderPrograms();
 renderKabar();
+renderGaleri();

@@ -1,7 +1,7 @@
 // Daftar kabar/kegiatan, terbaru tampil paling atas di beranda (2 kartu utama + 4 daftar).
 // Judul diambil dari feed Instagram (liputan lensajatim.id), urutan tanggal mengikuti urutan feed.
 // TODO: tanggal pasti dan isi lengkap dari klien. Tanggal tanpa TODO sudah pasti (hari peringatan).
-// image: path lokal atau id foto Unsplash ("photo-...").
+// image: path lokal atau id foto Unsplash ("photo-..."). imagePos: titik fokus saat foto dipotong tegak di galeri.
 
 export const kegiatan = [
   {
@@ -12,6 +12,7 @@ export const kegiatan = [
     summary: 'Pengusaha dan pemerintah perlu bergerak bersama agar pasokan pangan terjaga dan petani ikut sejahtera.',
     region: 'Jakarta',
     image: 'assets/img/kabar/hipka-ketahanan-pangan.webp',
+    imagePos: '50% center',
     imageAlt: 'Cak Ali bersama pengurus HIPKA berfoto di Kementerian Pertanian'
   },
   {
@@ -22,6 +23,7 @@ export const kegiatan = [
     summary: 'Rasa aman menjadi syarat utama agar pelaku usaha berani berinvestasi dan membuka lapangan kerja di daerah.',
     region: 'Surabaya',
     image: 'assets/img/kabar/kapolda-iklim-usaha.webp',
+    imagePos: '48% center',
     imageAlt: 'Cak Ali memberi sambutan di podium'
   },
   {
@@ -32,6 +34,7 @@ export const kegiatan = [
     summary: 'Panen yang melimpah harus berujung pada kesejahteraan. Petani butuh kepastian pasar dan harga yang adil untuk hasil buminya.',
     region: 'Jawa Timur',
     image: 'assets/img/kabar/hari-tani-2026.webp',
+    imagePos: '45% center',
     imageAlt: 'Cak Ali berbicara dalam sebuah forum diskusi'
   },
   {
@@ -42,6 +45,7 @@ export const kegiatan = [
     summary: 'Kolaborasi organisasi keagamaan dan dunia usaha dinilai bisa memperkuat ekonomi warga dari tingkat desa.',
     region: 'Jakarta',
     image: 'assets/img/kabar/ekonomi-umat.webp',
+    imagePos: '90% center',
     imageAlt: 'Cak Ali bersilaturahmi dengan para kiai'
   },
   {
@@ -52,6 +56,7 @@ export const kegiatan = [
     summary: 'Peringatan kemerdekaan menjadi momen merawat semangat gotong royong bersama warga.',
     region: 'Jawa Timur',
     image: 'assets/img/kabar/hut-ri-81.webp',
+    imagePos: '72% center',
     imageAlt: 'Cak Ali memberi sambutan di panggung malam puncak HUT RI'
   },
   {
@@ -62,6 +67,7 @@ export const kegiatan = [
     summary: 'Momen Iduladha menjadi kesempatan berbagi bersama santri dan warga sekitar pesantren.',
     region: 'Bondowoso',
     image: 'assets/img/kabar/kurban-pesantren.webp',
+    imagePos: '58% center',
     imageAlt: 'Cak Ali menyerahkan sapi kurban kepada pengasuh pesantren'
   },
   {
@@ -72,6 +78,7 @@ export const kegiatan = [
     summary: 'Informasi yang jernih membantu warga mengambil keputusan dan menjaga kepercayaan publik.',
     region: 'Jakarta',
     image: 'assets/img/kabar/hari-pers-2026.webp',
+    imagePos: '64% center',
     imageAlt: 'Cak Ali di forum B20 Indonesia dan BKSAP DPR RI'
   },
   {
@@ -82,6 +89,7 @@ export const kegiatan = [
     summary: 'Pesantren bukan hanya pusat ilmu agama, tetapi juga bisa menjadi tempat lahirnya wirausahawan muda yang mandiri.',
     region: 'Jawa Timur',
     image: 'assets/img/kabar/santri-pengusaha.webp',
+    imagePos: '50% center',
     imageAlt: 'Cak Ali menerima penghargaan di acara Pesantrenpreneur'
   },
   {
