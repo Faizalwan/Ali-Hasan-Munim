@@ -181,34 +181,29 @@ function setupScrollState() {
   update();
 }
 
-/* ---------- Footer (CTA + menu + kontak + nama besar) ---------- */
-// Kiri: ajakan bergerak (relawan & aspirasi). Tengah: menu utama berukuran besar. Kanan: kontak & media sosial.
-// Bawah: nama lengkap besar selebar kontainer, lalu baris hak cipta dan tombol kembali ke atas.
+/* ---------- Footer (CTA + menu + kontak) ---------- */
+// Kiri: logo, ajakan bergerak, dan satu tombol. Tengah: menu utama berukuran besar.
+// Kanan: alamat, surel, dan ikon media sosial. Bawah: hak cipta dan tombol kembali ke atas.
 function renderFooter() {
   const el = document.getElementById('site-footer');
   if (!el) return;
-  const { contact, social, campaign } = config;
+  const { contact, social } = config;
 
-  const socials = [
+  const icons = [
     ['instagram', 'Instagram', social.instagram],
     ['youtube', 'YouTube', social.youtube],
-    ['facebook', 'Facebook', social.facebook]
+    ['facebook', 'Facebook', social.facebook],
+    ['whatsapp', `Chat Tim ${config.person.nickname} di WhatsApp`, waLink()]
   ].filter(([, , href]) => href).map(([icon, label, href]) =>
-    `<a href="${esc(href)}" target="_blank" rel="noopener" class="grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white hover:text-brand-700" aria-label="${label}"><svg data-icon="${icon}" class="h-5 w-5"></svg></a>`
+    `<a href="${esc(href)}" target="_blank" rel="noopener" class="grid h-12 w-12 place-items-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white hover:text-brand-700" aria-label="${esc(label)}"><svg data-icon="${icon}" class="h-5 w-5"></svg></a>`
   ).join('');
 
   // Menu: Beranda + tiap grup navigasi (grup bermenu memakai tautan item pertamanya).
   const menu = [{ label: 'Beranda', href: 'index.html', pages: ['beranda'] }, ...groups].map(g => {
     const href = g.href || (g.items && g.items[0].href.split('#')[0]);
     const active = (g.pages || []).includes(page);
-    return `<li><a href="${esc(href)}" class="inline-block text-2xl font-bold leading-tight tracking-tight transition hover:text-gold-300 md:text-[1.75rem]${active ? 'text-gold-300' : 'text-white'}"${active ? ' aria-current="page"' : ''}>${esc(g.label)}</a></li>`;
+    return `<li><a href="${esc(href)}" class="inline-block text-2xl font-bold leading-tight tracking-tight transition hover:text-gold-300 md:text-[1.75rem] ${active ? 'text-gold-300' : 'text-white'}"${active ? ' aria-current="page"' : ''}>${esc(g.label)}</a></li>`;
   }).join('');
-
-  const info = (label, body) => `
-    <div>
-      <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/60">${label}</p>
-      <div class="mt-2 text-lg font-bold leading-snug text-white">${body}</div>
-    </div>`;
 
   // Sudut atas membulat besar. Di halaman bergaleri (beranda) footer naik menimpa galeri,
   // jadi foto tetap terlihat di balik lengkungan sudutnya.
@@ -216,19 +211,15 @@ function renderFooter() {
 
   el.outerHTML = `
   <footer class="${overlap} rounded-t-[2.5rem] bg-brand-700 text-brand-100 md:rounded-t-[5rem]">
-    <div class="container-site pt-16 md:pt-20">
+    <div class="container-site pb-14 pt-16 md:pb-20 md:pt-20">
       <div class="grid gap-14 lg:grid-cols-12 lg:gap-8">
         <div class="lg:col-span-5">
-          <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-white/80">
-            <span class="h-2.5 w-2.5 rounded-full bg-gold-400" aria-hidden="true"></span>
-            Ayo Terlibat
-          </p>
-          <h2 class="mt-3 text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">Mari bergerak<br />bersama.</h2>
-          <p class="mt-4 max-w-md text-base leading-relaxed">Gabung jadi relawan dan bantu kabarkan program untuk kampungmu, atau ceritakan apa yang perlu dibenahi di desamu.</p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="relawan.html" class="btn btn-lg group bg-white text-brand-700 hover:bg-brand-50 focus-visible:ring-white/40">Jadi Relawan <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
-            <a href="aspirasi.html" class="btn btn-lg border border-white/40 text-white hover:border-white hover:bg-white/10 focus-visible:ring-white/30">Sampaikan Aspirasi</a>
-          </div>
+          <a href="index.html" class="inline-block rounded-xl" aria-label="${esc(config.person.nickname)}, ke beranda">
+            <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="h-14 w-auto" loading="lazy" />
+          </a>
+          <h2 class="mt-8 text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">Mari bergerak<br />bersama.</h2>
+          <p class="mt-4 max-w-md text-base leading-relaxed">Gabung jadi relawan dan bantu kabarkan program untuk kampungmu.</p>
+          <a href="relawan.html" class="btn btn-lg group mt-8 bg-white text-brand-700 hover:bg-brand-50 focus-visible:ring-white/40">Jadi Relawan <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
         </div>
 
         <nav class="lg:col-span-3 lg:col-start-7" aria-label="Menu footer">
@@ -236,27 +227,18 @@ function renderFooter() {
           <ul class="mt-5 space-y-4">${menu}</ul>
         </nav>
 
-        <div class="space-y-7 lg:col-span-3">
-          ${info('WhatsApp', `<a href="${waLink()}" target="_blank" rel="noopener" class="transition hover:text-gold-300">Chat Tim ${esc(config.person.nickname)}</a>`)}
-          ${info('Surel', `<a href="mailto:${esc(contact.email)}" class="transition hover:text-gold-300">${esc(contact.email)}</a>`)}
-          ${info('Posko', esc(contact.address))}
-          ${info('Dapil', esc(campaign.regions.join(' · ')))}
-          <div class="flex gap-2">${socials}</div>
+        <div class="space-y-8 lg:col-span-3 lg:pt-9">
+          <p class="text-lg font-bold leading-snug text-white">${esc(contact.address)}</p>
+          <a href="mailto:${esc(contact.email)}" class="block text-lg font-bold text-white transition hover:text-gold-300">${esc(contact.email)}</a>
+          <div class="flex gap-3">${icons}</div>
         </div>
       </div>
-
-      <a href="index.html" class="mt-16 block rounded-2xl md:mt-20" aria-label="${esc(config.person.nickname)}, ke beranda">
-        <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="mx-auto h-auto w-full max-w-2xl" loading="lazy" />
-      </a>
     </div>
 
     <div class="container-site">
-      <div class="mt-10 flex flex-col gap-3 border-t border-white/20 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <p>© ${new Date().getFullYear()} ${esc(config.person.fullName)}. ${esc(config.site.disclaimer)}</p>
-        <div class="flex items-center gap-6">
-          <a href="privasi.html" class="transition hover:text-white">Kebijakan Privasi</a>
-          <button type="button" data-to-top class="group inline-flex items-center gap-1.5 font-bold text-white">Kembali ke Atas <svg data-icon="arrow-up" class="h-4 w-4 transition group-hover:-translate-y-0.5"></svg></button>
-        </div>
+      <div class="flex flex-col gap-3 border-t border-white/20 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <p>© ${new Date().getFullYear()} ${esc(config.person.fullName)}. ${esc(config.site.disclaimer)} · <a href="privasi.html" class="underline-offset-4 transition hover:text-white hover:underline">Kebijakan Privasi</a></p>
+        <button type="button" data-to-top class="group inline-flex items-center gap-1.5 self-start font-bold text-white sm:self-auto">Kembali ke Atas <svg data-icon="arrow-up" class="h-4 w-4 transition group-hover:-translate-y-0.5"></svg></button>
       </div>
     </div>
   </footer>`;
