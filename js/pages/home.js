@@ -66,17 +66,6 @@ function renderTicker() {
 
 /* ---------- Kenalan ---------- */
 
-function renderStats() {
-  const el = document.getElementById('stats');
-  if (!el) return;
-  if (!config.stats.length) { el.remove(); return; }
-  el.innerHTML = config.stats.map(s => `
-    <div class="flex flex-col-reverse justify-end">
-      <dt class="mt-2 text-sm leading-snug text-stone-500">${esc(s.label)}</dt>
-      <dd class="text-4xl font-light tracking-tight text-stone-900 md:text-5xl">${esc(s.value)}</dd>
-    </div>`).join('');
-}
-
 /* ---------- Program (bento) ---------- */
 
 function renderPrograms() {
@@ -198,6 +187,5 @@ function renderKabar() {
 
 setupVideo();
 renderTicker();
-renderStats();
 renderPrograms();
 renderKabar();
