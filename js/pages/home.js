@@ -66,14 +66,14 @@ function renderTicker() {
 
 /* ---------- Kenalan ---------- */
 
-function renderProfile() {
-  const el = document.getElementById('facts');
+function renderStats() {
+  const el = document.getElementById('stats');
   if (!el) return;
-  if (!config.profile.length) { el.remove(); return; }
-  el.innerHTML = config.profile.map(f => `
-    <div class="flex items-baseline justify-between gap-4 border-b border-stone-200 py-4">
-      <span class="text-sm font-semibold uppercase tracking-wider text-stone-500">${esc(f.label)}</span>
-      <span class="text-right text-lg font-bold tracking-tight text-stone-900">${esc(f.value)}</span>
+  if (!config.stats.length) { el.remove(); return; }
+  el.innerHTML = config.stats.map(s => `
+    <div class="flex flex-col-reverse justify-end">
+      <dt class="mt-2 text-sm leading-snug text-stone-500">${esc(s.label)}</dt>
+      <dd class="text-4xl font-light tracking-tight text-stone-900 md:text-5xl">${esc(s.value)}</dd>
     </div>`).join('');
 }
 
@@ -198,6 +198,6 @@ function renderKabar() {
 
 setupVideo();
 renderTicker();
-renderProfile();
+renderStats();
 renderPrograms();
 renderKabar();

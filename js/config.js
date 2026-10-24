@@ -56,16 +56,15 @@ export const config = {
     mp4: '' // TODO: atau file lokal, mis. 'assets/video/kenalan.mp4'
   },
 
-  // Baris profil singkat di seksi "Kenalan".
-  profile: [
-    { label: 'Asal', value: 'Tapal Kuda, Jawa Timur' },
-    { label: 'Profesi', value: 'Pengusaha' },
-    { label: 'Organisasi', value: 'KADIN Indonesia' },
-    { label: 'Dapil', value: 'Jawa Timur IV' }
+  // Angka singkat di seksi "Kenalan". Kosongkan array untuk menyembunyikan barisnya.
+  stats: [
+    { value: '3', label: 'Kabupaten di Dapil Jatim IV' },
+    { value: '2019', label: 'Pertama maju DPRD Jatim' },
+    { value: '10+', label: 'Tahun di dunia usaha' } // TODO: konfirmasi angka ke klien
   ],
 
   quote: {
-    text: 'Saya tidak mau cuma datang saat pemilu. Saya mau jadi teman ngobrol warga, kapan pun.' // TODO
+    text: 'Kemajuan daerah berawal dari desa dan dari warganya. Tugas saya adalah mendengar, memperjuangkan, dan menghadirkan solusi bersama.' // TODO: konfirmasi ke klien
   },
 
   // Menu utama, maksimal 5. Grup dengan "items" tampil sebagai mega menu.
