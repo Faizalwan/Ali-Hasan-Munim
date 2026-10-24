@@ -68,11 +68,11 @@
 
       /* Tipografi */
       .eyebrow { @apply text-xs font-bold uppercase tracking-[0.14em] text-brand-600; }
-      .text-display { @apply text-[2.5rem] font-extrabold leading-[1.05] tracking-tight text-stone-900 md:text-[3.5rem]; }
-      .h1 { @apply text-4xl font-extrabold leading-tight tracking-tight text-stone-900 md:text-5xl; }
+      .text-display { @apply text-[2.5rem] font-bold leading-[1.05] tracking-tight text-stone-900 md:text-[3.5rem]; }
+      .h1 { @apply text-4xl font-bold leading-tight tracking-tight text-stone-900 md:text-5xl; }
       .h2 { @apply text-3xl font-bold leading-tight tracking-tight text-stone-900 md:text-4xl; }
       .h3 { @apply text-2xl font-bold leading-snug text-stone-900; }
-      .h4 { @apply text-xl font-semibold leading-snug text-stone-900; }
+      .h4 { @apply text-xl font-bold leading-snug text-stone-900; }
       .lead { @apply text-lg leading-relaxed text-stone-600 md:text-xl; }
       .body { @apply text-base leading-relaxed text-stone-700; }
       .caption { @apply text-xs text-stone-500; }
@@ -214,7 +214,7 @@
 <!-- ============ PENGANTAR ============ -->
 <section id="pengantar" class="ds-section">
   <p class="eyebrow">Pedoman Visual</p>
-  <h1 class="mt-3 text-5xl uppercase leading-[1.02] tracking-tight text-stone-900 md:text-6xl"><span class="font-light">Design System</span><br /><span class="font-extrabold text-brand-600">Cak Ali</span></h1>
+  <h1 class="mt-3 text-5xl font-bold uppercase leading-[1.02] tracking-tight text-stone-900 md:text-6xl">Design System<br /><span class="text-brand-600">Cak Ali</span></h1>
   <p class="lead mt-5 max-w-2xl">Pedoman tampilan dan komponen untuk <strong class="text-stone-900">cakali.id</strong>. Gaya: minimalis, bersih, modern, dengan sentuhan <strong class="text-stone-900">editorial</strong> yang personal. Struktur informasi mengikuti <strong class="text-stone-900">Portal Jabar</strong>: mega menu, kartu kabar, kolom layanan, tombol samping, footer berwarna brand.</p>
 
   <div class="mt-10 grid gap-4 sm:grid-cols-2">
@@ -281,14 +281,14 @@
 <!-- ============ TIPOGRAFI ============ -->
 <section id="tipografi" class="ds-section">
   <h2 class="ds-title">Tipografi</h2>
-  <p class="ds-desc"><strong>Plus Jakarta Sans</strong> (font buatan Indonesia), bobot 300–800, untuk semua teks. Tanda tangan "Cak Ali" memakai <strong>gambar logo</strong>, bukan font. Ciri khas editorial: judul seksi menggabungkan baris <em>tipis</em> dan baris <em>tebal merah</em>, huruf kapital.</p>
+  <p class="ds-desc"><strong>Plus Jakarta Sans</strong> (font buatan Indonesia), bobot 300–800, untuk semua teks. Tanda tangan "Cak Ali" memakai <strong>gambar logo</strong>, bukan font. Semua judul (H1–H6) memakai bobot <strong>bold (700)</strong>. Ciri khas editorial: judul seksi huruf kapital, baris kedua berwarna merah.</p>
 
   <h3 class="ds-sub">Judul editorial (pola utama judul seksi)</h3>
   <div class="ds-canvas bg-white">
-    <p class="text-4xl uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl"><span class="font-light">Program</span><br /><span class="font-extrabold text-brand-600">Prioritas</span></p>
-    <pre class="ds-code"><code>&lt;h2 class="text-4xl uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl"&gt;
-  &lt;span class="font-light"&gt;Program&lt;/span&gt;&lt;br&gt;
-  &lt;span class="font-extrabold text-brand-600"&gt;Prioritas&lt;/span&gt;
+    <p class="text-4xl font-bold uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl">Program<br /><span class="text-brand-600">Prioritas</span></p>
+    <pre class="ds-code"><code>&lt;h2 class="text-4xl font-bold uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl"&gt;
+  Program&lt;br&gt;
+  &lt;span class="text-brand-600"&gt;Prioritas&lt;/span&gt;
 &lt;/h2&gt;</code></pre>
   </div>
 
@@ -296,10 +296,10 @@
   <div class="ds-canvas divide-y divide-stone-200 bg-white !p-0">
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Nama hero · 22vw→13.5rem / 800</code><p class="text-7xl font-extrabold uppercase leading-[0.82] tracking-[-0.05em] text-stone-900 md:text-8xl">Cak Ali</p></div>
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Nama tipis · 36→48px / 300</code><p class="text-4xl font-light uppercase leading-[1.02] tracking-tight text-stone-900 md:text-5xl">Ali Hasan Mun'im</p></div>
-    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h1 · 36→48px / 800</code><p class="h1">Membangun dari desa</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h1 · 36→48px / 700</code><p class="h1">Membangun dari desa</p></div>
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h2 · 30→36px / 700</code><p class="h2">Kabar terkini</p></div>
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h3 · 24px / 700</code><p class="h3">Penguatan UMKM lokal</p></div>
-    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h4 · 20px / 600</code><p class="h4">Pelatihan digital untuk pemuda</p></div>
+    <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.h4 · 20px / 700</code><p class="h4">Pelatihan digital untuk pemuda</p></div>
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">Angka urut · 36px / 300</code><p class="text-4xl font-light tracking-tight text-brand-600">01 <span class="text-stone-300">02 03</span></p></div>
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.lead · 18→20px / 400</code><p class="lead">Cak Ali percaya perubahan dimulai dari mendengar langsung suara warga.</p></div>
     <div class="grid gap-2 p-5 md:grid-cols-[180px_1fr] md:items-baseline"><code class="caption">.body · 16px / 400</code><p class="body">Selama bertahun-tahun, Cak Ali aktif mendampingi pelaku usaha kecil di Bondowoso, Situbondo, dan Banyuwangi.</p></div>
@@ -807,7 +807,7 @@
           <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60 motion-reduce:animate-none"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-600"></span></span>
           Dapil Jawa Timur IV
         </p>
-        <p class="mx-auto mt-3 max-w-2xl text-balance text-3xl font-extrabold leading-[1.05] tracking-tight text-stone-900 md:text-[2.6rem]">Bersama <span class="text-brand-600">Cak Ali</span>, membangun Jawa Timur dari desa</p>
+        <p class="mx-auto mt-3 max-w-2xl text-balance text-3xl font-bold leading-[1.05] tracking-tight text-stone-900 md:text-[2.6rem]">Bersama <span class="text-brand-600">Cak Ali</span>, membangun Jawa Timur dari desa</p>
       </div>
       <div class="mt-6 grid gap-8 lg:grid-cols-12 lg:gap-4">
         <div class="order-2 lg:order-1 lg:col-span-4 lg:pb-8 lg:pt-6">
@@ -860,7 +860,7 @@
 
   <h3 class="ds-sub">Kepala seksi editorial (12 kolom: 5 · 4 · 3)</h3>
   <div class="ds-canvas grid gap-6 bg-white lg:grid-cols-12 lg:items-end">
-    <p class="text-4xl uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl lg:col-span-5"><span class="font-light">Program</span><br /><span class="font-extrabold text-brand-600">Prioritas</span></p>
+    <p class="text-4xl font-bold uppercase leading-[1.05] tracking-tight text-stone-900 md:text-5xl lg:col-span-5">Program<br /><span class="text-brand-600">Prioritas</span></p>
     <p class="text-stone-600 lg:col-span-4">Disusun dari obrolan langsung dengan warga, petani, nelayan, dan pelaku usaha.</p>
     <span class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-stone-900 lg:col-span-3 lg:justify-self-end">Semua program <svg data-icon="arrow-right" class="h-5 w-5"></svg></span>
   </div>
@@ -933,7 +933,7 @@
 
   <h3 class="ds-sub">Kenalan (3 kolom bergaris: fakta · kutipan · nilai)</h3>
   <div class="ds-canvas grid gap-10 bg-white lg:grid-cols-3 lg:gap-0">
-    <div class="lg:pr-8"><p class="text-3xl uppercase leading-[1.05] tracking-tight text-stone-900"><span class="font-light">Kenalan dengan</span><br /><span class="font-extrabold text-brand-600">Cak Ali</span></p><div class="mt-5 border-t border-stone-200"><div class="flex justify-between border-b border-stone-200 py-3 text-sm"><span class="font-semibold uppercase tracking-wider text-stone-500">Kabupaten</span><span class="text-xl font-extrabold text-stone-900">3</span></div></div></div>
+    <div class="lg:pr-8"><p class="text-3xl font-bold uppercase leading-[1.05] tracking-tight text-stone-900">Kenalan dengan<br /><span class="text-brand-600">Cak Ali</span></p><div class="mt-5 border-t border-stone-200"><div class="flex justify-between border-b border-stone-200 py-3 text-sm"><span class="font-semibold uppercase tracking-wider text-stone-500">Kabupaten</span><span class="text-xl font-extrabold text-stone-900">3</span></div></div></div>
     <figure class="lg:border-l lg:border-stone-200 lg:px-8"><svg data-icon="quote" class="h-10 w-10 text-gold-500"></svg><blockquote class="mt-3 text-xl font-medium leading-snug text-stone-900">Saya mau jadi teman ngobrol warga, kapan pun.</blockquote><figcaption class="mt-3"><img src="assets/img/logo-cak-ali.png" alt="" class="h-10 w-auto -rotate-2" /></figcaption></figure>
     <div class="lg:border-l lg:border-stone-200 lg:pl-8"><div class="flex gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white"><svg data-icon="route" class="h-5 w-5"></svg></span><span><span class="block text-sm font-bold uppercase tracking-wider text-stone-900">Turun langsung</span><span class="mt-1 block text-sm text-stone-600">Datang ke desa, mencatat sendiri.</span></span></div></div>
   </div>
@@ -949,7 +949,7 @@
 
   <h3 class="ds-sub">Ajakan akhir (3 kolom, garis atas hitam)</h3>
   <div class="grid gap-8 border-t border-stone-900 pt-8 lg:grid-cols-3 lg:gap-0">
-    <div class="lg:pr-8"><p class="text-3xl uppercase leading-[1.05] tracking-tight text-stone-900"><span class="font-light">Mari bergerak</span><br /><span class="font-extrabold text-brand-600">bersama</span></p><span class="btn btn-md btn-primary mt-5">Jadi Relawan</span></div>
+    <div class="lg:pr-8"><p class="text-3xl font-bold uppercase leading-[1.05] tracking-tight text-stone-900">Mari bergerak<br /><span class="text-brand-600">bersama</span></p><span class="btn btn-md btn-primary mt-5">Jadi Relawan</span></div>
     <div class="lg:border-l lg:border-stone-200 lg:px-8"><span class="icon-tile"><svg data-icon="megaphone" class="h-6 w-6"></svg></span><p class="h4 mt-4">Ada yang perlu dibenahi di desamu?</p><span class="btn btn-sm btn-outline mt-4">Sampaikan aspirasi</span></div>
     <ul class="space-y-4 lg:border-l lg:border-stone-200 lg:pl-8">
       <li class="flex items-center gap-3"><span class="grid h-10 w-10 place-items-center rounded-full bg-wa text-white"><svg data-icon="whatsapp" class="h-5 w-5"></svg></span><span class="font-semibold text-stone-900">Chat tim Cak Ali</span></li>
