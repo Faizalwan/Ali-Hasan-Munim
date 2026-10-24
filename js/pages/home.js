@@ -6,7 +6,6 @@ import { kegiatan } from '../data/kegiatan.js';
 import { renderIcons } from '../icons.js';
 import { esc, formatDate, imgSrc } from '../utils.js';
 
-const pad = n => String(n).padStart(2, '0');
 const programHref = p => p.href || `program.html#${p.id}`;
 const kegiatanHref = k => `kegiatan-detail.html?id=${encodeURIComponent(k.id)}`;
 
@@ -73,12 +72,11 @@ function renderTicker() {
 function renderPrograms() {
   const el = document.getElementById('program-list');
   if (!el || !programs.length) return;
-  el.innerHTML = programs.map((p, i) => `
+  el.innerHTML = programs.map(p => `
     <li class="flex w-[85%] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2.5rem)/3)]">
       <a href="${esc(programHref(p))}" class="card-link group flex w-full flex-col rounded-2xl">
         <span class="relative block aspect-[16/10] overflow-hidden rounded-2xl bg-stone-200">
           <img src="${imgSrc(p.image, 700)}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105 group-focus-visible:scale-105" loading="lazy" />
-          <span class="absolute left-4 top-4 rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold tracking-wider text-stone-900 backdrop-blur">${pad(i + 1)}</span>
         </span>
         <span class="mt-2 flex flex-1 items-center gap-4 rounded-2xl border border-stone-200 bg-white p-5 transition duration-300 group-hover:border-stone-300 group-hover:shadow-soft">
           <span class="min-w-0 flex-1">
