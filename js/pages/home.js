@@ -85,7 +85,7 @@ function renderPrograms() {
             <span class="block text-lg font-bold leading-snug text-stone-900 transition group-hover:text-brand-700">${esc(p.title)}</span>
             <span class="mt-1 line-clamp-2 text-sm leading-relaxed text-stone-500">${esc(p.summary)}</span>
           </span>
-          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white transition duration-300 group-hover:rotate-45 group-hover:bg-stone-900 group-focus-visible:rotate-45 group-focus-visible:bg-stone-900"><svg data-icon="arrow-up-right" class="h-4 w-4"></svg></span>
+          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-600 text-white transition duration-300 group-hover:rotate-45 group-hover:bg-brand-700 group-focus-visible:rotate-45 group-focus-visible:bg-brand-700"><svg data-icon="arrow-up-right" class="h-4 w-4"></svg></span>
         </span>
       </a>
     </li>`).join('');
