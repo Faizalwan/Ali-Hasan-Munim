@@ -270,39 +270,10 @@
       </div>
     </section>
 
-    <!-- ========== DARI LAPANGAN (galeri melengkung + panah) ========== -->
-    <section class="section overflow-hidden" aria-labelledby="lapangan-title">
-      <div class="container-site">
-        <div data-reveal class="grid gap-6 lg:grid-cols-12 lg:items-end">
-          <div class="lg:col-span-7">
-            <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600">
-              <span class="h-2.5 w-2.5 rounded-full bg-brand-600" aria-hidden="true"></span>
-              Dari Lapangan
-            </p>
-            <h2 id="lapangan-title" class="mt-3 text-3xl font-bold leading-[1.2] tracking-tight text-stone-900 md:text-[2.5rem]">Potret keseharian di<br class="hidden sm:inline" /> <span class="text-brand-600">tiga kabupaten</span>.</h2>
-          </div>
-          <div class="lg:col-span-4 lg:col-start-9">
-            <p class="text-base leading-relaxed text-stone-600">Dokumentasi kegiatan Cak Ali bersama warga, dari pesantren dan forum usaha hingga panggung perayaan di kampung.</p>
-            <a href="galeri.html" class="link mt-3 inline-block text-sm underline underline-offset-4">Lihat Semua Galeri</a>
-          </div>
-        </div>
-
-        <!-- Galeri silinder 3D selebar layar (dilihat dari dalam: tengah jauh, tepi dekat & miring).
-             Kartu diisi dan digerakkan home.js; berputar tanpa ujung, bisa digeser atau pakai panah. -->
-        <div id="galeri-stage" data-reveal class="relative mx-[calc(50%-50vw)] mt-6 h-[260px] cursor-grab touch-pan-y select-none overflow-hidden [perspective:900px] active:cursor-grabbing md:h-[460px]">
-          <ul id="galeri-list" aria-label="Galeri kegiatan" class="absolute inset-0 [transform-style:preserve-3d]"></ul>
-        </div>
-        <div class="mt-2 flex items-center justify-center gap-3">
-          <button type="button" data-galeri-prev aria-controls="galeri-list" aria-label="Foto sebelumnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200"><svg data-icon="arrow-right" class="h-4 w-4 rotate-180"></svg></button>
-          <button type="button" data-galeri-next aria-controls="galeri-list" aria-label="Foto berikutnya" class="btn btn-icon h-11 border border-stone-300 bg-white text-stone-900 hover:border-stone-900 focus-visible:ring-stone-200"><svg data-icon="arrow-right" class="h-4 w-4"></svg></button>
-        </div>
-      </div>
-    </section>
-
     <!-- ========== AJAKAN AKHIR ========== -->
-    <section class="pb-20 md:pb-28">
+    <section class="section">
       <div class="container-site">
-        <div data-reveal class="grid gap-12 border-t border-stone-200 pt-14 lg:grid-cols-3 lg:gap-0">
+        <div data-reveal class="grid gap-12 lg:grid-cols-3 lg:gap-0">
           <div class="lg:pr-10">
             <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600">
               <span class="h-2.5 w-2.5 rounded-full bg-brand-600" aria-hidden="true"></span>
@@ -326,6 +297,25 @@
           </ul>
         </div>
       </div>
+    </section>
+
+    <!-- ========== DARI LAPANGAN (kipas foto, terpotong langsung oleh footer) ========== -->
+    <section class="overflow-hidden bg-stone-50 pt-16 md:pt-24" aria-labelledby="lapangan-title">
+      <div class="container-site">
+        <div data-reveal class="mx-auto max-w-2xl text-center">
+          <p class="flex items-center justify-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600">
+            <span class="h-2.5 w-2.5 rounded-full bg-brand-600" aria-hidden="true"></span>
+            Dari Lapangan
+          </p>
+          <h2 id="lapangan-title" class="mt-3 text-3xl font-bold leading-[1.2] tracking-tight text-stone-900 md:text-[2.5rem]">Potret keseharian di<br /><span class="text-brand-600">tiga kabupaten</span>.</h2>
+          <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-stone-600 md:text-lg">Dokumentasi kegiatan Cak Ali bersama warga, dari pesantren dan forum usaha hingga panggung perayaan di kampung.</p>
+          <a href="galeri.html" class="btn btn-md btn-outline mt-8">Lihat Semua Galeri <svg data-icon="arrow-right" class="h-4 w-4"></svg></a>
+        </div>
+      </div>
+
+      <!-- Kipas kartu: kartu tengah paling besar & tegak, kartu samping mengecil, turun, dan miring keluar.
+           Posisi tiap kartu diatur lewat --k (jarak dari tengah) dan --ak (nilai mutlaknya); diisi home.js. -->
+      <ul id="galeri-list" data-reveal aria-label="Galeri kegiatan" class="relative mx-auto mt-14 h-[210px] [--drop:22px] [--gap:110px] sm:h-[260px] sm:[--gap:150px] md:mt-16 md:h-[300px] md:[--drop:30px] md:[--gap:190px] lg:h-[340px] lg:[--gap:215px]"></ul>
     </section>
 
   </main>

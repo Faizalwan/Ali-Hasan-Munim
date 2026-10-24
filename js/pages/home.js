@@ -169,111 +169,33 @@ function renderKabar() {
   renderIcons(featuredEl);
 }
 
-/* ---------- Dari lapangan (galeri silinder 3D) ---------- */
+/* ---------- Dari lapangan (kipas foto) ---------- */
 
-// Kartu disusun di dinding silinder yang dilihat dari dalam: kartu tengah jauh & kecil, kartu tepi dekat,
-// besar, dan miring. Posisi dihitung tiap frame dari satu sudut `current` yang mengejar `target`
-// secara halus, jadi gerak otomatis, panah, dan geser (drag/swipe) semuanya mulus dan berputar tanpa ujung.
+// 7 foto kegiatan terbaru disusun seperti kipas: terbaru di tengah (paling besar & tegak), berikutnya
+// bergantian kiri-kanan, makin ke luar makin kecil, turun, dan miring. Bagian bawah kartu terpotong oleh
+// footer. Jarak (--gap) dan turunnya (--drop) diatur responsif di #galeri-list; di HP hanya 3 kartu tampil.
 function renderGaleri() {
-  const stage = document.getElementById('galeri-stage');
   const list = document.getElementById('galeri-list');
-  if (!stage || !list) return;
-  const photos = kegiatan.filter(k => k.image && !k.image.startsWith('photo-'));
-  if (!photos.length) return;
+  if (!list) return;
+  const photos = kegiatan.filter(k => k.image && !k.image.startsWith('photo-')).slice(0, 7);
+  const slots = photos.map((k, i) => ({ k, pos: i === 0 ? 0 : (i % 2 ? -1 : 1) * Math.ceil(i / 2) }));
 
-  // Ulangi foto sampai cukup untuk satu putaran penuh tanpa terlihat celah.
-  const items = [];
-  while (items.length < 16) items.push(...photos);
-  list.innerHTML = items.map(k => `
-    <li class="absolute left-1/2 top-1/2 will-change-transform">
-      <figure class="group relative h-full w-full overflow-hidden rounded-3xl bg-stone-200 shadow-soft-lg">
-        <img src="${imgSrc(k.image)}" alt="${esc(k.imageAlt || k.title)}" style="object-position:${esc(k.imagePos || 'center')}" class="pointer-events-none h-full w-full object-cover" draggable="false" />
-        <figcaption class="absolute inset-x-2 bottom-2 rounded-xl bg-white/90 px-3 py-2 text-xs font-semibold text-stone-900 backdrop-blur transition md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">${esc(k.category)} · ${esc(k.region)}</figcaption>
+  list.innerHTML = slots.map(({ k, pos }) => {
+    const ak = Math.abs(pos);
+    const hide = ak >= 3 ? 'hidden lg:block' : ak === 2 ? 'hidden sm:block' : '';
+    const style = `transform: translateX(calc(-50% + ${pos} * var(--gap))) translateY(calc(${(ak * ak + ak) / 2} * var(--drop))) rotate(${pos * 7}deg) scale(${(1 - ak * 0.07).toFixed(2)}); z-index: ${10 - ak}`;
+    return `
+    <li class="group absolute left-1/2 top-0 w-[180px] origin-bottom sm:w-[220px] md:w-[260px] lg:w-[290px] ${hide}" style="${style}">
+      <figure class="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-stone-200 shadow-soft-lg ring-4 ring-white transition-transform duration-500 ease-out group-hover:-translate-y-5">
+        <img src="${imgSrc(k.image)}" alt="${esc(k.imageAlt || k.title)}" style="object-position:${esc(k.imagePos || 'center')}" class="h-full w-full object-cover" loading="lazy" />
+        <span class="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-stone-950/70 to-transparent" aria-hidden="true"></span>
+        <figcaption class="absolute left-5 right-5 top-5 text-white">
+          <span class="block text-lg font-bold leading-tight md:text-xl">${esc(k.category)}</span>
+          <span class="mt-1 block text-sm text-white/80">${esc(k.region)}</span>
+        </figcaption>
       </figure>
-    </li>`).join('');
-  const cards = [...list.children];
-
-  const PERSPECTIVE = 900;                  // sama dengan [perspective:900px] di stage
-  const CENTER_SCALE = 0.62;                // ukuran kartu tengah relatif terhadap kartu terdekat
-  let cardW, cardH, R, Z0, step, span, maxA;
-  const measure = () => {
-    const w = stage.clientWidth;
-    cardW = w < 640 ? 180 : w < 1024 ? 200 : 230;
-    cardH = Math.round(cardW * 4 / 3);
-    R = Math.min(1100, Math.max(280, w * 0.62));
-    Z0 = R + PERSPECTIVE - PERSPECTIVE / CENTER_SCALE;          // kartu tengah tampil sebesar CENTER_SCALE
-    step = ((cardW + 18) / R) * 180 / Math.PI;                  // jarak antarkartu dalam derajat
-    span = step * cards.length;
-    // Sudut saat kartu sudah sepenuhnya keluar layar; kartu di luar sudut ini disembunyikan.
-    maxA = 89;
-    for (let a = 0; a < 89; a++) {
-      const rad = a * Math.PI / 180;
-      // tepi dalam kartu (yang paling dekat ke tengah layar) sedikit lebih jauh dari kamera karena kartu miring
-      const z = Z0 - R * Math.cos(rad) - (cardW / 2) * Math.sin(rad);
-      const s = PERSPECTIVE / (PERSPECTIVE - z);
-      if ((R * Math.sin(rad) - (cardW / 2) * Math.cos(rad)) * s > w / 2) { maxA = a + 1; break; }
-    }
-    cards.forEach(li => { li.style.width = `${cardW}px`; li.style.height = `${cardH}px`; li.style.margin = `${-cardH / 2}px 0 0 ${-cardW / 2}px`; });
-  };
-
-  let current = 0, target = 0;
-  const layout = () => {
-    cards.forEach((li, i) => {
-      let a = i * step - current;
-      a = ((a % span) + span * 1.5) % span - span / 2;          // bungkus ke [-span/2, span/2) → tanpa ujung
-      const rad = a * Math.PI / 180;
-      const show = Math.abs(a) < maxA;
-      li.style.visibility = show ? 'visible' : 'hidden';
-      if (show) li.style.transform = `translate3d(${(R * Math.sin(rad)).toFixed(1)}px,0,${(Z0 - R * Math.cos(rad)).toFixed(1)}px) rotateY(${(-a).toFixed(2)}deg)`;
-    });
-  };
-
-  // Gerak otomatis pelan; berhenti saat kursor di atas galeri, saat digeser, atau saat galeri tak terlihat.
-  const autoSpeed = matchMedia('(prefers-reduced-motion: reduce)').matches ? 2.5 : 5;   // derajat per detik
-  let hovering = false, dragging = false, onScreen = true, raf = 0, last = 0;
-  const frame = t => {
-    const dt = Math.min(0.05, (t - (last || t)) / 1000);
-    last = t;
-    if (!hovering && !dragging) target += autoSpeed * dt;
-    current += (target - current) * (1 - Math.pow(0.002, dt));  // mengejar target dengan perlambatan halus
-    layout();
-    raf = requestAnimationFrame(frame);
-  };
-  const start = () => { if (!raf && onScreen && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } };
-  const stop = () => { cancelAnimationFrame(raf); raf = 0; };
-
-  document.querySelector('[data-galeri-next]')?.addEventListener('click', () => { target = Math.round(target / step + 1) * step; });
-  document.querySelector('[data-galeri-prev]')?.addEventListener('click', () => { target = Math.round(target / step - 1) * step; });
-
-  stage.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hovering = true; });
-  stage.addEventListener('pointerleave', () => { hovering = false; });
-
-  // Geser: 1 kartu ≈ lebar kartu di layar. Saat dilepas, sisa kecepatan diteruskan (inersia).
-  let startX = 0, startTarget = 0, lastX = 0, lastT = 0, velocity = 0;
-  stage.addEventListener('pointerdown', e => {
-    dragging = true; startX = lastX = e.clientX; startTarget = target; lastT = e.timeStamp; velocity = 0;
-    stage.setPointerCapture(e.pointerId);
-  });
-  stage.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    const degPerPx = step / (cardW * 1.1);
-    target = startTarget - (e.clientX - startX) * degPerPx;
-    const dtm = Math.max(1, e.timeStamp - lastT);
-    velocity = -(e.clientX - lastX) * degPerPx / dtm * 1000;  // derajat per detik
-    lastX = e.clientX; lastT = e.timeStamp;
-  });
-  const release = () => { if (!dragging) return; dragging = false; target += velocity * 0.25; };
-  stage.addEventListener('pointerup', release);
-  stage.addEventListener('pointercancel', release);
-
-  new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; onScreen ? start() : stop(); }).observe(stage);
-  document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
-  window.addEventListener('resize', () => { measure(); layout(); });
-
-  measure();
-  current = target = -step * 0.5;   // mulai dengan dua kartu mengapit tengah
-  layout();
-  start();
+    </li>`;
+  }).join('');
 }
 
 setupVideo();
