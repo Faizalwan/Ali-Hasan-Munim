@@ -75,7 +75,7 @@ export const config = {
         { icon: 'flag', label: 'Visi & Misi', desc: 'Arah perjuangan untuk Dapil Jawa Timur IV.', href: 'program.html#visi' },
         { icon: 'shield-check', label: 'Nilai yang Dipegang', desc: 'Turun langsung, terbuka, dan amanah.', href: 'tentang.html#nilai' }
       ],
-      feature: { image: 'photo-1558005530-a7958896ec60', eyebrow: 'Kenalan', title: 'Pengusaha yang tumbuh dari kampung, kembali untuk kampung', cta: 'Baca Profil', href: 'tentang.html' }
+      feature: { image: 'assets/img/kabar/hari-tani-2026.webp', imagePos: '45% 30%', eyebrow: 'Kenalan', title: 'Pengusaha yang pulang untuk kampung', cta: 'Baca Profil', href: 'tentang.html' }
     },
     {
       id: 'program',
@@ -100,7 +100,7 @@ export const config = {
         { icon: 'calendar', label: 'Agenda Kunjungan', desc: 'Jadwal Cak Ali turun ke desa-desa.', href: 'kegiatan.html#agenda' },
         { icon: 'instagram', label: 'Instagram', desc: 'Kabar harian di @alihasanmunim.', href: 'https://www.instagram.com/alihasanmunim/', external: true }
       ],
-      feature: { image: 'photo-1603725616907-82eb483d7dea', eyebrow: 'Dari lapangan', title: 'Menyusuri tapal kuda, dari Ijen sampai pesisir', cta: 'Lihat Kegiatan', href: 'kegiatan.html' }
+      feature: { image: 'assets/img/kabar/hut-ri-81.webp', imagePos: '70% 30%', eyebrow: 'Dari lapangan', title: 'Turun langsung ke tengah warga', cta: 'Lihat Kegiatan', href: 'kegiatan.html' }
     },
     {
       id: 'terlibat',
@@ -113,7 +113,7 @@ export const config = {
         { icon: 'megaphone', label: 'Sampaikan Aspirasi', desc: 'Ceritakan masalah di desamu, kami catat dan kawal.', href: 'aspirasi.html' },
         { icon: 'whatsapp', label: 'Chat via WhatsApp', desc: 'Ngobrol langsung dengan tim Cak Ali.', wa: true }
       ],
-      feature: { image: 'photo-1623210412831-e29c8c5b81cf', eyebrow: 'Relawan', title: 'Bergerak bareng tetangga, mulai dari desamu', cta: 'Daftar Relawan', href: 'relawan.html' }
+      feature: { image: 'assets/img/kabar/kurban-pesantren.webp', imagePos: '58% 30%', eyebrow: 'Relawan', title: 'Bergerak bareng, mulai dari desamu', cta: 'Daftar Relawan', href: 'relawan.html' }
     },
     { id: 'kontak', label: 'Kontak', href: 'kontak.html', pages: ['kontak'] }
   ]

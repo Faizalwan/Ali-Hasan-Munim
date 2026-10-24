@@ -31,11 +31,11 @@ function megaPanel(g) {
   const f = g.feature;
   const feature = f ? `
     <a href="${esc(f.href)}" class="group relative hidden min-h-[260px] overflow-hidden rounded-2xl lg:block">
-      <img src="${imgSrc(f.image, 700)}" alt="" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+      <img src="${imgSrc(f.image, 700)}" alt="" style="object-position:${esc(f.imagePos || 'center')}" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
       <span class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/30 to-transparent"></span>
       <span class="absolute inset-x-0 bottom-0 p-6">
         <span class="text-xs font-bold uppercase tracking-[0.14em] text-gold-400">${esc(f.eyebrow)}</span>
-        <span class="mt-2 block text-xl font-bold leading-snug text-white">${esc(f.title)}</span>
+        <span class="mt-2 line-clamp-2 text-xl font-bold leading-snug text-white">${esc(f.title)}</span>
         <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-white">${esc(f.cta)} <svg data-icon="arrow-right" class="h-4 w-4 transition group-hover:translate-x-1"></svg></span>
       </span>
     </a>` : '';
