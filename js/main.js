@@ -218,8 +218,11 @@ function renderFooter() {
             <img src="${esc(config.site.logoWhite)}" alt="" width="600" height="273" class="h-14 w-auto" loading="lazy" />
           </a>
           <h2 class="mt-8 text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">Mari bergerak<br />bersama.</h2>
-          <p class="mt-4 max-w-md text-base leading-relaxed">Gabung jadi relawan dan bantu kabarkan program untuk kampungmu.</p>
-          <a href="relawan.html" class="btn btn-lg group mt-8 bg-white text-brand-700 hover:bg-brand-50 focus-visible:ring-white/40">Jadi Relawan <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
+          <p class="mt-4 max-w-md text-base leading-relaxed">Gabung jadi relawan dan bantu kabarkan<br class="hidden sm:inline" /> program untuk kampungmu.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="relawan.html" class="btn btn-lg group bg-white text-brand-700 hover:bg-brand-50 focus-visible:ring-white/40">Jadi Relawan <svg data-icon="arrow-right" class="h-5 w-5 transition group-hover:translate-x-1"></svg></a>
+            <a href="aspirasi.html" class="btn btn-lg border border-white/40 text-white hover:border-white hover:bg-white/10 focus-visible:ring-white/30">Sampaikan Aspirasi</a>
+          </div>
         </div>
 
         <nav class="lg:col-span-3 lg:col-start-7" aria-label="Menu footer">
